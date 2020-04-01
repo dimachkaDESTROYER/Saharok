@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace Saharok
 {
-    class GameCell
+    public enum CellType
     {
+        Wall,
+        Empty,
+    }
+    public class GameCell
+    {
+        public readonly CellType Type;
+        public GameCell(CellType type, string fileName)
+        {
+            Type = type;
+        }
     }
 }
