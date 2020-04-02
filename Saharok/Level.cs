@@ -35,6 +35,7 @@ namespace Saharok
             this.player = player;
             LevelHeight = cellHeigth * gameCells.GetLength(1);
             LevelWidth = cellWidth * gameCells.GetLength(0);
+            MovePlayer = movePlayer;
         }
 
         private IEnumerable<GameCell> GetSquareRange(int left, int right, int top, int bottom)

@@ -6,3 +6,11 @@ C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\Saharok.exe
 C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\Saharok.pdb
 C:\Users\Оля\Desktop\игруля\Saharok\Saharok\obj\Debug\Saharok.exe
 C:\Users\Оля\Desktop\игруля\Saharok\Saharok\obj\Debug\Saharok.pdb
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\bin\Debug\Saharok.exe.config
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\bin\Debug\Saharok.exe
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\bin\Debug\Saharok.pdb
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\obj\Debug\Saharok.csprojAssemblyReference.cache
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\obj\Debug\Saharok.Properties.Resources.resources
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\obj\Debug\Saharok.csproj.GenerateResource.cache
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\obj\Debug\Saharok.exe
+C:\Users\Ольга\Documents\GitHub\Saharok\Saharok\obj\Debug\Saharok.pdb
