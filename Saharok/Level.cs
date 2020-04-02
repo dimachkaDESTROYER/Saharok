@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace Saharok
 {
-    class Level
+    public class Level
     {
         private int gravityForce;
         private int playerForce;
-        private int frictionForce;
+        private double frictionCoef;
         public readonly int CellWidth;
         public readonly int CellHeigth;
         public GameCell[,] gameCells;
         public Player player;
         public readonly Func<IEnumerable<MovingDirection>> MovePlayer;
 
-        public Level(int gForce, int pForce, int fForce,
+        public Level(int gForce, int pForce, double fCoef,
                     int cellWidth, int cellHeigth,
                     GameCell[,] gameCells, Player player,
                     Func<IEnumerable<MovingDirection>> movePlayer)
         {
             gravityForce = gForce;
             playerForce = pForce;
-            frictionForce = fForce;
+            frictionCoef = fCoef;
             CellWidth = cellWidth;
             CellHeigth = cellHeigth;
             this.gameCells = gameCells;
@@ -58,20 +58,19 @@ namespace Saharok
                 dy = -player.Position.Bottom % CellHeigth;
                 player.onGround = true;
             }
+            if (dx != 0) player.SpeedX = 0;
+            if (dy != 0) player.SpeedY = 0;
             player.ChangePositionBy(dx, dy);
         }
 
         public void GameTurn()
         {
             foreach (var direction in MovePlayer())
-                player.ChangeSpeed(direction, playerForce);
+                player.ChangeSpeedBy(direction, playerForce);
             CorrectMove();
             if (!player.onGround)
-                player.ChangeSpeed(MovingDirection.Down, gravityForce);
-            if (player.SpeedX > 0 && player.SpeedX > frictionForce)
-                player.ChangeSpeed(MovingDirection.Left, frictionForce);
-            else if (player.SpeedX + frictionForce < 0)
-                player.ChangeSpeed(MovingDirection.Right, frictionForce);
+                player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
+            player.SpeedX = (int) (player.SpeedX * (1 - frictionCoef)); 
         }
     }
 }

@@ -16,12 +16,12 @@ namespace Saharok
     }
     public class Player
     {
-        public bool onGround;
+        public bool onGround = false;
         public Rectangle Position { get; private set; }
-        public int SpeedX { get; private set; }
-        public int SpeedY { get; private set; }
+        public int SpeedX;
+        public int SpeedY;
 
-        public void ChangeSpeed(MovingDirection d, int AbsSpeed)
+        public void ChangeSpeedBy(MovingDirection d, int AbsSpeed)
         {
             if (d == MovingDirection.Up)
                 SpeedY += AbsSpeed;
@@ -32,7 +32,6 @@ namespace Saharok
             if (d == MovingDirection.Right)
                 SpeedX += AbsSpeed;
         }
-
         public void ChangePositionBy(int dx, int dy)
         {
             Position.Offset(dx, dy);

@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Level.cs" />
     <Compile Include="GameCell.cs" />
+    <Compile Include="LevelBuilder.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

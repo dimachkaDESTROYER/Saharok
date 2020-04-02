@@ -14,7 +14,7 @@ namespace Saharok
     public class GameCell
     {
         public readonly CellType Type;
-        public GameCell(CellType type, string fileName)
+        public GameCell(CellType type)
         {
             Type = type;
         }
