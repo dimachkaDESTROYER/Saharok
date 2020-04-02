@@ -12,8 +12,10 @@ namespace Saharok
         private int gravityForce;
         private int playerForce;
         private double frictionCoef;
-        public readonly int CellWidth;
-        public readonly int CellHeigth;
+        private readonly int CellWidth;
+        private readonly int CellHeigth;
+        public readonly int LevelHeight;
+        public readonly int LevelWidth;
         public GameCell[,] gameCells;
         public Player player;
         public readonly Func<IEnumerable<MovingDirection>> MovePlayer;
@@ -30,6 +32,8 @@ namespace Saharok
             CellHeigth = cellHeigth;
             this.gameCells = gameCells;
             this.player = player;
+            LevelHeight = cellHeigth * gameCells.GetLength(1);
+            LevelWidth = cellWidth * gameCells.GetLength(0);
         }
 
         private IEnumerable<GameCell> GetSquareRange(int left, int right, int top, int bottom)
