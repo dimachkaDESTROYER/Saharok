@@ -41,6 +41,11 @@ namespace Saharok
         {
             Position = position;
         }
-        
+
+        public string GetImageFileName()
+        {
+            return "поворот.png";
+        }
+
     }
 }

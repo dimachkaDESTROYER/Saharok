@@ -18,5 +18,12 @@ namespace Saharok
         {
             Type = type;
         }
+
+        public string GetImageFileName()
+        {
+            return "математика 3.png";
+        }
     }
+
+
 }
