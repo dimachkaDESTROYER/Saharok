@@ -8,7 +8,7 @@ namespace Saharok
 {
     public class LevelBuilder
     {
-        private int gravityForce = 3;
+        private int gravityForce = 0;
         private int playerForce = 5;
         private double frictionC = 0.9;
         private int cellWidth;

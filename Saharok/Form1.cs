@@ -58,7 +58,7 @@ namespace Saharok
         {
             //e.Graphics.TranslateTransform(0, GameState.ElementSize);
             e.Graphics.FillRectangle(
-                Brushes.Black, 0, 0, currentLevel.LevelWidth,
+                Brushes.Red, 0, 0, currentLevel.LevelWidth,
                 currentLevel.LevelHeight);
             foreach (var cell in currentLevel.GetCells())
                 e.Graphics.DrawImage(bitmaps[cell.Item1.GetImageFileName()], cell.Item2);
