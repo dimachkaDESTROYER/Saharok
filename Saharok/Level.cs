@@ -48,26 +48,11 @@ namespace Saharok
         private void CorrectMove()
         {
             player.ChangePositionBy(player.SpeedX, player.SpeedY);
-            var top = player.Position.Top / gameCells.GetLength(1);
-            var bottom = player.Position.Bottom / gameCells.GetLength(1);
-            var left = player.Position.Left / gameCells.GetLength(0);
-            var right = player.Position.Right / gameCells.GetLength(0);
-            var dx = 0;
-            var dy = 0;
-            if (player.SpeedX > 0 && GetSquareRange(right, right, top, bottom).Any(c => c.Type == CellType.Wall))
-                dx = -player.Position.Right % CellWidth;
-            if (player.SpeedX < 0 && GetSquareRange(left, left, top, bottom).Any(c => c.Type == CellType.Wall))
-                dx = CellWidth - player.Position.Left % CellWidth;
-            if (player.SpeedY > 0 && GetSquareRange(left, right, top, top).Any(c => c.Type == CellType.Wall))
-                dy = CellHeigth - player.Position.Top % CellHeigth;
-            if (player.SpeedY > 0 && GetSquareRange(left, right, bottom, bottom).Any(c => c.Type == CellType.Wall))
-            {
-                dy = -player.Position.Bottom % CellHeigth;
-                player.onGround = true;
-            }
-            if (dx != 0) player.SpeedX = 0;
-            if (dy != 0) player.SpeedY = 0;
-            player.ChangePositionBy(dx, dy);
+            var top = player.Position.Top / CellHeigth;
+            var bottom = player.Position.Bottom / CellHeigth;
+            var left = player.Position.Left / CellWidth;
+            var right = player.Position.Right / CellWidth;
+
         }
 
         public void GameTurn()
@@ -77,15 +62,16 @@ namespace Saharok
             CorrectMove();
             if (!player.onGround)
                 player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
-            player.SpeedX = (int) (player.SpeedX * (1 - frictionCoef)); 
+            player.SpeedX = (int)(player.SpeedX * (1 - frictionCoef));
         }
 
         public IEnumerable<Tuple<GameCell, Rectangle>> GetCells()
         {
             for (var x = 0; x < gameCells.GetLength(0); x++)
                 for (var y = 0; y < gameCells.GetLength(1); y++)
-                    yield return Tuple.Create(gameCells[x, y], new Rectangle(x * CellWidth, y * CellHeigth,
-                                                                            CellWidth, CellHeigth));
+                    if (gameCells[x, y].Type != CellType.Empty)
+                        yield return Tuple.Create(gameCells[x, y], new Rectangle(x * CellWidth, y * CellHeigth,
+                                                                                CellWidth, CellHeigth));
         }
 
         public Keys KeyPressed;

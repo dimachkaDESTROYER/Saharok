@@ -24,9 +24,9 @@ namespace Saharok
         public void ChangeSpeedBy(MovingDirection d, int AbsSpeed)
         {
             if (d == MovingDirection.Up)
-                SpeedY += AbsSpeed;
-            if (d == MovingDirection.Down)
                 SpeedY -= AbsSpeed;
+            if (d == MovingDirection.Down)
+                SpeedY += AbsSpeed;
             if (d == MovingDirection.Left)
                 SpeedX -= AbsSpeed;
             if (d == MovingDirection.Right)
@@ -34,7 +34,7 @@ namespace Saharok
         }
         public void ChangePositionBy(int dx, int dy)
         {
-            Position.Offset(dx, dy);
+            Position = new Rectangle(new Point(Position.X + dx, Position.Y + dy), Position.Size);
         }
 
         public Player(Rectangle position)
