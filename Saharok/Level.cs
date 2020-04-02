@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,6 +72,14 @@ namespace Saharok
             if (!player.onGround)
                 player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
             player.SpeedX = (int) (player.SpeedX * (1 - frictionCoef)); 
+        }
+
+        public IEnumerable<Tuple<GameCell, Rectangle>> GetCells()
+        {
+            for (var x = 0; x < gameCells.GetLength(0); x++)
+                for (var y = 0; y < gameCells.GetLength(1); y++)
+                    yield return Tuple.Create(gameCells[x, y], new Rectangle(x * CellWidth, y * CellHeigth,
+                                                                            CellWidth, CellHeigth));
         }
     }
 }
