@@ -14,6 +14,12 @@ namespace Saharok
         Left,
         Right,
     }
+
+    public enum Axis
+    {
+        Vertical,
+        Horisontal,
+    }
     public class Player
     {
         public bool onGround = false;
@@ -32,9 +38,24 @@ namespace Saharok
             if (d == MovingDirection.Right)
                 SpeedX += AbsSpeed;
         }
-        public void ChangePositionBy(int dx, int dy)
+        public void ChangePosition(Axis axis)
         {
-            Position = new Rectangle(new Point(Position.X + dx, Position.Y + dy), Position.Size);
+            Position = GetChangedPosition(axis);
+            if (axis == Axis.Horisontal)
+                SpeedX = 0;
+            else
+                SpeedY = 0;
+        }
+
+        public Rectangle GetChangedPosition(Axis axis)
+        {
+            var dx = 0;
+            var dy = 0;
+            if (axis == Axis.Horisontal)
+                dx = SpeedX;
+            else
+                dy = SpeedY;
+            return new Rectangle(new Point(Position.X + dx, Position.Y + dy), Position.Size);
         }
 
         public Player(Rectangle position)

@@ -20,7 +20,6 @@ namespace Saharok
         public GameCell[,] gameCells;
         public Player player;
         public readonly Func<IEnumerable<MovingDirection>> MovePlayer;
-
         public Level(int gForce, int pForce, double fCoef,
                     int cellWidth, int cellHeigth,
                     GameCell[,] gameCells, Player player,
@@ -38,31 +37,39 @@ namespace Saharok
             MovePlayer = movePlayer;
         }
 
-        private IEnumerable<GameCell> GetSquareRange(int left, int right, int top, int bottom)
+        private IEnumerable<GameCell> SquareRange(int left, int right, int top, int bottom)
         {
             foreach (var x in Enumerable.Range(left, right))
                 foreach (var y in Enumerable.Range(top, bottom))
                     yield return gameCells[x, y];
         }
 
-        private void CorrectMove()
+        private bool IsSquareRangeContainsCellType(int left, int right, int top, int bottom, CellType type)
         {
-            player.ChangePositionBy(player.SpeedX, player.SpeedY);
-            var top = player.Position.Top / CellHeigth;
-            var bottom = player.Position.Bottom / CellHeigth;
-            var left = player.Position.Left / CellWidth;
-            var right = player.Position.Right / CellWidth;
+            return SquareRange(left, right, top, bottom).Any(c => c.Type == type);
+        }
 
+        private void CorrectMove(Axis axis)
+        {
+            var newPosition = player.GetChangedPosition(axis);
+            if (newPosition.Left < 0 || newPosition.Right > LevelWidth ||
+               newPosition.Top < 0 || newPosition.Bottom > LevelHeight)
+                return;
+            if (GetCells().Where(t => t.Item1.Type != CellType.Empty)
+                         .Select(t => t.Item2)
+                         .Any(r => r.IntersectsWith(newPosition)))
+                return;
+            player.ChangePosition(axis);
         }
 
         public void GameTurn()
         {
             foreach (var direction in MovePlayer())
                 player.ChangeSpeedBy(direction, playerForce);
-            CorrectMove();
-            if (!player.onGround)
+            CorrectMove(Axis.Horisontal);
+            CorrectMove(Axis.Vertical);
+            if (player.SpeedY >= 0 && !player.onGround)
                 player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
-            player.SpeedX = (int)(player.SpeedX * (1 - frictionCoef));
         }
 
         public IEnumerable<Tuple<GameCell, Rectangle>> GetCells()
