@@ -80,6 +80,7 @@
   <ItemGroup>
     <Content Include="Image\математика 3.png" />
     <Content Include="Image\поворот.png" />
+    <Content Include="Image\у.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

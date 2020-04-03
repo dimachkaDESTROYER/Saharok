@@ -65,7 +65,7 @@ namespace Saharok
 
         public string GetImageFileName()
         {
-            return "поворот.png";
+            return "у.png";
         }
 
     }
