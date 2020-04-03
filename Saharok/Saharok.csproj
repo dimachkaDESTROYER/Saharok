@@ -78,6 +78,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Image\грусть.png" />
     <Content Include="Image\математика 3.png" />
     <Content Include="Image\поворот.png" />
     <Content Include="Image\у.png" />
