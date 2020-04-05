@@ -29,8 +29,11 @@ namespace Saharok
 
         public void ChangeSpeedBy(MovingDirection d, int AbsSpeed)
         {
-            if (d == MovingDirection.Up)
+            if (d == MovingDirection.Up && onGround)
+            {
+                onGround = false;
                 SpeedY -= AbsSpeed;
+            }
             if (d == MovingDirection.Down)
                 SpeedY += AbsSpeed;
             if (d == MovingDirection.Left)
@@ -41,10 +44,7 @@ namespace Saharok
         public void ChangePosition(Axis axis)
         {
             Position = GetChangedPosition(axis);
-            if (axis == Axis.Horisontal)
-                SpeedX = 0;
-            else
-                SpeedY = 0;
+            SpeedX /= 2;
         }
 
         public Rectangle GetChangedPosition(Axis axis)

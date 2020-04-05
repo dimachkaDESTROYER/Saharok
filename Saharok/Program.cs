@@ -17,15 +17,9 @@ namespace Saharok
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var player = new Player(new Rectangle(200, 100, 100, 100));
-            var d = new Dictionary<char, GameCell>();
-            d['.'] = new GameCell(CellType.Empty);
-            d['W'] = new GameCell(CellType.Wall);
-            var map = new[]{"WWWWWW",
-                            "....WW",
-                            ".....W",
-                            "WWWWWW" };
-            var l = new LevelBuilder(100, 100, map, d).AddPlayer(player, () => new[] { MovingDirection.Right })
+            var player = new Player(new Rectangle(100, 100, 100, 100));
+            var cells = new[] { new GameCell(CellType.Wall, new Rectangle(0, 600, 1000, 200))};
+            var l = new LevelBuilder(1000, 800, cells).AddPlayer(player)
                                                     .ToLevel();
             Application.Run(new GameForm(l));
         }
