@@ -14,3 +14,11 @@ C:\Users\Оля\Desktop\игруля\Saharok\Saharok\obj\Debug\Saharok.Propertie
 C:\Users\Оля\Desktop\игруля\Saharok\Saharok\obj\Debug\Saharok.csproj.GenerateResource.cache
 C:\Users\Оля\Desktop\игруля\Saharok\Saharok\obj\Debug\Saharok.exe
 C:\Users\Оля\Desktop\игруля\Saharok\Saharok\obj\Debug\Saharok.pdb
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\obj\Debug\Saharok.csprojAssemblyReference.cache
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\obj\Debug\Saharok.Properties.Resources.resources
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\obj\Debug\Saharok.csproj.GenerateResource.cache
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\obj\Debug\Saharok.exe
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\obj\Debug\Saharok.pdb
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\bin\Debug\Saharok.exe.config
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\bin\Debug\Saharok.exe
+C:\Users\Ольга\Desktop\cf[fh\Saharok\Saharok\bin\Debug\Saharok.pdb

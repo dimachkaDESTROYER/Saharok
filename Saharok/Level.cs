@@ -13,36 +13,56 @@ namespace Saharok
         private int gravityForce;
         public readonly int LevelHeight;
         public readonly int LevelWidth;
-        public readonly IEnumerable<GameCell> NonEmptygameCells;
+        private GameCell[] Walls;
+        private List<GameCell> Coins;
         public Player player;
         public Keys KeyPressed;
-        public Level(int LevelHeight, int LevelWidth, int gForce,
-                    IEnumerable<GameCell> gameCells, Player player)
+        public Level(int LevelHeight, int LevelWidth,
+                     IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins,
+                     int gForce, Player player)
         {
             this.LevelHeight = LevelHeight;
             this.LevelWidth = LevelWidth;
+            Walls = walls.Select(r => new GameCell(CellType.Wall, r)).ToArray();
+            Coins = coins.Select(r => new GameCell(CellType.Money, r)).ToList();
             gravityForce = gForce;
-            NonEmptygameCells = gameCells;
             this.player = player;
         }
-        private void CorrectMove(Axis axis)
+        private bool TryMove(Axis axis)
         {
             if (!player.onGround)
                 player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
             var newPosition = player.GetChangedPosition(axis);
             if (newPosition.Left < 0 || newPosition.Right > LevelWidth ||
                newPosition.Top < 0 || newPosition.Bottom > LevelHeight)
-                return;
-            if (NonEmptygameCells.Any(c => c.Position.IntersectsWith(newPosition)))
-                return;
+                return false;
+            if (Walls.Any(c => c.Position.IntersectsWith(newPosition)))
+                return false;
             player.ChangePosition(axis);
-            player.onGround = true;
+            return true;
         }
 
         public void GameTurn()
         {
-            CorrectMove(Axis.Horisontal);
-            CorrectMove(Axis.Vertical);
+            TryMove(Axis.Horisontal);
+            if (TryMove(Axis.Vertical) && player.SpeedY > 0)
+                player.onGround = true;
+            var removed = new List<GameCell>();
+            foreach (var coin in Coins.Where(c => c.Position.IntersectsWith(player.Position)))
+            {
+                removed.Add(coin);
+                player.AddCoin();
+            }
+            foreach (var coin in removed)
+                Coins.Remove(coin);
+        }
+
+        public IEnumerable<GameCell> GetCells()
+        {
+            foreach(var wall in Walls)
+                yield return wall;
+            foreach (var coin in Coins)
+                yield return coin;
         }
     }
 }

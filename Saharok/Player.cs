@@ -22,11 +22,16 @@ namespace Saharok
     }
     public class Player
     {
+        public int Coins { get; private set; }
         public bool onGround = false;
         public Rectangle Position { get; private set; }
         public int SpeedX;
         public int SpeedY;
 
+        public void AddCoin()
+        {
+            Coins++;
+        }
         public void ChangeSpeedBy(MovingDirection d, int AbsSpeed)
         {
             if (d == MovingDirection.Up && onGround)
@@ -62,11 +67,5 @@ namespace Saharok
         {
             Position = position;
         }
-
-        public string GetImageFileName()
-        {
-            return "у.png";
-        }
-
     }
 }

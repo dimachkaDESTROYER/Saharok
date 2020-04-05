@@ -10,6 +10,7 @@ namespace Saharok
     public enum CellType
     {
         Wall,
+        Money,
     }
 
     public class GameCell
@@ -21,12 +22,5 @@ namespace Saharok
             Type = type;
             Position = position;
         }
-
-        public string GetImageFileName()
-        {
-            return "математика 3.png";
-        }
     }
-
-
 }

@@ -14,12 +14,20 @@ namespace Saharok
     public class GameForm : Form
     {
         private readonly Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
+        private readonly Dictionary<CellType, string> cells = new Dictionary<CellType, string>();
         private readonly Level level;
-        private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
-        private int time;
+        private readonly string LifeImage;
+        private readonly string CoinImage;
+        private readonly string PlayerImage;
 
+        private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
         public GameForm(Level level, DirectoryInfo imagesDirectory = null)
         {
+            PlayerImage = "грусть.png";
+            LifeImage = "жизнь.png";
+            CoinImage = "монетка.png";
+            cells[CellType.Wall] = "математика 3.png";
+            cells[CellType.Money] = CoinImage;
             this.level = level;
             ClientSize = new Size(
                 this.level.LevelWidth,
@@ -31,7 +39,6 @@ namespace Saharok
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             BackColor = Color.Aquamarine;
             var timer = new Timer();
-            timer.Interval = 15;
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -68,11 +75,12 @@ namespace Saharok
             //    e.Graphics.FillRectangle(
             //    Brushes.Red, 0, 0, currentLevel.LevelWidth,
             //    currentLevel.LevelHeight);
-            foreach (var cell in level.NonEmptygameCells)
-                e.Graphics.DrawImage(bitmaps[cell.GetImageFileName()], cell.Position);
-            e.Graphics.DrawImage(bitmaps[level.player.GetImageFileName()], level.player.Position);
-            //e.Graphics.DrawString(level.Scores.ToString(), new Font("Arial", 16), Brushes.Black, 120, 0);
+            foreach (var cell in level.GetCells())
+                e.Graphics.DrawImage(bitmaps[cells[cell.Type]], cell.Position);
+            e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
+            e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 16), Brushes.Black, 120, 0);
             //e.Graphics.DrawString(level.Lifes.ToString(), new Font("Arial", 16), Brushes.Black, 100, 0);
+            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.9 * level.LevelWidth), 0));
         }
 
         private void TimerTick(object sender, EventArgs args)
