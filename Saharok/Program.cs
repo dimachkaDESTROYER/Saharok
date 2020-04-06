@@ -17,12 +17,17 @@ namespace Saharok
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+<<<<<<< HEAD
             var player = new Player(new Rectangle(100, 100, 100, 100));
             var l = new LevelBuilder(1000, 800).AddPlayer(player)
                                                .AddWalls(new Rectangle(0, 600, 1000, 200))
                                                .AddCoins(new Rectangle(500, 500, 50, 50))
                                                .ToLevel();
             Application.Run(new GameForm(l));
+=======
+            
+            Application.Run(new Menu());
+>>>>>>> origin/new
         }
     }
 }

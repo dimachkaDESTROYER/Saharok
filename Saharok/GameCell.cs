@@ -11,6 +11,10 @@ namespace Saharok
     {
         Wall,
         Money,
+<<<<<<< HEAD
+=======
+        Water
+>>>>>>> origin/new
     }
 
     public class GameCell
@@ -22,5 +26,9 @@ namespace Saharok
             Type = type;
             Position = position;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/new
     }
 }
