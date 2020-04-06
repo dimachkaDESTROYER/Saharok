@@ -17,11 +17,8 @@ namespace Saharok
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var player = new Player(new Rectangle(100, 100, 100, 100));
-            var cells = new[] { new GameCell(CellType.Wall, new Rectangle(0, 600, 1000, 200))};
-            var l = new LevelBuilder(1000, 800, cells).AddPlayer(player)
-                                                    .ToLevel();
-            Application.Run(new GameForm(l));
+            
+            Application.Run(new Menu());
         }
     }
 }
