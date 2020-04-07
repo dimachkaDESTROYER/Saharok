@@ -19,7 +19,6 @@ namespace Saharok
         private readonly string LifeImage;
         private readonly string CoinImage;
         private readonly string PlayerImage;
-
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
         public GameForm(Level level, DirectoryInfo imagesDirectory = null)
         {
@@ -53,14 +52,6 @@ namespace Saharok
         protected override void OnKeyDown(KeyEventArgs e)
         {
             pressedKeys.Add(e.KeyCode);
-            if (e.KeyCode == Keys.W)
-                level.player.ChangeSpeedBy(MovingDirection.Up, 15);
-            else if (e.KeyCode == Keys.S)
-                level.player.ChangeSpeedBy(MovingDirection.Down, 12);
-            else if (e.KeyCode == Keys.D)
-                level.player.ChangeSpeedBy(MovingDirection.Right, 12);
-            else if (e.KeyCode == Keys.A)
-                level.player.ChangeSpeedBy(MovingDirection.Left, 12);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -86,6 +77,15 @@ namespace Saharok
 
         private void TimerTick(object sender, EventArgs args)
         {
+            foreach (var key in pressedKeys)
+            {
+                if (key == Keys.W)
+                    level.player.ChangeSpeedBy(MovingDirection.Up, 30);
+                else if (key == Keys.D)
+                    level.player.ChangeSpeedBy(MovingDirection.Right, 30);
+                else if (key == Keys.A)
+                    level.player.ChangeSpeedBy(MovingDirection.Left, 30);
+            }
             level.GameTurn();
             Invalidate();
         }

@@ -30,3 +30,11 @@ C:\Users\Ольга\Desktop\Sugar2\Saharok\Saharok\obj\Debug\Saharok.pdb
 C:\Users\Ольга\Desktop\Sugar2\Saharok\Saharok\bin\Debug\Saharok.exe.config
 C:\Users\Ольга\Desktop\Sugar2\Saharok\Saharok\bin\Debug\Saharok.exe
 C:\Users\Ольга\Desktop\Sugar2\Saharok\Saharok\bin\Debug\Saharok.pdb
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\bin\Debug\Saharok.exe.config
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\bin\Debug\Saharok.exe
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\bin\Debug\Saharok.pdb
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.csprojAssemblyReference.cache
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.Properties.Resources.resources
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.csproj.GenerateResource.cache
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.exe
+C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.pdb

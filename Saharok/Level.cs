@@ -32,32 +32,52 @@ namespace Saharok
             gravityForce = gForce;
             this.player = player;
         }
-        private bool TryMove(Axis axis)
+        private void Move(Axis axis)
         {
-            if (!player.onGround)
-                player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
-            var newPosition = player.GetChangedPosition(axis);
-            if (newPosition.Left < 0 || newPosition.Right > LevelWidth)
-            {
-                player.SpeedX = 0;
-                return false;
-            }
-            if (newPosition.Top < 0 || newPosition.Bottom > LevelHeight)
-            {
-                player.SpeedY = 0;
-                return false;
-            }
-            if (Walls.Any(c => c.Position.IntersectsWith(newPosition)))
-                return false;
             player.ChangePosition(axis);
-            return true;
+            var dx = 0;
+            var dy = 0;
+            foreach (var wall in Walls.Select(w => w.Position))
+                if (player.Position.IntersectsWith(wall))
+                {
+                    if (axis == Axis.Horisontal)
+                    {
+                        if (player.SpeedX > 0)
+                            dx = wall.Left - player.Position.Right;
+                        else if(player.SpeedX < 0)
+                            dx = wall.Right - player.Position.Left;
+                    }
+                    else
+                    {
+                        if (player.SpeedY > 0)
+                        {
+                            player.onGround = true;
+                            dy = wall.Top - player.Position.Bottom;
+                        }
+                        else if (player.SpeedY < 0)
+                            dy = wall.Bottom - player.Position.Top;
+                    }
+                }
+            player.SpeedX = 0;
+            if (dy != 0)
+                player.SpeedY = 0;
+            player.ChangePosition(dx, dy);
+        }
+
+        private void Move()
+        {
+            if(player.SpeedX != 0)
+                Move(Axis.Horisontal);
+            if(player.SpeedY != 0)
+                Move(Axis.Vertical);
+
         }
 
         public void GameTurn()
         {
-            TryMove(Axis.Horisontal);
-            if (TryMove(Axis.Vertical) && player.SpeedY > 0)
-                player.onGround = true;
+            if(player.SpeedY < gravityForce)
+                player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
+            Move();
             var removed = new List<GameCell>();
             foreach (var coin in Coins.Where(c => c.Position.IntersectsWith(player.Position)))
             {

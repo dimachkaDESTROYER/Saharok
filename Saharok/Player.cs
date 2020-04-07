@@ -26,8 +26,8 @@ namespace Saharok
         public int Lifes { get; set; }
         public bool onGround = false;
         public Rectangle Position { get; private set; }
-        public int SpeedX;
-        public int SpeedY;
+        public int SpeedX { get; set; }
+        public int SpeedY { get; set; }
 
         public void AddCoin()
         {
@@ -50,19 +50,18 @@ namespace Saharok
         }
         public void ChangePosition(Axis axis)
         {
-            Position = GetChangedPosition(axis);
-            SpeedX /= 2;
-        }
-
-        public Rectangle GetChangedPosition(Axis axis)
-        {
             var dx = 0;
             var dy = 0;
             if (axis == Axis.Horisontal)
                 dx = SpeedX;
             else
                 dy = SpeedY;
-            return new Rectangle(new Point(Position.X + dx, Position.Y + dy), Position.Size);
+            ChangePosition(dx, dy);
+        }
+
+        public void ChangePosition(int dx, int dy)
+        {
+            Position = new Rectangle(new Point(Position.X + dx, Position.Y + dy), Position.Size);
         }
 
         public Player(Rectangle position)

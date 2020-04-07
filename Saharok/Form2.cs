@@ -27,7 +27,8 @@ namespace Saharok
             {
                 var player = new Player(new Rectangle(100, 100, 100, 100));
                 var l = new LevelBuilder(1000, 800).AddPlayer(player)
-                                                   .AddWalls(new Rectangle(0, 600, 200, 200), new Rectangle(600, 200, 50, 400))
+                                                   .AddWalls(new Rectangle(0, 600, 400, 10), new Rectangle(600, 200, 50, 400),
+                                                             new Rectangle(200,200, 200,200))
                                                    .AddWater(new Rectangle(200, 600, 800, 200))
                                                    .AddCoins(new Rectangle(500, 500, 50, 50))
                                                    .ToLevel();
