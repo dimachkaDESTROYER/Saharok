@@ -23,10 +23,7 @@ namespace Saharok
     public class Player
     {
         public int Coins { get; private set; }
-<<<<<<< HEAD
-=======
         public int Lifes { get; set; }
->>>>>>> origin/new
         public bool onGround = false;
         public Rectangle Position { get; private set; }
         public int SpeedX;
@@ -36,10 +33,7 @@ namespace Saharok
         {
             Coins++;
         }
-<<<<<<< HEAD
-=======
-        
->>>>>>> origin/new
+
         public void ChangeSpeedBy(MovingDirection d, int AbsSpeed)
         {
             if (d == MovingDirection.Up && onGround)

@@ -26,11 +26,7 @@ namespace Saharok
             PlayerImage = "грусть.png";
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
-<<<<<<< HEAD
-            cells[CellType.Wall] = "математика 3.png";
-=======
             cells[CellType.Wall] = "platform.png";
->>>>>>> origin/new
             cells[CellType.Money] = CoinImage;
             this.level = level;
             ClientSize = new Size(
@@ -82,17 +78,10 @@ namespace Saharok
             foreach (var cell in level.GetCells())
                 e.Graphics.DrawImage(bitmaps[cells[cell.Type]], cell.Position);
             e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
-<<<<<<< HEAD
-            e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 16), Brushes.Black, 120, 0);
-            //e.Graphics.DrawString(level.Lifes.ToString(), new Font("Arial", 16), Brushes.Black, 100, 0);
-            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.9 * level.LevelWidth), 0));
-=======
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
             e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.9 * level.LevelWidth), 0));
             e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0));
-            
->>>>>>> origin/new
         }
 
         private void TimerTick(object sender, EventArgs args)

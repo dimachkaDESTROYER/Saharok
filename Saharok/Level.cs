@@ -15,19 +15,12 @@ namespace Saharok
         public readonly int LevelHeight;
         public readonly int LevelWidth;
         private GameCell[] Walls;
-<<<<<<< HEAD
-=======
         private GameCell[] Water;
->>>>>>> origin/new
         private List<GameCell> Coins;
         public Player player;
         public Keys KeyPressed;
         public Level(int LevelHeight, int LevelWidth,
-<<<<<<< HEAD
-                     IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins,
-=======
-                     IEnumerable<Rectangle> walls, IEnumerable<Rectangle> water, IEnumerable<Rectangle> coins,
->>>>>>> origin/new
+                     IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> water,
                      int gForce, Player player)
         {
             IsOver = false;
@@ -35,10 +28,7 @@ namespace Saharok
             this.LevelWidth = LevelWidth;
             Walls = walls.Select(r => new GameCell(CellType.Wall, r)).ToArray();
             Coins = coins.Select(r => new GameCell(CellType.Money, r)).ToList();
-<<<<<<< HEAD
-=======
             Water = water.Select(r => new GameCell(CellType.Water, r)).ToArray();
->>>>>>> origin/new
             gravityForce = gForce;
             this.player = player;
         }
@@ -47,9 +37,16 @@ namespace Saharok
             if (!player.onGround)
                 player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
             var newPosition = player.GetChangedPosition(axis);
-            if (newPosition.Left < 0 || newPosition.Right > LevelWidth ||
-               newPosition.Top < 0 || newPosition.Bottom > LevelHeight)
+            if (newPosition.Left < 0 || newPosition.Right > LevelWidth)
+            {
+                player.SpeedX = 0;
                 return false;
+            }
+            if (newPosition.Top < 0 || newPosition.Bottom > LevelHeight)
+            {
+                player.SpeedY = 0;
+                return false;
+            }
             if (Walls.Any(c => c.Position.IntersectsWith(newPosition)))
                 return false;
             player.ChangePosition(axis);
@@ -67,10 +64,8 @@ namespace Saharok
                 removed.Add(coin);
                 player.AddCoin();
             }
-<<<<<<< HEAD
             foreach (var coin in removed)
                 Coins.Remove(coin);
-=======
             foreach (var water in Water.Where(c => c.Position.IntersectsWith(player.Position)))
             {
                 player.Lifes -= 1;
@@ -80,16 +75,11 @@ namespace Saharok
             
             if (player.Lifes <= 0)
                 IsOver = true;
->>>>>>> origin/new
         }
 
         public IEnumerable<GameCell> GetCells()
         {
-<<<<<<< HEAD
             foreach(var wall in Walls)
-=======
-            foreach (var wall in Walls)
->>>>>>> origin/new
                 yield return wall;
             foreach (var coin in Coins)
                 yield return coin;

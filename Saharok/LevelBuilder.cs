@@ -9,28 +9,18 @@ namespace Saharok
 {
     public class LevelBuilder
     {
-<<<<<<< HEAD
         private int GravityForce = 5;
-=======
-        private int GravityForce = 20;
->>>>>>> origin/new
         private int Width { get; }
         private int Height { get; }
         private List<Rectangle> coins;
         private List<Rectangle> walls;
-<<<<<<< HEAD
-=======
         private List<Rectangle> water;
->>>>>>> origin/new
         private Player Player;
         public LevelBuilder(int width, int height)
         {
             coins = new List<Rectangle>();
             walls = new List<Rectangle>();
-<<<<<<< HEAD
-=======
             water = new List<Rectangle>();
->>>>>>> origin/new
             Width = width;
             Height = height;
         }
@@ -41,9 +31,6 @@ namespace Saharok
                 this.walls.Add(wall);
             return this;
         }
-
-<<<<<<< HEAD
-=======
         public LevelBuilder AddWater(params Rectangle[] water)
         {
             foreach (var drop in water)
@@ -51,7 +38,6 @@ namespace Saharok
             return this;
         }
 
->>>>>>> origin/new
         public LevelBuilder AddCoins(params Rectangle[] coins)
         {
             foreach (var coin in coins)
@@ -70,12 +56,7 @@ namespace Saharok
             Player = player;
             return this;
         }
-
-<<<<<<< HEAD
-        public Level ToLevel() => new Level(Height, Width, walls, coins, 
-=======
-        public Level ToLevel() => new Level(Height, Width, walls, water, coins,
->>>>>>> origin/new
+        public Level ToLevel() => new Level(Height, Width, walls, coins, water,
                                             GravityForce, Player);
     }
 }
