@@ -19,14 +19,18 @@ namespace Saharok
         private readonly string LifeImage;
         private readonly string CoinImage;
         private readonly string PlayerImage;
+        private readonly string WaterImage;
+
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
         public GameForm(Level level, DirectoryInfo imagesDirectory = null)
         {
-            PlayerImage = "грусть.png";
+            PlayerImage = "длинный.png";
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
+            WaterImage = "water.png";
             cells[CellType.Wall] = "platform.png";
             cells[CellType.Money] = CoinImage;
+            cells[CellType.Water] = WaterImage;
             this.level = level;
             ClientSize = new Size(
                 this.level.LevelWidth,
@@ -38,6 +42,7 @@ namespace Saharok
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             BackgroundImage = bitmaps["математика.png"];
             var timer = new Timer();
+            timer.Interval = 1;
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -47,11 +52,20 @@ namespace Saharok
             base.OnLoad(e);
             Text = "Sugar";
             DoubleBuffered = true;
+
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
             pressedKeys.Add(e.KeyCode);
+            if (e.KeyCode == Keys.W)
+                level.player.ChangeSpeedBy(MovingDirection.Up, 70);
+            else if (e.KeyCode == Keys.S)
+                level.player.ChangeSpeedBy(MovingDirection.Down, 30);
+            else if (e.KeyCode == Keys.D)
+                level.player.ChangeSpeedBy(MovingDirection.Right, 30);
+            else if (e.KeyCode == Keys.A)
+                level.player.ChangeSpeedBy(MovingDirection.Left, 30);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -66,6 +80,7 @@ namespace Saharok
             //    e.Graphics.FillRectangle(
             //    Brushes.Red, 0, 0, currentLevel.LevelWidth,
             //    currentLevel.LevelHeight);
+
             foreach (var cell in level.GetCells())
                 e.Graphics.DrawImage(bitmaps[cells[cell.Type]], cell.Position);
             e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
@@ -74,21 +89,22 @@ namespace Saharok
             e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.9 * level.LevelWidth), 0));
             e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0));
         }
-
         private void TimerTick(object sender, EventArgs args)
         {
-            foreach (var key in pressedKeys)
-            {
-                if (key == Keys.W)
-                    level.player.ChangeSpeedBy(MovingDirection.Up, 30);
-                else if (key == Keys.D)
-                    level.player.ChangeSpeedBy(MovingDirection.Right, 30);
-                else if (key == Keys.A)
-                    level.player.ChangeSpeedBy(MovingDirection.Left, 30);
-            }
             level.GameTurn();
-            Invalidate();
+            if (level.IsOver)
+            {
+                this.Hide();
+            }
+            var startX = Math.Abs(level.player.Position.X - level.player.Position.Width);
+            var startY = level.player.Position.Y - level.player.Position.Height;
+            var rec = new Rectangle(startX, startY, 3 * level.player.Position.Width, 3 * level.player.Position.Height);
+
+            Invalidate(rec, true);
+            Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
+
         }
+
 
         private void InitializeComponent()
         {
@@ -96,6 +112,7 @@ namespace Saharok
             this.ClientSize = new Size(884, 626);
             this.Name = "SugarWindow";
             this.ResumeLayout(false);
+
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Saharok
 
         public void ChangeSpeedBy(MovingDirection d, int AbsSpeed)
         {
-            if (d == MovingDirection.Up && onGround)
+            if (d == MovingDirection.Up && onGround && SpeedY == 0)
             {
                 onGround = false;
                 SpeedY -= AbsSpeed;

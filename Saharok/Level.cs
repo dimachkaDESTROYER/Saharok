@@ -44,7 +44,7 @@ namespace Saharok
                     {
                         if (player.SpeedX > 0)
                             dx = wall.Left - player.Position.Right;
-                        else if(player.SpeedX < 0)
+                        else if (player.SpeedX < 0)
                             dx = wall.Right - player.Position.Left;
                     }
                     else
@@ -66,16 +66,16 @@ namespace Saharok
 
         private void Move()
         {
-            if(player.SpeedX != 0)
+            if (player.SpeedX != 0)
                 Move(Axis.Horisontal);
-            if(player.SpeedY != 0)
+            if (player.SpeedY != 0)
                 Move(Axis.Vertical);
 
         }
 
         public void GameTurn()
         {
-            if(player.SpeedY < gravityForce)
+            if (player.SpeedY < gravityForce)
                 player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
             Move();
             var removed = new List<GameCell>();
@@ -92,15 +92,18 @@ namespace Saharok
             }
             foreach (var coin in removed)
                 Coins.Remove(coin);
-            
+            if (player.Position.Bottom > LevelHeight)
+                player.Lifes -= 1;
             if (player.Lifes <= 0)
                 IsOver = true;
         }
 
         public IEnumerable<GameCell> GetCells()
         {
-            foreach(var wall in Walls)
+            foreach (var wall in Walls)
                 yield return wall;
+            foreach (var water in Water)
+                yield return water;
             foreach (var coin in Coins)
                 yield return coin;
         }
