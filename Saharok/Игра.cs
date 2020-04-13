@@ -96,8 +96,8 @@ namespace Saharok
             {
                 this.Hide();
             }
-            var startX = Math.Abs(level.player.Position.X - level.player.Position.Width);
-            var startY = level.player.Position.Y - level.player.Position.Height;
+            var startX = level.player.Position.X - level.player.Position.Width;
+            var startY = level.player.Position.Y - level.player.Position.Height/2;
             var rec = new Rectangle(startX, startY, 3 * level.player.Position.Width, 3 * level.player.Position.Height);
 
             Invalidate(rec, true);
