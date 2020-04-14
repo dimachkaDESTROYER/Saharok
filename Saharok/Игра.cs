@@ -20,10 +20,12 @@ namespace Saharok
         private readonly string CoinImage;
         private readonly string PlayerImage;
         private readonly string WaterImage;
+        private IEnumerable<Rectangle> Coins;
 
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
         public GameForm(Level level, DirectoryInfo imagesDirectory = null)
         {
+            Coins = level.GetCoins();
             PlayerImage = "длинный.png";
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
@@ -58,14 +60,12 @@ namespace Saharok
         protected override void OnKeyDown(KeyEventArgs e)
         {
             pressedKeys.Add(e.KeyCode);
-            if (e.KeyCode == Keys.W)
+            if (e.KeyCode == Keys.Space)
                 level.player.ChangeSpeedBy(MovingDirection.Up, 70);
-            else if (e.KeyCode == Keys.S)
-                level.player.ChangeSpeedBy(MovingDirection.Down, 30);
             else if (e.KeyCode == Keys.D)
-                level.player.ChangeSpeedBy(MovingDirection.Right, 30);
+                level.player.ChangeSpeedBy(MovingDirection.Right, 15);
             else if (e.KeyCode == Keys.A)
-                level.player.ChangeSpeedBy(MovingDirection.Left, 30);
+                level.player.ChangeSpeedBy(MovingDirection.Left, 15);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -91,16 +91,19 @@ namespace Saharok
         }
         private void TimerTick(object sender, EventArgs args)
         {
+            var prevCoins = Coins.ToList();
+            var prevPos = level.player.Position;
             level.GameTurn();
             if (level.IsOver)
             {
                 this.Hide();
             }
-            var startX = level.player.Position.X - level.player.Position.Width;
-            var startY = level.player.Position.Y - level.player.Position.Height/2;
-            var rec = new Rectangle(startX, startY, 3 * level.player.Position.Width, 3 * level.player.Position.Height);
 
-            Invalidate(rec, true);
+            Coins = level.GetCoins();
+            foreach(var coin in prevCoins.Where(p => !Coins.Contains(p)))
+                Invalidate(coin, true);
+            Invalidate(prevPos, true);
+            Invalidate(level.player.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
 
         }

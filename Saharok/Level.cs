@@ -98,6 +98,10 @@ namespace Saharok
                 IsOver = true;
         }
 
+        public IEnumerable<Rectangle> GetCoins()
+        {
+            return Coins.Select(c => c.Position);
+        }
         public IEnumerable<GameCell> GetCells()
         {
             foreach (var wall in Walls)
