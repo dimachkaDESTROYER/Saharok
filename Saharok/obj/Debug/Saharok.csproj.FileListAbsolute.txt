@@ -38,3 +38,11 @@ C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.Propert
 C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.csproj.GenerateResource.cache
 C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.exe
 C:\Users\Ольга\Desktop\сахар\Saharok\Saharok\obj\Debug\Saharok.pdb
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\NUnit3.TestAdapter.dll
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\NUnit3.TestAdapter.pdb
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\nunit.engine.dll
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\nunit.engine.api.dll
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\nunit.framework.dll
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\nunit.framework.pdb
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\bin\Debug\nunit.framework.xml
+C:\Users\Оля\Desktop\игруля\Saharok\Saharok\obj\Debug\Saharok.csproj.CopyComplete
