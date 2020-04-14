@@ -76,7 +76,7 @@ namespace Saharok
         public void GameTurn()
         {
             if (player.SpeedY < gravityForce)
-                player.ChangeSpeedBy(MovingDirection.Down, gravityForce);
+                player.Down(gravityForce);
             Move();
             var removed = new List<GameCell>();
             foreach (var coin in Coins.Where(c => c.Position.IntersectsWith(player.Position)))

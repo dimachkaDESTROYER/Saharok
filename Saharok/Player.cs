@@ -34,19 +34,39 @@ namespace Saharok
             Coins++;
         }
 
-        public void ChangeSpeedBy(MovingDirection d, int AbsSpeed)
+        public void Up(int absSpeed)
+        {
+            ChangeSpeedBy(MovingDirection.Up, absSpeed);
+        }
+
+        public void Left(int absSpeed)
+        {
+            ChangeSpeedBy(MovingDirection.Left, absSpeed);
+        }
+
+        public void Down(int absSpeed)
+        {
+            ChangeSpeedBy(MovingDirection.Down, absSpeed);
+        }
+
+        public void Right(int absSpeed)
+        {
+            ChangeSpeedBy(MovingDirection.Right, absSpeed);
+        }
+
+        private void ChangeSpeedBy(MovingDirection d, int absSpeed)
         {
             if (d == MovingDirection.Up && onGround && SpeedY == 0)
             {
                 onGround = false;
-                SpeedY -= AbsSpeed;
+                SpeedY -= absSpeed;
             }
             if (d == MovingDirection.Down)
-                SpeedY += AbsSpeed;
+                SpeedY += absSpeed;
             if (d == MovingDirection.Left)
-                SpeedX -= AbsSpeed;
+                SpeedX -= absSpeed;
             if (d == MovingDirection.Right)
-                SpeedX += AbsSpeed;
+                SpeedX += absSpeed;
         }
         public void ChangePosition(Axis axis)
         {

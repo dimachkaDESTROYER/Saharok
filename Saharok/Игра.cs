@@ -60,12 +60,6 @@ namespace Saharok
         protected override void OnKeyDown(KeyEventArgs e)
         {
             pressedKeys.Add(e.KeyCode);
-            if (e.KeyCode == Keys.Space)
-                level.player.ChangeSpeedBy(MovingDirection.Up, 70);
-            else if (e.KeyCode == Keys.D)
-                level.player.ChangeSpeedBy(MovingDirection.Right, 15);
-            else if (e.KeyCode == Keys.A)
-                level.player.ChangeSpeedBy(MovingDirection.Left, 15);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -89,8 +83,19 @@ namespace Saharok
             e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.9 * level.LevelWidth), 0));
             e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0));
         }
+
+        private void AddMovement()
+        {
+            if (pressedKeys.Contains(Keys.A))
+                level.player.Left(10);
+            if (pressedKeys.Contains(Keys.D))
+                level.player.Right(10);
+            if (pressedKeys.Contains(Keys.Space))
+                level.player.Up(70);
+        }
         private void TimerTick(object sender, EventArgs args)
         {
+            AddMovement();
             var prevCoins = Coins.ToList();
             var prevPos = level.player.Position;
             level.GameTurn();
@@ -100,7 +105,7 @@ namespace Saharok
             }
 
             Coins = level.GetCoins();
-            foreach(var coin in prevCoins.Where(p => !Coins.Contains(p)))
+            foreach(var coin in prevCoins.Concat(Coins))
                 Invalidate(coin, true);
             Invalidate(prevPos, true);
             Invalidate(level.player.Position, true);
