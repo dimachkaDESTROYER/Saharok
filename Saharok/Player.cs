@@ -96,7 +96,7 @@ namespace Saharok
     public class Player_Should
     { 
 
-        private List<Rectangle> walls = new List<Rectangle> { new Rectangle(0, 600, 200, 200), new Rectangle(300, 600, 200, 200) };
+        private List<Rectangle> walls = new List<Rectangle> { new Rectangle(0, 600, 200, 200), new Rectangle(400, 600, 200, 200) };
         private List<Rectangle> coins = new List<Rectangle> { new Rectangle(60, 500, 50, 50), new Rectangle(900, 500, 50, 50) };
         private List<Rectangle> water = new List<Rectangle> { new Rectangle(200, 600, 100, 200) };
         private Rectangle finish = new Rectangle(350, 500, 50, 50);
