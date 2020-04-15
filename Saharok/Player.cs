@@ -96,9 +96,10 @@ namespace Saharok
     public class Player_Should
     { 
 
-        private List<Rectangle> walls = new List<Rectangle> { new Rectangle(0, 600, 200, 200) };
+        private List<Rectangle> walls = new List<Rectangle> { new Rectangle(0, 600, 200, 200), new Rectangle(300, 600, 200, 200) };
         private List<Rectangle> coins = new List<Rectangle> { new Rectangle(60, 500, 50, 50), new Rectangle(900, 500, 50, 50) };
         private List<Rectangle> water = new List<Rectangle> { new Rectangle(200, 600, 100, 200) };
+        private Rectangle finish = new Rectangle(350, 500, 50, 50);
     
         [Test]
         public void TestMoveRight()
@@ -124,7 +125,7 @@ namespace Saharok
         public void TestMoveUpWithoutGravity()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 1000, walls, coins, water, 0, player);
+            var level = new Level(1000, 1000, walls, coins, water, 0, player, finish);
             level.player.onGround = true;
             level.player.Up(5);
             level.GameTurn();            
@@ -137,7 +138,7 @@ namespace Saharok
         public void TestMoveUpWithGravity()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 1000, walls, coins, water, 5, player);
+            var level = new Level(1000, 1000, walls, coins, water, 5, player, finish);
             level.player.onGround = true;
             level.player.Up(10);
             level.GameTurn();
@@ -151,7 +152,7 @@ namespace Saharok
         public void TestMoveUpNotOnGround()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 1000, walls, coins, water, 5, player);
+            var level = new Level(1000, 1000, walls, coins, water, 5, player, finish);
             level.player.onGround = false;
             level.player.Up(70);
             level.GameTurn();
@@ -176,7 +177,7 @@ namespace Saharok
         {
             
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 800, walls, coins, water, 0, player);
+            var level = new Level(1000, 800, walls, coins, water, 0, player, finish);
             level.player.Right(10);
             level.GameTurn();
             var actual = level.player.Coins;
@@ -189,7 +190,7 @@ namespace Saharok
         public void TestCoinDisappearAfterCollecting()
         {           
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 800, walls, coins, water, 0, player);
+            var level = new Level(1000, 800, walls, coins, water, 0, player, finish);
             level.player.Right(10);
             level.GameTurn();
             var actualCoins = level.GetCoins().ToList();
@@ -200,7 +201,7 @@ namespace Saharok
         public void TestInteractionWithWater()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 1000, walls, coins, water, 5, player);
+            var level = new Level(1000, 1000, walls, coins, water, 5, player, finish);
             level.player.onGround = true;
             level.player.Right(200);
             level.GameTurn();
@@ -208,6 +209,17 @@ namespace Saharok
             var actualLives = level.player.Lifes;
             Assert.AreEqual(true, actual);
             Assert.AreEqual(0, actualLives);
+        }
+
+        [Test]
+        public void TestIsWin()
+        {
+            var player = new Player(new Rectangle(340, 500, 100, 100));
+            var level = new Level(1000, 1000, walls, coins, water, 5, player, finish);
+            level.player.Right(15);
+            level.GameTurn();
+            var actual = level.IsWin;
+            Assert.AreEqual(true, actual);
         }
     }
 }

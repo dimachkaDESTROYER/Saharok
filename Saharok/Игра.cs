@@ -17,6 +17,7 @@ namespace Saharok
         private readonly Dictionary<CellType, string> cells = new Dictionary<CellType, string>();
         private readonly Level level;
         private readonly string LifeImage;
+        private readonly string finish;
         private readonly string CoinImage;
         private readonly string PlayerImage;
         private readonly string WaterImage;
@@ -26,6 +27,7 @@ namespace Saharok
         public GameForm(Level level, DirectoryInfo imagesDirectory = null)
         {
             Coins = level.GetCoins();
+            finish = "финиш.png";
             PlayerImage = "длинный.png";
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
@@ -78,6 +80,7 @@ namespace Saharok
             foreach (var cell in level.GetCells())
                 e.Graphics.DrawImage(bitmaps[cells[cell.Type]], cell.Position);
             e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
+            e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
             e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.9 * level.LevelWidth), 0));
@@ -99,7 +102,7 @@ namespace Saharok
             var prevCoins = Coins.ToList();
             var prevPos = level.player.Position;
             level.GameTurn();
-            if (level.IsOver)
+            if (level.IsOver || level.IsWin)
             {
                 this.Hide();
             }

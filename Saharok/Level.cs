@@ -11,6 +11,7 @@ namespace Saharok
     public class Level
     {
         public bool IsOver { get; private set; }
+        public bool IsWin { get; private set; }
         private int gravityForce;
         public readonly int LevelHeight;
         public readonly int LevelWidth;
@@ -18,10 +19,11 @@ namespace Saharok
         private GameCell[] Water;
         private List<GameCell> Coins;
         public Player player;
+        public Rectangle finish;
         public Keys KeyPressed;
         public Level(int LevelHeight, int LevelWidth,
                      IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> water,
-                     int gForce, Player player)
+                     int gForce, Player player, Rectangle finish)
         {
             IsOver = false;
             this.LevelHeight = LevelHeight;
@@ -31,6 +33,7 @@ namespace Saharok
             Water = water.Select(r => new GameCell(CellType.Water, r)).ToArray();
             gravityForce = gForce;
             this.player = player;
+            this.finish = finish;
         }
         private void Move(Axis axis)
         {
@@ -96,6 +99,9 @@ namespace Saharok
                 player.Lifes -= 1;
             if (player.Lifes <= 0)
                 IsOver = true;
+            if (player.Position.IntersectsWith(finish))
+                IsWin = true;
+                
         }
 
         public IEnumerable<Rectangle> GetCoins()

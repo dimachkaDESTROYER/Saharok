@@ -16,13 +16,15 @@ namespace Saharok
         private List<Rectangle> walls;
         private List<Rectangle> water;
         private Player Player;
-        public LevelBuilder(int width, int height)
+        private Rectangle Finish;
+        public LevelBuilder(int width, int height, Rectangle finish)
         {
             coins = new List<Rectangle>();
             walls = new List<Rectangle>();
             water = new List<Rectangle>();
             Width = width;
             Height = height;
+            Finish = finish;
         }
 
         public LevelBuilder AddWalls(params Rectangle[] walls)
@@ -57,6 +59,6 @@ namespace Saharok
             return this;
         }
         public Level ToLevel() => new Level(Height, Width, walls, coins, water,
-                                            GravityForce, Player);
+                                            GravityForce, Player, Finish);
     }
 }

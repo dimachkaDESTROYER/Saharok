@@ -18,9 +18,10 @@ namespace Saharok
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var l = new LevelBuilder(1000, 800).AddPlayer(player)
+            var finish = new Rectangle(550, 500, 100, 100);
+            var l = new LevelBuilder(1000, 800, finish).AddPlayer(player)
                                                .AddWalls(new Rectangle(0, 600, 200, 200),
-                                                         new Rectangle(400, 600, 200, 200))
+                                                         new Rectangle(400, 600, 400, 200))
                                                //new Rectangle(600, 500, 100, 100),
                                                //new Rectangle(300, 300, 200, 100),
                                                //new Rectangle(100, 100, 100, 100),
