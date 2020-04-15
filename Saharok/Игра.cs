@@ -44,9 +44,10 @@ namespace Saharok
                 imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
+           
             BackgroundImage = bitmaps["математика.png"];
             var timer = new Timer();
-            timer.Interval = 1;
+            timer.Interval = 5;
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -59,9 +60,21 @@ namespace Saharok
 
         }
 
+        //protected override void OnKeyDown(KeyEventArgs e)
+        //{
+        //    pressedKeys.Add(e.KeyCode);
+        //}
         protected override void OnKeyDown(KeyEventArgs e)
         {
             pressedKeys.Add(e.KeyCode);
+            if (e.KeyCode == Keys.W)
+                level.player.ChangeSpeedBy(MovingDirection.Up, 100);
+            else if (e.KeyCode == Keys.S)
+                level.player.ChangeSpeedBy(MovingDirection.Down, 20);
+            else if (e.KeyCode == Keys.D)
+                level.player.ChangeSpeedBy(MovingDirection.Right, 20);
+            else if (e.KeyCode == Keys.A)
+                level.player.ChangeSpeedBy(MovingDirection.Left, 20);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -87,19 +100,18 @@ namespace Saharok
             e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0));
         }
 
-        private void AddMovement()
-        {
-            if (pressedKeys.Contains(Keys.A))
-                level.player.Left(10);
-            if (pressedKeys.Contains(Keys.D))
-                level.player.Right(10);
-            if (pressedKeys.Contains(Keys.Space))
-                level.player.Up(70);
-        }
+        //private void AddMovement()
+        //{
+        //    if (pressedKeys.Contains(Keys.A))
+        //        level.player.Left(20);
+        //    if (pressedKeys.Contains(Keys.D))
+        //        level.player.Right(20);
+        //    if (pressedKeys.Contains(Keys.Space))
+        //        level.player.Up(80);
+        //}
         private void TimerTick(object sender, EventArgs args)
         {
-            AddMovement();
-            var prevCoins = Coins.ToList();
+            ////AddMovement();
             var prevPos = level.player.Position;
             level.GameTurn();
             if (level.IsOver || level.IsWin)
@@ -107,11 +119,12 @@ namespace Saharok
                 this.Hide();
             }
 
-            Coins = level.GetCoins();
-            foreach(var coin in prevCoins.Concat(Coins))
-                Invalidate(coin, true);
             Invalidate(prevPos, true);
             Invalidate(level.player.Position, true);
+            var prevCoins = Coins.ToList();
+            Coins = level.GetCoins();
+            foreach (var coin in prevCoins.Concat(Coins))
+                Invalidate(coin, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
 
         }

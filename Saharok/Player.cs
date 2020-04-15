@@ -41,7 +41,7 @@ namespace Saharok
             Coins++;
         }
 
-        private void ChangeSpeedBy(MovingDirection d, int absSpeed)
+        public void ChangeSpeedBy(MovingDirection d, int absSpeed)
         {
             if (d == MovingDirection.Up && onGround && SpeedY == 0)
             {
