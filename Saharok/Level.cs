@@ -99,9 +99,8 @@ namespace Saharok
                 player.Lifes -= 1;
             if (player.Lifes <= 0)
                 IsOver = true;
-            if (player.Position.IntersectsWith(finish))
+            if (player.Position.IntersectsWith(finish) && Coins.Count == 0)
                 IsWin = true;
-                
         }
 
         public IEnumerable<Rectangle> GetCoins()
