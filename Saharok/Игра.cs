@@ -30,6 +30,7 @@ namespace Saharok
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
             WaterImage = "water.png";
+            
             cells[CellType.Wall] = "platform.png";
             cells[CellType.Money] = CoinImage;
             cells[CellType.Water] = WaterImage;
@@ -44,7 +45,7 @@ namespace Saharok
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             BackgroundImage = bitmaps["математика.png"];
             var timer = new Timer();
-            timer.Interval = 20;
+            timer.Interval = 40;
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -99,18 +100,18 @@ namespace Saharok
             e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
-            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.9 * level.LevelWidth), 0));
+            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.92 * level.LevelWidth), 0));
             e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0));
         }
 
         private void AddMovement()
         {
             if (pressedKeys.Contains(Keys.A))
-                level.player.Left(20);
+                level.player.Left(15);
             if (pressedKeys.Contains(Keys.D))
-                level.player.Right(20);
+                level.player.Right(15);
             if (pressedKeys.Contains(Keys.Space))
-                level.player.Up(80);
+                level.player.Up(50);
         }
         private void TimerTick(object sender, EventArgs args)
         {

@@ -9,7 +9,7 @@ namespace Saharok
 {
     public class LevelBuilder
     {
-        private int GravityForce = 20;
+        private int GravityForce = 10;
         private int Width { get; }
         private int Height { get; }
         private List<Rectangle> coins;
