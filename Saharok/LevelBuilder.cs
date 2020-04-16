@@ -16,7 +16,7 @@ namespace Saharok
         private List<Rectangle> walls;
         private List<Rectangle> water;
         private Player Player;
-        private Monstr Monstr;
+        private List<Monster> Monsters;
         private Rectangle Finish;
         public LevelBuilder(int width, int height, Rectangle finish)
         {
@@ -60,12 +60,12 @@ namespace Saharok
             return this;
         }
 
-        public LevelBuilder AddMonstr(Monstr monstr)
+        public LevelBuilder AddMonstr(params Monster[] monsters)
         {
-            Monstr = monstr;
+            Monsters = monsters.ToList();
             return this;
         }
         public Level ToLevel() => new Level(Height, Width, walls, coins, water,
-                                            GravityForce, Player, Monstr, Finish);
+                                            GravityForce, Player, Monsters, Finish);
     }
 }

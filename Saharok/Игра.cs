@@ -47,7 +47,7 @@ namespace Saharok
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             BackgroundImage = bitmaps["фон.png"];
             var timer = new Timer();
-            timer.Interval = 40;
+            timer.Interval = 10;
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -98,9 +98,10 @@ namespace Saharok
             }
             foreach (var coin in level.GetCoins())
                 e.Graphics.DrawImage(bitmaps[CoinImage], coin);
+            foreach (var monster in level.monsters)
+                e.Graphics.DrawImage(bitmaps[MonstrImage], monster.Position);
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
-            e.Graphics.DrawImage(bitmaps[MonstrImage], level.monstr.Position);
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
             e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.92 * level.LevelWidth), 0));
@@ -110,9 +111,9 @@ namespace Saharok
         private void AddMovement()
         {
             if (pressedKeys.Contains(Keys.A))
-                level.player.Left(15);
+                level.player.Left(20);
             if (pressedKeys.Contains(Keys.D))
-                level.player.Right(15);
+                level.player.Right(20);
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
         }
@@ -120,18 +121,19 @@ namespace Saharok
         {
             AddMovement();
             var prevPos = level.player.Position;
-            var monstrPrevPos = level.monstr.Position;
             foreach (var coin in level.GetCoins())
                 Invalidate(coin);
+            foreach (var monster in level.monsters)
+                Invalidate(monster.Position);
             level.GameTurn();
             if (level.IsOver || level.IsWin)
             {
                 this.Hide();
             }
             Invalidate(prevPos, true);
-            Invalidate(monstrPrevPos, true);
+            foreach (var monster in level.monsters)
+                Invalidate(monster.Position);
             Invalidate(level.player.Position, true);
-            Invalidate(level.monstr.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
         }
 

@@ -7,25 +7,42 @@ using System.Threading.Tasks;
 
 namespace Saharok
 {
-    public class Monstr
+    public class Monster
     {
+
         public Rectangle Position { get; private set; }
-        
-        public Monstr(Rectangle position)
+        private int LeftBorder { get; }
+        private int RightBorder { get; }
+        private MovingDirection Direction { get; set; }
+        private static int Speed = 10;
+
+
+        public Monster(int leftBorder, int rightBorder, MovingDirection direction, Rectangle position)
         {
-            
+            LeftBorder = leftBorder;
+            RightBorder = rightBorder;
+            Direction = direction;
             Position = position;
         }
 
-        public void ChangePositionToRight()
+        public void ChangePosition()
         {
-            Position = new Rectangle(new Point(Position.X + 5, Position.Y), Position.Size);
+            if (Direction == MovingDirection.Left)
+            {
+                if (Position.Left - Speed < LeftBorder)
+                    Direction = MovingDirection.Right;
+                else
+                    Position = new Rectangle(new Point(Position.X - Speed, Position.Y), Position.Size);
+            }
+            else
+            {
+                if (Position.Right + Speed > RightBorder)
+                    Direction = MovingDirection.Left;
+                else
+                    Position = new Rectangle(new Point(Position.X + Speed, Position.Y), Position.Size);
+            }
         }
-
-        public void ChangePositionToLeft()
-        {
-            Position = new Rectangle(new Point(Position.X - 5, Position.Y), Position.Size);
-        }
+   
 
     }
 }

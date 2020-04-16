@@ -19,12 +19,12 @@ namespace Saharok
         private GameCell[] Water;
         private List<GameCell> Coins;
         public Player player;
-        public Monstr monstr;
+        public List<Monster> monsters;
         public Rectangle finish;
         public Keys KeyPressed;
         public Level(int LevelHeight, int LevelWidth,
                      IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> water,
-                     int gForce, Player player, Monstr monstr, Rectangle finish)
+                     int gForce, Player player, List<Monster> monsters, Rectangle finish)
         {
             IsOver = false;
             this.LevelHeight = LevelHeight;
@@ -34,7 +34,7 @@ namespace Saharok
             Water = water.Select(r => new GameCell(CellType.Water, r)).ToArray();
             gravityForce = gForce;
             this.player = player;
-            this.monstr = monstr;
+            this.monsters = monsters;
             this.finish = finish;
         }
         private void Move(Axis axis)
@@ -64,13 +64,6 @@ namespace Saharok
                             dy = wall.Bottom - player.Position.Top;
                     }
                 }
-                if (!monstr.Position.IntersectsWith(wall))
-                {
-                    if (monstr.Position.X < wall.X)
-                        monstr.ChangePositionToRight();
-                    if (monstr.Position.X > wall.X)
-                        monstr.ChangePositionToLeft();
-                } 
             }
             player.SpeedX = 0;
             if (dy != 0)
@@ -84,6 +77,8 @@ namespace Saharok
                 Move(Axis.Horisontal);
             if (player.SpeedY != 0)
                 Move(Axis.Vertical);
+            foreach (var monster in monsters)
+                monster.ChangePosition();
         }
 
         public void GameTurn()
@@ -102,6 +97,13 @@ namespace Saharok
             foreach (var water in Water.Where(c => c.Position.IntersectsWith(player.Position)))
             {
                 player.Lifes -= 1;
+               
+                player.Up(80);
+            }
+            foreach (var monster in monsters.Where(m => m.Position.IntersectsWith(player.Position)))
+            {
+                player.Lifes -= 1;
+                player.Up(80);
             }
             foreach (var coin in removed)
                 Coins.Remove(coin);

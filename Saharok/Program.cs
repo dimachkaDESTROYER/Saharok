@@ -23,9 +23,9 @@ namespace Saharok
                     coins.Add(new Rectangle(x, y, 25, 25));
             coins.Add(new Rectangle(1000, 450, 25, 25));
             var player = new Player(new Rectangle(25, 600, 50, 50));
-            var monstr = new Monstr(new Rectangle(330, 700, 50, 50));
+            var monster = new Monster[] { new Monster(320, 560, MovingDirection.Right, new Rectangle(380, 700, 50, 50)) };
             var finish = new Rectangle(80, 400, 100, 100);
-            var l = new LevelBuilder(1024, 800, finish).AddPlayer(player).AddMonstr(monstr)
+            var l = new LevelBuilder(1024, 800, finish).AddPlayer(player).AddMonstr(monster)
                                                .AddWalls(new Rectangle(0, 750, 160, 50),
                                                          new Rectangle(320, 750, 320, 50),
                                                          new Rectangle(560, 700, 80, 50),
