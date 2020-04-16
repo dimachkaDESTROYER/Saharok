@@ -53,34 +53,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exit.cs">
+    <Compile Include="Interface\Exit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Exit.Designer.cs">
+    <Compile Include="Interface\Exit.Designer.cs">
       <DependentUpon>Exit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Monstr1.cs" />
-    <Compile Include="Игра.cs">
+    <Compile Include="Model\Monster.cs" />
+    <Compile Include="Interface\Игра.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Пуск.cs">
+    <Compile Include="Interface\Пуск.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Пуск.Designer.cs">
+    <Compile Include="Interface\Пуск.Designer.cs">
       <DependentUpon>Пуск.cs</DependentUpon>
     </Compile>
-    <Compile Include="Магазин.cs">
+    <Compile Include="Interface\Магазин.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Магазин.Designer.cs">
+    <Compile Include="Interface\Магазин.Designer.cs">
       <DependentUpon>Магазин.cs</DependentUpon>
     </Compile>
-    <Compile Include="Level.cs" />
-    <Compile Include="GameCell.cs" />
-    <Compile Include="LevelBuilder.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Model\Level.cs" />
+    <Compile Include="Model\GameCell.cs" />
+    <Compile Include="Model\LevelBuilder.cs" />
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\Player_Should.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -104,6 +105,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
