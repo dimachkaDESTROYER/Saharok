@@ -21,6 +21,7 @@ namespace Saharok
         private readonly string CoinImage;
         private readonly string PlayerImage;
         private readonly string WaterImage;
+        private readonly string MonstrImage;
         private bool firstTimeDrawing = true;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
         public GameForm(Level level, DirectoryInfo imagesDirectory = null)
@@ -30,8 +31,9 @@ namespace Saharok
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
             WaterImage = "water.png";
+            MonstrImage = "кофе.png";
             
-            cells[CellType.Wall] = "platform.png";
+            cells[CellType.Wall] = "platform1.png";
             cells[CellType.Money] = CoinImage;
             cells[CellType.Water] = WaterImage;
             this.level = level;
@@ -43,7 +45,7 @@ namespace Saharok
                 imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
-            BackgroundImage = bitmaps["математика.png"];
+            BackgroundImage = bitmaps["фон.png"];
             var timer = new Timer();
             timer.Interval = 40;
             timer.Tick += TimerTick;
@@ -98,6 +100,7 @@ namespace Saharok
                 e.Graphics.DrawImage(bitmaps[CoinImage], coin);
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
+            e.Graphics.DrawImage(bitmaps[MonstrImage], level.monstr.Position);
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
             e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.92 * level.LevelWidth), 0));
@@ -117,6 +120,7 @@ namespace Saharok
         {
             AddMovement();
             var prevPos = level.player.Position;
+            var monstrPrevPos = level.monstr.Position;
             foreach (var coin in level.GetCoins())
                 Invalidate(coin);
             level.GameTurn();
@@ -125,7 +129,9 @@ namespace Saharok
                 this.Hide();
             }
             Invalidate(prevPos, true);
+            Invalidate(monstrPrevPos, true);
             Invalidate(level.player.Position, true);
+            Invalidate(level.monstr.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
         }
 

@@ -19,11 +19,12 @@ namespace Saharok
         private GameCell[] Water;
         private List<GameCell> Coins;
         public Player player;
+        public Monstr monstr;
         public Rectangle finish;
         public Keys KeyPressed;
         public Level(int LevelHeight, int LevelWidth,
                      IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> water,
-                     int gForce, Player player, Rectangle finish)
+                     int gForce, Player player, Monstr monstr, Rectangle finish)
         {
             IsOver = false;
             this.LevelHeight = LevelHeight;
@@ -33,6 +34,7 @@ namespace Saharok
             Water = water.Select(r => new GameCell(CellType.Water, r)).ToArray();
             gravityForce = gForce;
             this.player = player;
+            this.monstr = monstr;
             this.finish = finish;
         }
         private void Move(Axis axis)
@@ -40,7 +42,8 @@ namespace Saharok
             player.ChangePosition(axis);
             var dx = 0;
             var dy = 0;
-            foreach (var wall in Walls.Select(w => w.Position))
+            foreach (var wall in Walls.Select(w => w.Position)) 
+            { 
                 if (player.Position.IntersectsWith(wall))
                 {
                     if (axis == Axis.Horisontal)
@@ -61,6 +64,14 @@ namespace Saharok
                             dy = wall.Bottom - player.Position.Top;
                     }
                 }
+                if (!monstr.Position.IntersectsWith(wall))
+                {
+                    if (monstr.Position.X < wall.X)
+                        monstr.ChangePositionToRight();
+                    if (monstr.Position.X > wall.X)
+                        monstr.ChangePositionToLeft();
+                } 
+            }
             player.SpeedX = 0;
             if (dy != 0)
                 player.SpeedY = 0;
@@ -73,7 +84,6 @@ namespace Saharok
                 Move(Axis.Horisontal);
             if (player.SpeedY != 0)
                 Move(Axis.Vertical);
-
         }
 
         public void GameTurn()
@@ -101,6 +111,7 @@ namespace Saharok
                 IsOver = true;
             if (player.Position.IntersectsWith(finish) && Coins.Count == 0)
                 IsWin = true;
+            
         }
 
         public IEnumerable<Rectangle> GetCoins()
