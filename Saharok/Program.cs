@@ -37,8 +37,8 @@ namespace Saharok
                                                          new Rectangle(80, 500, 160, 50))
                                                .AddCoins(coins.ToArray())
                                                .AddWater(new Rectangle(160, 750, 160, 50),
-                                                         new Rectangle(640, 750, 480, 50))
-                                               .ToLevel();
+                                                         new Rectangle(640, 750, 480, 50));
+                                               
             Application.Run(new GameForm(l));
         }
     }

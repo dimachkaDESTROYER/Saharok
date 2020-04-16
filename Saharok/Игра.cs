@@ -16,15 +16,17 @@ namespace Saharok
         private readonly Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
         private readonly Dictionary<CellType, string> cells = new Dictionary<CellType, string>();
         private readonly Level level;
+        private readonly LevelBuilder levelBuilder;
         private readonly string LifeImage;
         private readonly string finish;
         private readonly string CoinImage;
         private readonly string PlayerImage;
         private readonly string WaterImage;
         private readonly string MonstrImage;
+        private bool inicialise;
         private bool firstTimeDrawing = true;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
-        public GameForm(Level level, DirectoryInfo imagesDirectory = null)
+        public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
         {
             finish = "финиш.png";
             PlayerImage = "длинный.png";
@@ -36,7 +38,8 @@ namespace Saharok
             cells[CellType.Wall] = "platform1.png";
             cells[CellType.Money] = CoinImage;
             cells[CellType.Water] = WaterImage;
-            this.level = level;
+            this.levelBuilder = levelBuilder;
+            this.level = levelBuilder.ToLevel();
             ClientSize = new Size(
                 this.level.LevelWidth,
                 this.level.LevelHeight);
@@ -50,6 +53,7 @@ namespace Saharok
             timer.Interval = 10;
             timer.Tick += TimerTick;
             timer.Start();
+            
         }
 
         protected override void OnLoad(EventArgs e)
@@ -57,7 +61,6 @@ namespace Saharok
             base.OnLoad(e);
             Text = "Sugar";
             DoubleBuffered = true;
-
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -82,6 +85,7 @@ namespace Saharok
             pressedKeys.Remove(e.KeyCode);
             //level.KeyPressed = pressedKeys.Any() ? pressedKeys.Min() : Keys.None;
         }
+
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -126,9 +130,13 @@ namespace Saharok
             foreach (var monster in level.monsters)
                 Invalidate(monster.Position);
             level.GameTurn();
-            if (level.IsOver || level.IsWin)
+            if ((level.IsOver || level.IsWin) && !inicialise)
             {
-                this.Hide();
+                if (level.IsOver)
+                    Exit("Вы проиграли");
+                else
+                    Exit("Победа!");
+               
             }
             Invalidate(prevPos, true);
             foreach (var monster in level.monsters)
@@ -136,6 +144,15 @@ namespace Saharok
             Invalidate(level.player.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
         }
+
+        private void Exit(string text)
+        {
+            this.inicialise = true;
+            var ex = new Exit(text, levelBuilder);
+            this.Hide();
+            ex.ShowDialog();
+        }
+        
 
 
         private void InitializeComponent()
