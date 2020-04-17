@@ -36,7 +36,7 @@ namespace Saharok
             CoinImage = "монетка.png";
             WaterImage = "water.png";
             MonstrImage = "кофе.png";
-            coinMagnet = new CoinMagnet(10, 10, 100);
+            coinMagnet = new CoinMagnet(10, 10, 1000);
             cells[CellType.Wall] = "platform1.png";
             cells[CellType.Money] = CoinImage;
             cells[CellType.Water] = WaterImage;

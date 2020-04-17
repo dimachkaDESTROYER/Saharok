@@ -14,45 +14,60 @@ namespace Saharok
     {
         public Exit(string text, LevelBuilder level)
         {
-            this.Size = new Size(1024, 800);
-            RichTextBox text_form = new RichTextBox();
-            text_form.Text = text;
-            text_form.Location = new Point(this.Width / 3, this.Height / 5);
-            var exit = new Button();
+            this.Size = new Size(1024, 600);
+            BackColor = Color.DarkSlateBlue;
+            var text_form = new RichTextBox()
+            {
+                Text = text,
+                Font = new Font("AlaskaC", 30),
+                Size = new Size(300, 100),
+                Location = new Point(this.Width / 3, this.Height / 5)
+            };
             this.Controls.Add(text_form);
-            exit.BackColor = Color.Gray;
-            exit.Text = "Выйти";
-            exit.Click += (sender, args) =>
+
+            var buttonExit = new Button()
+            {
+                Text = "Выйти",
+                Font = new Font("AlaskaC", 15),
+                BackColor = Color.Yellow,
+                Size = new Size(200, 200),
+                Location = new Point((int)(1.6 * this.Width / 3), (int)(1.5 * this.Height / 3))
+
+            };
+            buttonExit.Click += (sender, args) =>
             {
                 Application.Exit();
                 InitializeComponent();
             };
-            Controls.Add(exit);
-            exit.Size = new Size(100, 100);
-            exit.Location = new Point((int)(0.5 * this.Width / 3), this.Height / 3);
-            var again = new Button();
-            again.BackColor = Color.Gray;
-            again.Text = "Начать заново";
-            again.Click += (sender, args) =>
+
+            var buttonAgain = new Button()
+            {
+
+                BackColor = Color.Yellow,
+                Text = "Начать заново",
+                Font = new Font("AlaskaC", 15),
+                Size = new Size(200, 200),
+                Location = new Point((int)(this.Width / 4), (int)(1.5 * this.Height / 3))
+
+            };
+            Controls.Add(buttonAgain);
+            buttonAgain.Click += (sender, args) =>
             {
                 this.Hide();
                 var game = new GameForm(level);
                 game.Show();
                 InitializeComponent();
             };
-            Controls.Add(again);
-            again.Size = new Size(100, 100);
-            again.Location = new Point(this.Width / 3, this.Height / 3);
 
+
+            Controls.Add(buttonExit);
+            Controls.Add(buttonAgain);
         }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Text = "Sugar";
+            Text = "Menu";
             DoubleBuffered = true;
         }
-
-
     }
 }
