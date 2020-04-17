@@ -84,7 +84,7 @@ namespace Saharok.Tests
         public void TestCoinAddToPlayer()
         {
             var player = new Player(new Rectangle(10, 10, 10, 10));
-            player.AddCoin();
+            player.AddCoins(1);
             var actual = player.Coins;
             var expected = 1;
             Assert.AreEqual(expected, actual);

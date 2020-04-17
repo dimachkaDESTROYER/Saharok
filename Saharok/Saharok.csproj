@@ -59,6 +59,7 @@
     <Compile Include="Interface\Exit.Designer.cs">
       <DependentUpon>Exit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\CoinMagnet.cs" />
     <Compile Include="Model\Monster.cs" />
     <Compile Include="Interface\Игра.cs">
       <SubType>Form</SubType>

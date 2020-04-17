@@ -15,9 +15,9 @@ namespace Saharok
         private int gravityForce;
         public readonly int LevelHeight;
         public readonly int LevelWidth;
-        private GameCell[] Walls;
+        public readonly GameCell[] Walls;
         private GameCell[] Water;
-        private List<GameCell> Coins;
+        private Dictionary<Rectangle, int> Coins;
         public Player player;
         public List<Monster> monsters;
         public Rectangle finish;
@@ -30,7 +30,9 @@ namespace Saharok
             this.LevelHeight = LevelHeight;
             this.LevelWidth = LevelWidth;
             Walls = walls.Select(r => new GameCell(CellType.Wall, r)).ToArray();
-            Coins = coins.Select(r => new GameCell(CellType.Money, r)).ToList();
+            Coins = new Dictionary<Rectangle, int>();
+            foreach (var coin in coins)
+                Coins[coin] = 1;
             Water = water.Select(r => new GameCell(CellType.Water, r)).ToArray();
             gravityForce = gForce;
             this.player = player;
@@ -86,29 +88,26 @@ namespace Saharok
             if (player.SpeedY < gravityForce)
                 player.Down(gravityForce);
             Move();
-            var removed = new List<GameCell>();
-            foreach (var coin in Coins.Where(c => c.Position.IntersectsWith(player.Position)))
+            var removed = new List<Rectangle>();
+            foreach (var coin in GetCoins().Where(c => c.IntersectsWith(player.Position)).ToList())
             {
                 removed.Add(coin);
-                player.AddCoin();
+                if(Coins.ContainsKey(coin))
+                    player.AddCoins(Coins[coin]);
+                Coins.Remove(coin);
             }
             foreach (var coin in removed)
                 Coins.Remove(coin);
             foreach (var water in Water.Where(c => c.Position.IntersectsWith(player.Position)))
-            {
-                player.Lifes -= 1;
-               
-                player.Up(80);
-            }
+                player.Conflict();
             foreach (var monster in monsters.Where(m => m.Position.IntersectsWith(player.Position)))
             {
-                player.Lifes -= 1;
-                player.Up(80);
+                player.Conflict();
             }
             foreach (var coin in removed)
                 Coins.Remove(coin);
             if (player.Position.Bottom > LevelHeight)
-                player.Lifes -= 1;
+                player.Conflict();
             if (player.Lifes <= 0)
                 IsOver = true;
             if (player.Position.IntersectsWith(finish) && Coins.Count == 0)
@@ -118,7 +117,21 @@ namespace Saharok
 
         public IEnumerable<Rectangle> GetCoins()
         {
-            return Coins.Select(c => c.Position);
+            return Coins.Keys;
+        }
+
+        public void AddCoin(Rectangle coin)
+        {
+            if (!Coins.ContainsKey(coin))
+                Coins[coin] = 0;
+            Coins[coin]++;
+        }
+
+        public void RemoveCoin(Rectangle coin)
+        {
+            Coins[coin]--;
+            if (Coins[coin] <= 0)
+                Coins.Remove(coin);
         }
         public IEnumerable<GameCell> GetCells()
         {
@@ -126,8 +139,8 @@ namespace Saharok
                 yield return wall;
             foreach (var water in Water)
                 yield return water;
-            foreach (var coin in Coins)
-                yield return coin;
+            foreach (var coin in Coins.Keys)
+                yield return new GameCell(CellType.Money, coin);
         }
     }
 }

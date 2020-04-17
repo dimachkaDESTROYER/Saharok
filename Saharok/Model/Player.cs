@@ -24,7 +24,7 @@ namespace Saharok
     public class Player
     {
         public int Coins { get; private set; }
-        public int Lifes { get; set; }
+        public int Lifes { get; private set; }
         public bool onGround = false;
         public Rectangle Position { get; private set; }
         public int SpeedX { get; set; }
@@ -40,18 +40,15 @@ namespace Saharok
             Position = position;
         }
 
-        public void AddCoin()
+        public void AddCoins(int count)
         {
-            Coins++;
+            Coins+= count;
         }
 
         public void ChangeSpeedBy(MovingDirection d, int absSpeed)
         {
-            if (d == MovingDirection.Up && onGround && SpeedY == 0)
-            {
-                onGround = false;
+            if (d == MovingDirection.Up)
                 SpeedY -= absSpeed;
-            }
             if (d == MovingDirection.Down)
                 SpeedY += absSpeed;
             if (d == MovingDirection.Left)
@@ -70,6 +67,11 @@ namespace Saharok
             ChangePosition(dx, dy);
         }
 
+        public void Conflict()
+        {
+            Lifes--;
+            ChangeSpeedBy(MovingDirection.Up,70);
+        }
         public void ChangePosition(int dx, int dy)
         {
             Position = new Rectangle(new Point(Position.X + dx, Position.Y + dy), Position.Size);
@@ -77,7 +79,9 @@ namespace Saharok
 
         public void Up(int absSpeed)
         {
-            ChangeSpeedBy(MovingDirection.Up, absSpeed);
+            if(onGround)
+                ChangeSpeedBy(MovingDirection.Up, absSpeed);
+            onGround = false;
         }
 
         public void Left(int absSpeed)

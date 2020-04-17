@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Saharok.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,6 +27,7 @@ namespace Saharok
         private bool inicialise;
         private bool firstTimeDrawing = true;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
+        private CoinMagnet coinMagnet;
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
         {
             finish = "финиш.png";
@@ -34,7 +36,7 @@ namespace Saharok
             CoinImage = "монетка.png";
             WaterImage = "water.png";
             MonstrImage = "кофе.png";
-            
+            coinMagnet = new CoinMagnet(10, 10, 100);
             cells[CellType.Wall] = "platform1.png";
             cells[CellType.Money] = CoinImage;
             cells[CellType.Water] = WaterImage;
@@ -89,10 +91,6 @@ namespace Saharok
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //e.Graphics.TranslateTransform(0, GameState.ElementSize);
-            //    e.Graphics.FillRectangle(
-            //    Brushes.Red, 0, 0, currentLevel.LevelWidth,
-            //    currentLevel.LevelHeight);
             if (firstTimeDrawing)
             {
 
@@ -112,7 +110,7 @@ namespace Saharok
             e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0));
         }
 
-        private void AddMovement()
+        private void ReadPressedKeys()
         {
             if (pressedKeys.Contains(Keys.A))
                 level.player.Left(20);
@@ -120,15 +118,18 @@ namespace Saharok
                 level.player.Right(20);
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
+            if (pressedKeys.Contains(Keys.M))
+                coinMagnet.Magnetize(level);
         }
         private void TimerTick(object sender, EventArgs args)
         {
-            AddMovement();
-            var prevPos = level.player.Position;
             foreach (var coin in level.GetCoins())
                 Invalidate(coin);
+            ReadPressedKeys();
+            Invalidate(level.player.Position); 
             foreach (var monster in level.monsters)
                 Invalidate(monster.Position);
+
             level.GameTurn();
             if ((level.IsOver || level.IsWin) && !inicialise)
             {
@@ -138,7 +139,8 @@ namespace Saharok
                     Exit("Победа!");
                
             }
-            Invalidate(prevPos, true);
+            foreach (var coin in level.GetCoins())
+                Invalidate(coin);
             foreach (var monster in level.monsters)
                 Invalidate(monster.Position);
             Invalidate(level.player.Position, true);
