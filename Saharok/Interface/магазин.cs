@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Saharok.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,11 +21,12 @@ namespace Saharok
         private readonly Image ImageSugar;
         private readonly Image CoinImage;
         private readonly Level level;
+        private ITool current;
 
-        public Shop(Level level, DirectoryInfo imagesDirectory = null)
+        public Shop(Level level, bool inicialise, DirectoryInfo imagesDirectory = null)
         {
             InitializeComponent();
-
+            
             if (imagesDirectory == null)
                 imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
@@ -46,6 +48,13 @@ namespace Saharok
                 Font = new Font("AlaskaC", 15),
                 Dock = DockStyle.Fill
             };
+            buttonBuy.Click += (sender, args) =>
+            {
+                if (current != null && level.player.TryRemoveCoins(current.GetPrise()))
+                {
+                    level.player.tools.Add(current);
+                }
+            };
 
             var buttonBack = new Button()
             {
@@ -54,9 +63,16 @@ namespace Saharok
                 Dock = DockStyle.Fill
             };
 
-            var gun = new Button()
+            buttonBack.Click += (sender, args) =>
             {
+                
+                this.Hide();
+                inicialise = false;
+                
+            };
 
+                var gun = new Button()
+            {
                 Image = ImageGun,
                 Dock = DockStyle.Fill
             };
@@ -65,6 +81,11 @@ namespace Saharok
             {
                 Image = imageHat,
                 Dock = DockStyle.Fill
+            };
+
+            hat.Click += (sender, args) =>
+            {
+                current = new Magnit();
             };
 
             var student = new Button()

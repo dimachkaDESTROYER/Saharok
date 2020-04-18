@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Saharok
+namespace Saharok.Model
 {
     public class Level
     {
@@ -21,7 +21,6 @@ namespace Saharok
         public Player player;
         public List<Monster> monsters;
         public Rectangle finish;
-        public Keys KeyPressed;
         public Level(int LevelHeight, int LevelWidth,
                      IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> water,
                      int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish)

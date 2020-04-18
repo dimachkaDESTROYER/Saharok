@@ -21,10 +21,11 @@ namespace Saharok
         private readonly string LifeImage;
         private readonly string finish;
         private readonly string CoinImage;
-        private readonly string PlayerImage;
+        private string PlayerImage;
         private readonly string WaterImage;
         private readonly string MonstrImage;
         private bool inicialise;
+        private bool ShopInicialise;
         private bool firstTimeDrawing = true;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
         private CoinMagnet coinMagnet;
@@ -36,7 +37,7 @@ namespace Saharok
             CoinImage = "монетка.png";
             WaterImage = "water.png";
             MonstrImage = "кофе.png";
-            coinMagnet = new CoinMagnet(10, 10, 1000);
+            coinMagnet = new CoinMagnet(10, 10, 200);
             cells[CellType.Wall] = "platform1.png";
             cells[CellType.Money] = CoinImage;
             cells[CellType.Water] = WaterImage;
@@ -119,7 +120,21 @@ namespace Saharok
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
             if (pressedKeys.Contains(Keys.M))
-                coinMagnet.Magnetize(level);
+            {
+                foreach (var tool in level.player.tools)
+                    if (tool.GetToolType() == TypeTool.Magnit)
+                    {
+                        PlayerImage = "крутой.png";
+                        tool.DoAction(level);
+                    }
+                        
+            }
+            if (pressedKeys.Contains(Keys.C) && !ShopInicialise)
+            {
+                ShopInicialise = true;
+                new Shop(level, ShopInicialise).Show();
+            }
+                
         }
         private void TimerTick(object sender, EventArgs args)
         {

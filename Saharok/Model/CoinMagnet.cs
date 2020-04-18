@@ -24,7 +24,7 @@ namespace Saharok.Model
         {
             for (var dx = -1; dx <= 1; dx++)
                 for (var dy = -1; dy <= 1; dy++)
-                    if(dy == 0 ^ dx == 0)
+                    if (dy == 0 ^ dx == 0)
                         yield return new Rectangle(new Point(currentPos.X + dx * DeltaX,
                                                              currentPos.Y + dy * DeltaY),
                                                     currentPos.Size);
@@ -34,7 +34,7 @@ namespace Saharok.Model
         {
             return (first.X - second.X) * (first.X - second.X) + (first.Y - second.Y) * (first.Y - second.Y);
         }
-        
+
         private static Point GetCenter(Rectangle r) => new Point((r.Left + r.Right) / 2, (r.Top + r.Bottom) / 2);
 
         private Stack<Rectangle> GetPathFromDict(Rectangle? currentPos, Dictionary<Rectangle, Rectangle?> stepBack)
@@ -60,7 +60,7 @@ namespace Saharok.Model
                     return GetPathFromDict(currentPos, stepBack);
                 foreach (var neighbour in GetNeighbourPositions(currentPos))
                 {
-                    if (stepBack.ContainsKey(neighbour) || 
+                    if (stepBack.ContainsKey(neighbour) ||
                         walls.Any(w => w.IntersectsWith(neighbour)) ||
                         !IsNear(neighbour, player))
                         continue;
@@ -77,11 +77,11 @@ namespace Saharok.Model
 
         public void Magnetize(Level level)
         {
-            
+
             if (level.player.Position != previousPlayerPosition)
             {
                 coinPathByIndex = new Dictionary<Rectangle, Stack<Rectangle>>();
-                foreach(var coin in level.GetCoins())
+                foreach (var coin in level.GetCoins())
                     if (IsNear(coin, level.player.Position))
                         coinPathByIndex[coin] = GetOptimalPath(level.Walls.Select(w => w.Position),
                                                                 level.player.Position,
@@ -97,10 +97,10 @@ namespace Saharok.Model
                     level.RemoveCoin(coin);
                     level.AddCoin(nextPos);
                     removedCoins.Add(coin);
-                    addedCoins[nextPos] = coinPathByIndex[coin]; 
+                    addedCoins[nextPos] = coinPathByIndex[coin];
                 }
             }
-            foreach(var coin in removedCoins)
+            foreach (var coin in removedCoins)
                 coinPathByIndex.Remove(coin);
             foreach (var coinPathPair in addedCoins)
                 coinPathByIndex[coinPathPair.Key] = coinPathPair.Value;

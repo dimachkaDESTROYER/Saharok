@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Saharok.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Saharok
+namespace Saharok.Model
 {
     public enum MovingDirection
     {
@@ -29,6 +30,7 @@ namespace Saharok
         public Rectangle Position { get; private set; }
         public int SpeedX { get; set; }
         public int SpeedY { get; set; }
+        public List<ITool> tools = new List<ITool>();
 
         public Player Copy()
         {
@@ -43,6 +45,17 @@ namespace Saharok
         public void AddCoins(int count)
         {
             Coins+= count;
+        }
+
+        public bool TryRemoveCoins(int count)
+        {
+            if (Coins >= count)
+            {
+                Coins -= count;
+                return true;
+            }
+            return false;
+                
         }
 
         public void ChangeSpeedBy(MovingDirection d, int absSpeed)
