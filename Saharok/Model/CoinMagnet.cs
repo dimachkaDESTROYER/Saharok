@@ -24,10 +24,10 @@ namespace Saharok.Model
         {
             for (var dx = -1; dx <= 1; dx++)
                 for (var dy = -1; dy <= 1; dy++)
-                    if (dy == 0 ^ dx == 0)
+                    if(dy == 0 ^ dx == 0)
                         yield return new Rectangle(new Point(currentPos.X + dx * DeltaX,
                                                              currentPos.Y + dy * DeltaY),
-                                                    currentPos.Size);
+                                                             currentPos.Size);
         }
 
         private int GetSquaredDistance(Point first, Point second)
@@ -91,13 +91,13 @@ namespace Saharok.Model
             var addedCoins = new Dictionary<Rectangle, Stack<Rectangle>>();
             foreach (var coin in coinPathByIndex.Keys)
             {
-                if (coinPathByIndex[coin].Count > 0)
+                if (coinPathByIndex.TryGetValue(coin, out var path) && path != null && path.Count > 0)
                 {
-                    var nextPos = coinPathByIndex[coin].Pop();
+                    var nextPos = path.Pop();
                     level.RemoveCoin(coin);
                     level.AddCoin(nextPos);
                     removedCoins.Add(coin);
-                    addedCoins[nextPos] = coinPathByIndex[coin];
+                    addedCoins[nextPos] = path;
                 }
             }
             foreach (var coin in removedCoins)

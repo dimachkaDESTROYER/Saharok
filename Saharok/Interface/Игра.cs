@@ -70,23 +70,10 @@ namespace Saharok
         {
             pressedKeys.Add(e.KeyCode);
         }
-        //protected override void OnKeyDown(KeyEventArgs e)
-        //{
-        //    pressedKeys.Add(e.KeyCode);
-        //    if (e.KeyCode == Keys.W)
-        //        level.player.ChangeSpeedBy(MovingDirection.Up, 100);
-        //    else if (e.KeyCode == Keys.S)
-        //        level.player.ChangeSpeedBy(MovingDirection.Down, 20);
-        //    else if (e.KeyCode == Keys.D)
-        //        level.player.ChangeSpeedBy(MovingDirection.Right, 20);
-        //    else if (e.KeyCode == Keys.A)
-        //        level.player.ChangeSpeedBy(MovingDirection.Left, 20);
-        //}
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
             pressedKeys.Remove(e.KeyCode);
-            //level.KeyPressed = pressedKeys.Any() ? pressedKeys.Min() : Keys.None;
         }
 
 

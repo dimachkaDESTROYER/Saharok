@@ -34,11 +34,11 @@ namespace Saharok.Model
 
         public Player Copy()
         {
-            return new Player(Position);
+            return new Player(Position, Lifes);
         }
-        public Player(Rectangle position)
+        public Player(Rectangle position, int lifes = 1)
         {
-            Lifes = 2;
+            Lifes = lifes;
             Position = position;
         }
 
