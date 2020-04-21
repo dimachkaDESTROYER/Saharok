@@ -34,7 +34,7 @@ namespace Saharok.Model
 
         public string GetName()
         {
-            return "Magnit";
+            return "Шапка - магнит";
         }
 
         public TypeTool GetToolType()

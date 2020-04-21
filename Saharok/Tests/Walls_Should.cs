@@ -39,5 +39,31 @@ namespace Saharok.Tests
             level.GameTurn();
             Assert.AreEqual(new Point(20, 10), level.player.Position.Location);
         }
+
+        [Test]
+        public void TestRightWall()
+        {
+            var level = GetLevel();
+            level.player.ChangeSpeedBy(MovingDirection.Right, 40);
+            level.GameTurn();
+            Assert.AreEqual(new Point(30, 30), level.player.Position.Location);
+        }
+
+        [Test]
+        public void TestLeftWall()
+        {
+            var level = GetLevel();
+            level.player.ChangeSpeedBy(MovingDirection.Left, 20);
+            level.GameTurn();
+            Assert.AreEqual(new Point(10, 30), level.player.Position.Location);
+        }
+
+        [Test]
+        public void TestOnWall()
+        {
+            var level = GetLevel();
+            level.GameTurn();
+            Assert.AreEqual(true, level.player.onGround);
+        }
     }
 }

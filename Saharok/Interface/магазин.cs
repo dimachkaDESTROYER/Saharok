@@ -71,7 +71,15 @@ namespace Saharok
                 
             };
 
-                var gun = new Button()
+            var textBox = new TextBox
+            {
+                Text = "Выберите покупку",
+                Font = new Font("AlaskaC", 15),
+                Dock = DockStyle.Fill
+
+            };
+
+            var gun = new Button()
             {
                 Image = ImageGun,
                 Dock = DockStyle.Fill
@@ -86,6 +94,8 @@ namespace Saharok
             hat.Click += (sender, args) =>
             {
                 current = new Magnit();
+                textBox.Text = current.GetName() + "; Цена - " + current.GetPrise().ToString();
+                
             };
 
             var student = new Button()
@@ -94,15 +104,7 @@ namespace Saharok
                 Dock = DockStyle.Fill
             };
 
-            //var textBox = new TextBox
-            //{
-            //    Text = "Выберите покупку",
-            //    Dock = DockStyle.Fill
-
-            //};
-
-
-
+            
 
             var table = new TableLayoutPanel();
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
@@ -122,31 +124,30 @@ namespace Saharok
             table.Controls.Add(student, 2, 1);
             table.Controls.Add(hat, 3, 1);
 
-            //table.SetColumnSpan(textBox, 3);
-            //table.Controls.Add(textBox, 1, 0);
+            table.SetColumnSpan(textBox, 3);
+            table.Controls.Add(textBox, 1, 0);
             table.Dock = DockStyle.Fill;
             Controls.Add(table);
             BackgroundImage = ImageSugar;
 
         }
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            e.Graphics.DrawImage(ImageSugar, 0, 0, level.LevelWidth, level.LevelHeight);
-            //e.Graphics.DrawImage(ImageSugar, 0, 0, 100, 100);
-            e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.46 * level.LevelWidth), 5);
-            e.Graphics.DrawImage(CoinImage, new Point((int)(0.3 * level.LevelWidth), 0));
-            e.Graphics.DrawString("Выберите покупку", new Font("Arial", 30), Brushes.Black, (float)(0.51 * this.ClientSize.Width), 5);
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    e.Graphics.DrawImage(ImageSugar, 0, 0, level.LevelWidth, level.LevelHeight);
+        //    e.Graphics.DrawImage(ImageSugar, 0, 0, 100, 100);
+        //    e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.46 * level.LevelWidth), 5);
+        //    e.Graphics.DrawImage(CoinImage, new Point((int)(0.3 * level.LevelWidth), 0));
+        //    e.Graphics.DrawString("Выберите покупку", new Font("Arial", 30), Brushes.Black, (float)(0.51 * this.ClientSize.Width), 10);
 
-        }
+        //}
         //private void TimerTick(object sender, EventArgs args)
         //{
-        //    level.GameTurn();
+            
         //    if (level.IsOver)
         //    {
         //        this.Hide();
         //    }
-
-        //    Invalidate();
+        //    Shop.Invalidate();
         //}
     }
 }
