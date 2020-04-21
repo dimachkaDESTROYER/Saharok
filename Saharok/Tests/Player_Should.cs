@@ -120,6 +120,7 @@ namespace Saharok.Tests
         public void TestInteractionWithWater()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
+
             var level = new Level(1000, 1000, walls, coins, water, 5, player, monsters, finish);
             level.player.onGround = true;
             level.player.Right(200);
@@ -139,6 +140,18 @@ namespace Saharok.Tests
             level.GameTurn();
             var actual = level.IsWin;
             Assert.AreEqual(true, actual);
+        }
+
+        [Test]
+        public void TestConnectWithWalls()
+        {
+            var newWalls = walls = new List<Rectangle> { new Rectangle(200, 600, 400, 200) };
+            var player = new Player(new Rectangle(100, 500, 100, 100));
+            var level = new Level(1000, 1000, newWalls, coins, water, 5, player, monsters, finish);
+            level.player.Right(15);
+            level.GameTurn();
+            var actual = level.player.Position;
+            Assert.AreEqual(new Rectangle(100, 500, 100, 100), actual);
         }
     }
 }
