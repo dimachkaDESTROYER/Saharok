@@ -45,7 +45,7 @@ namespace Saharok.Tests
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
             var level = new Level(1000, 1000, walls, coins, water, 0, player, monsters, finish);
-            level.player.onGround = true;
+            level.player.OnGround = true;
             level.player.Up(5);
             level.GameTurn();
             var expected = new Rectangle(50, 495, 100, 100);
@@ -58,7 +58,7 @@ namespace Saharok.Tests
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
             var level = new Level(1000, 1000, walls, coins, water, 5, player, monsters, finish);
-            level.player.onGround = true;
+            level.player.OnGround = true;
             level.player.Up(10);
             level.GameTurn();
             var expected = new Rectangle(50, 495, 100, 100);
@@ -72,7 +72,7 @@ namespace Saharok.Tests
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
             var level = new Level(1000, 1000, walls, coins, water, 5, player, monsters, finish);
-            level.player.onGround = false;
+            level.player.OnGround = false;
             level.player.Up(70);
             level.GameTurn();
             var expected = new Rectangle(50, 500, 100, 100);
@@ -122,7 +122,7 @@ namespace Saharok.Tests
             var player = new Player(new Rectangle(50, 500, 100, 100));
 
             var level = new Level(1000, 1000, walls, coins, water, 1, player, monsters, finish);
-            level.player.onGround = true;
+            level.player.OnGround = true;
             level.player.Right(200);
             level.GameTurn();
             var actual = level.IsOver;

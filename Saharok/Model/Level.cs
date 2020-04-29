@@ -58,7 +58,7 @@ namespace Saharok.Model
                     {
                         if (player.SpeedY > 0)
                         {
-                            player.onGround = true;
+                            player.OnGround = true;
                             dy = wall.Top - player.Position.Bottom;
                         }
                         else if (player.SpeedY < 0)
@@ -131,15 +131,6 @@ namespace Saharok.Model
             Coins[coin]--;
             if (Coins[coin] <= 0)
                 Coins.Remove(coin);
-        }
-        public IEnumerable<GameCell> GetCells()
-        {
-            foreach (var wall in Walls)
-                yield return wall;
-            foreach (var water in Water)
-                yield return water;
-            foreach (var coin in Coins.Keys)
-                yield return new GameCell(CellType.Money, coin);
         }
     }
 }

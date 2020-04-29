@@ -10,7 +10,6 @@ namespace Saharok.Model
     public enum CellType
     {
         Wall,
-        Money,
         Water
     }
 

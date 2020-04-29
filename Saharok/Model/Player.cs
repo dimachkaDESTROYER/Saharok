@@ -26,11 +26,11 @@ namespace Saharok.Model
     {
         public int Coins { get; private set; }
         public int Lifes { get; private set; }
-        public bool onGround = false;
+        public bool OnGround = false;
         public Rectangle Position { get; private set; }
         public int SpeedX { get; set; }
         public int SpeedY { get; set; }
-        public List<ITool> tools = new List<ITool>();
+        public List<ITool> Tools = new List<ITool>();
 
         public Player Copy()
         {
@@ -92,9 +92,9 @@ namespace Saharok.Model
 
         public void Up(int absSpeed)
         {
-            if(onGround)
+            if(OnGround)
                 ChangeSpeedBy(MovingDirection.Up, absSpeed);
-            onGround = false;
+            OnGround = false;
         }
 
         public void Left(int absSpeed)

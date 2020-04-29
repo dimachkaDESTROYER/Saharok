@@ -55,6 +55,7 @@
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -74,23 +75,24 @@
     <Compile Include="Interface\Exit.Designer.cs">
       <DependentUpon>Exit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interface\GameColors.cs" />
     <Compile Include="Model\CoinMagnet.cs" />
     <Compile Include="Model\ITool.cs" />
     <Compile Include="Model\Monster.cs" />
-    <Compile Include="Interface\Игра.cs">
+    <Compile Include="Interface\Game.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interface\Пуск.cs">
+    <Compile Include="Interface\StartMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interface\Пуск.Designer.cs">
-      <DependentUpon>Пуск.cs</DependentUpon>
+    <Compile Include="Interface\StartMenu.Designer.cs">
+      <DependentUpon>StartMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interface\Магазин.cs">
+    <Compile Include="Interface\Shop.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interface\Магазин.Designer.cs">
-      <DependentUpon>Магазин.cs</DependentUpon>
+    <Compile Include="Interface\Shop.Designer.cs">
+      <DependentUpon>Shop.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Level.cs" />
     <Compile Include="Model\GameCell.cs" />

@@ -16,8 +16,8 @@ namespace Saharok
         public Exit(string text, LevelBuilder level)
         {
             this.Size = new Size(1024, 600);
-            BackColor = Color.DarkSlateBlue;
-            var text_form = new RichTextBox()
+            BackColor = GameColors.BackgroundColor;
+            var text_form = new Label()
             {
                 Text = text,
                 Font = new Font("AlaskaC", 30),
@@ -30,7 +30,7 @@ namespace Saharok
             {
                 Text = "Выйти",
                 Font = new Font("AlaskaC", 15),
-                BackColor = Color.Yellow,
+                BackColor = GameColors.ButtonColor,
                 Size = new Size(200, 200),
                 Location = new Point((int)(1.6 * this.Width / 3), (int)(1.5 * this.Height / 3))
 
@@ -44,7 +44,7 @@ namespace Saharok
             var buttonAgain = new Button()
             {
 
-                BackColor = Color.Yellow,
+                BackColor = GameColors.ButtonColor,
                 Text = "Начать заново",
                 Font = new Font("AlaskaC", 15),
                 Size = new Size(200, 200),

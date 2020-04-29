@@ -37,10 +37,6 @@ namespace Saharok
             ImageSugar = bitmaps["улыбка.png"];
             CoinImage = bitmaps["монетка.png"];
             this.level = level;
-            //var timer = new Timer();
-            //timer.Interval = 10;
-            //timer.Tick += TimerTick;
-            //timer.Start();
 
             var buttonBuy = new Button()
             {
@@ -52,7 +48,7 @@ namespace Saharok
             {
                 if (current != null && level.player.TryRemoveCoins(current.GetPrise()))
                 {
-                    level.player.tools.Add(current);
+                    level.player.Tools.Add(current);
                 }
             };
 
@@ -60,7 +56,8 @@ namespace Saharok
             {
                 Text = "Назад",
                 Font = new Font("AlaskaC", 15),
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = GameColors.ButtonColor,
             };
 
             buttonBack.Click += (sender, args) =>
@@ -75,20 +72,22 @@ namespace Saharok
             {
                 Text = "Выберите покупку",
                 Font = new Font("AlaskaC", 15),
-                Dock = DockStyle.Fill
-
+                Dock = DockStyle.Fill,
+                BackColor = GameColors.ButtonColor,
             };
 
             var gun = new Button()
             {
                 Image = ImageGun,
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = GameColors.ButtonColor,
             };
 
             var hat = new Button()
             {
                 Image = imageHat,
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = GameColors.ButtonColor,
             };
 
             hat.Click += (sender, args) =>
@@ -131,23 +130,5 @@ namespace Saharok
             BackgroundImage = ImageSugar;
 
         }
-        //protected override void OnPaint(PaintEventArgs e)
-        //{
-        //    e.Graphics.DrawImage(ImageSugar, 0, 0, level.LevelWidth, level.LevelHeight);
-        //    e.Graphics.DrawImage(ImageSugar, 0, 0, 100, 100);
-        //    e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.46 * level.LevelWidth), 5);
-        //    e.Graphics.DrawImage(CoinImage, new Point((int)(0.3 * level.LevelWidth), 0));
-        //    e.Graphics.DrawString("Выберите покупку", new Font("Arial", 30), Brushes.Black, (float)(0.51 * this.ClientSize.Width), 10);
-
-        //}
-        //private void TimerTick(object sender, EventArgs args)
-        //{
-            
-        //    if (level.IsOver)
-        //    {
-        //        this.Hide();
-        //    }
-        //    Shop.Invalidate();
-        //}
     }
 }

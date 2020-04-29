@@ -22,25 +22,18 @@ namespace Saharok
         private readonly string finish;
         private readonly string CoinImage;
         private string PlayerImage;
-        private readonly string WaterImage;
-        private readonly string MonstrImage;
+        private readonly string MonsterImage;
         private bool inicialise;
         private bool ShopInicialise;
-        private bool firstTimeDrawing = true;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
-        private CoinMagnet coinMagnet;
+
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
         {
             finish = "финиш.png";
             PlayerImage = "длинный.png";
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
-            WaterImage = "water.png";
-            MonstrImage = "монстр.png";
-            coinMagnet = new CoinMagnet(10, 10, 200);
-            cells[CellType.Wall] = "platform1.png";
-            cells[CellType.Money] = CoinImage;
-            cells[CellType.Water] = WaterImage;
+            MonsterImage = "монстр.png";
             this.levelBuilder = levelBuilder;
             this.level = levelBuilder.ToLevel();
             ClientSize = new Size(
@@ -51,12 +44,35 @@ namespace Saharok
                 imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
-            BackgroundImage = bitmaps["фон.png"];
+            BackgroundImage = GetBackgroundImage(levelBuilder);
             var timer = new Timer();
-            timer.Interval = 10;
+            timer.Interval = 30;
             timer.Tick += TimerTick;
             timer.Start();
             
+        }
+
+        private Bitmap GetBackgroundImage(LevelBuilder builder)
+        {
+            var bitmap = new Bitmap(builder.Width, builder.Height);
+            var g = Graphics.FromImage(bitmap);
+            g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0,0, 
+                                                                builder.Width, builder.Height));
+            var WallPen = new SolidBrush(GameColors.WallColor);
+            var WaterPen = new SolidBrush(Color.FromArgb(100,4,70));
+            foreach (var gameCell in builder.GetCells())
+            {
+                SolidBrush currentBrush;
+                if(gameCell.Type == CellType.Wall)
+                    currentBrush = WallPen;
+                else if (gameCell.Type == CellType.Water)
+                    currentBrush = WaterPen;
+                else
+                    throw new Exception("unexpected CellType");
+                g.FillRectangle(currentBrush, gameCell.Position);
+            }
+
+            return bitmap;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -79,17 +95,10 @@ namespace Saharok
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (firstTimeDrawing)
-            {
-
-                foreach (var cell in level.GetCells())
-                    e.Graphics.DrawImage(bitmaps[cells[cell.Type]], cell.Position);
-                firstTimeDrawing = false;
-            }
             foreach (var coin in level.GetCoins())
                 e.Graphics.DrawImage(bitmaps[CoinImage], coin);
             foreach (var monster in level.monsters)
-                e.Graphics.DrawImage(bitmaps[MonstrImage], monster.Position);
+                e.Graphics.DrawImage(bitmaps[MonsterImage], monster.Position);
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
@@ -108,7 +117,7 @@ namespace Saharok
                 level.player.Up(50);
             if (pressedKeys.Contains(Keys.M))
             {
-                foreach (var tool in level.player.tools)
+                foreach (var tool in level.player.Tools)
                     if (tool.GetToolType() == TypeTool.Magnit)
                     {
                         PlayerImage = "крутой.png";

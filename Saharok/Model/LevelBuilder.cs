@@ -9,15 +9,15 @@ namespace Saharok.Model
 {
     public class LevelBuilder
     {
-        private int GravityForce = 10;
-        private int Width { get; }
-        private int Height { get; }
+        private int gravityForce = 10;
+        public int Width { get; }
+        public int Height { get; }
         private List<Rectangle> coins;
         private List<Rectangle> walls;
         private List<Rectangle> water;
         private Player Player;
         private List<Monster> monsters;
-        private Rectangle Finish;
+        private readonly Rectangle finish;
         public LevelBuilder(int width, int height, Rectangle finish)
         {
             coins = new List<Rectangle>();
@@ -25,7 +25,7 @@ namespace Saharok.Model
             water = new List<Rectangle>();
             Width = width;
             Height = height;
-            Finish = finish;
+            this.finish = finish;
             monsters = new List<Monster>();
 
         }
@@ -52,7 +52,7 @@ namespace Saharok.Model
 
         public LevelBuilder ChangePhyisics(int gravityForce)
         {
-            GravityForce = gravityForce;
+            this.gravityForce = gravityForce;
             return this;
         }
 
@@ -67,7 +67,16 @@ namespace Saharok.Model
             this.monsters = monsters.ToList();
             return this;
         }
+
+        public IEnumerable<GameCell> GetCells()
+        {
+            foreach (var wall in walls)
+                yield return new GameCell(CellType.Wall, wall);
+            foreach (var water in water)
+                yield return new GameCell(CellType.Water, water);
+        }
+
         public Level ToLevel() => new Level(Height, Width, walls, coins.ToArray(), water,
-                                            GravityForce, Player.Copy(), monsters.Select(m => m.Copy()), Finish);
+                                            gravityForce, Player.Copy(), monsters.Select(m => m.Copy()), finish);
     }
 }

@@ -59,11 +59,11 @@ namespace Saharok.Tests
         }
 
         [Test]
-        public void TestOnWall()
+        public void TestOnFloor()
         {
             var level = GetLevel();
             level.GameTurn();
-            Assert.AreEqual(true, level.player.onGround);
+            Assert.AreEqual(true, level.player.OnGround);
         }
     }
 }
