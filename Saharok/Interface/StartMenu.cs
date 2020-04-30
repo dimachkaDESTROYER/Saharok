@@ -26,7 +26,7 @@ namespace Saharok
             {
                 BackColor = Color.Yellow,
                 Text = "Играть",
-                Font = new Font("AlaskaC", 15),
+                Font = new Font("Roboto", 15),
                 Size = new Size(200, 200),
                 Location = new Point((int)(this.Width / 4), (int)(1.5 * this.Height / 3))
 
@@ -66,7 +66,7 @@ namespace Saharok
                 Text = "Настройки",
                 Size = play.Size,
                 BackColor = Color.Yellow,
-                Font = new Font("AlaskaC", 15),
+                Font = new Font("Roboto", 15),
                 Location = new Point((int)(1.6 * this.Width / 3), (int)(1.5 * this.Height / 3))
             };
 

@@ -47,7 +47,7 @@ namespace Saharok
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             BackgroundImage = GetBackgroundImage(levelBuilder);
             var timer = new Timer();
-            timer.Interval = 30;
+            timer.Interval = 40;
             timer.Tick += TimerTick;
             timer.Start();
             
@@ -60,7 +60,7 @@ namespace Saharok
             g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0,0, 
                                                                 builder.Width, builder.Height));
             var wallPen = new SolidBrush(GameColors.WallColor);
-            var waterPen = new SolidBrush(Color.FromArgb(100,4,70));
+            var waterPen = new SolidBrush(Color.FromArgb(255,154,2));
             foreach (var gameCell in builder.GetCells())
             {
                 SolidBrush currentBrush;

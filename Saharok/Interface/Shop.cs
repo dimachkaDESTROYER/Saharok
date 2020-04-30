@@ -32,7 +32,7 @@ namespace Saharok
             var buttonBuy = new Button()
             {
                 Text = "Купить",
-                Font = new Font("AlaskaC", 15),
+                Font = new Font("Roboto", 15),
                 Dock = DockStyle.Fill,
                 BackColor = GameColors.ButtonColor,
 
@@ -48,7 +48,7 @@ namespace Saharok
             var buttonBack = new Button()
             {
                 Text = "Назад",
-                Font = new Font("AlaskaC", 15),
+                Font = new Font("Roboto", 15),
                 Dock = DockStyle.Fill,
                 BackColor = GameColors.ButtonColor,
             };
@@ -59,11 +59,12 @@ namespace Saharok
                 this.Hide();
             };
 
-            var textBox = new TextBox
+            var textBox = new Label()
             {
                 Text = "Выберите покупку",
-                Font = new Font("AlaskaC", 15),
+                Font = new Font("Roboto", 25),
                 Dock = DockStyle.Fill,
+                BackColor = GameColors.TextShopBackColor,
             };
 
             var boots = new Button()
