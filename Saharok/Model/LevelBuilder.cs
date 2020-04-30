@@ -12,9 +12,9 @@ namespace Saharok.Model
         private int gravityForce = 10;
         public int Width { get; }
         public int Height { get; }
-        private List<Rectangle> coins;
-        private List<Rectangle> walls;
-        private List<Rectangle> water;
+        private readonly List<Rectangle> coins;
+        private readonly List<Rectangle> walls;
+        private readonly List<Rectangle> water;
         private Player Player;
         private List<Monster> monsters;
         private readonly Rectangle finish;

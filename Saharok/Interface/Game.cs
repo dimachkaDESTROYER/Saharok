@@ -52,21 +52,21 @@ namespace Saharok
             
         }
 
-        private Bitmap GetBackgroundImage(LevelBuilder builder)
+        private static Bitmap GetBackgroundImage(LevelBuilder builder)
         {
             var bitmap = new Bitmap(builder.Width, builder.Height);
             var g = Graphics.FromImage(bitmap);
             g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0,0, 
                                                                 builder.Width, builder.Height));
-            var WallPen = new SolidBrush(GameColors.WallColor);
-            var WaterPen = new SolidBrush(Color.FromArgb(100,4,70));
+            var wallPen = new SolidBrush(GameColors.WallColor);
+            var waterPen = new SolidBrush(Color.FromArgb(100,4,70));
             foreach (var gameCell in builder.GetCells())
             {
                 SolidBrush currentBrush;
                 if(gameCell.Type == CellType.Wall)
-                    currentBrush = WallPen;
+                    currentBrush = wallPen;
                 else if (gameCell.Type == CellType.Water)
-                    currentBrush = WaterPen;
+                    currentBrush = waterPen;
                 else
                     throw new Exception("unexpected CellType");
                 g.FillRectangle(currentBrush, gameCell.Position);

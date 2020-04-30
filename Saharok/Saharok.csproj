@@ -76,6 +76,7 @@
       <DependentUpon>Exit.cs</DependentUpon>
     </Compile>
     <Compile Include="Interface\GameColors.cs" />
+    <Compile Include="Interface\GameImages.cs" />
     <Compile Include="Model\CoinMagnet.cs" />
     <Compile Include="Model\ITool.cs" />
     <Compile Include="Model\Monster.cs" />

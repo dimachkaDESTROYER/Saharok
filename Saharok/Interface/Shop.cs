@@ -25,6 +25,7 @@ namespace Saharok
 
         public Shop(Level level, bool inicialise, DirectoryInfo imagesDirectory = null)
         {
+            BackColor = GameColors.BackgroundColor;
             InitializeComponent();
             
             if (imagesDirectory == null)
@@ -42,7 +43,9 @@ namespace Saharok
             {
                 Text = "Купить",
                 Font = new Font("AlaskaC", 15),
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                BackColor = GameColors.ButtonColor,
+
             };
             buttonBuy.Click += (sender, args) =>
             {
