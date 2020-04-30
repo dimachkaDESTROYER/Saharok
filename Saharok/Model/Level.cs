@@ -101,7 +101,8 @@ namespace Saharok.Model
                 player.Conflict();
             foreach (var monster in monsters.Where(m => m.Position.IntersectsWith(player.Position)))
             {
-                player.Conflict();
+                if (!player.IsStudent)
+                    player.Conflict();
             }
             foreach (var coin in removed)
                 Coins.Remove(coin);

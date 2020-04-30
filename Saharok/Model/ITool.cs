@@ -54,7 +54,7 @@ namespace Saharok.Model
     {
         public void DoAction(Level level)
         {
-            throw new NotImplementedException();
+            level.player.IsStudent = true;
         }
 
         public string GetName()
@@ -77,7 +77,7 @@ namespace Saharok.Model
     {
         public void DoAction(Level level)
         {
-            throw new NotImplementedException();
+            level.player.Up(80);
         }
 
         public string GetName()

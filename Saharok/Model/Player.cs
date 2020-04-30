@@ -31,6 +31,7 @@ namespace Saharok.Model
         public int SpeedX { get; set; }
         public int SpeedY { get; set; }
         public List<ITool> Tools = new List<ITool>();
+        public bool IsStudent;
 
         public Player Copy()
         {

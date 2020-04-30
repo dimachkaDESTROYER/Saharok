@@ -123,9 +123,28 @@ namespace Saharok
                     {
                         PlayerImage = GameImages.PlayerImages.WithMagnet;
                         tool.DoAction(level);
-                    }
-                        
+                    }         
             }
+            if (pressedKeys.Contains(Keys.B))
+            {
+                foreach (var tool in level.player.Tools)
+                    if (tool.GetToolType() == TypeTool.Boot)
+                    {
+                        PlayerImage = GameImages.PlayerImages.WithBoots;
+                        tool.DoAction(level);
+                    }
+            }
+
+            if (pressedKeys.Contains(Keys.S))
+            {
+                foreach (var tool in level.player.Tools)
+                    if (tool.GetToolType() == TypeTool.Student)
+                    {
+                        PlayerImage = GameImages.PlayerImages.WithStudent;
+                        tool.DoAction(level);
+                    }
+            }
+
             if (pressedKeys.Contains(Keys.C))
             {
                 pressedKeys.Remove(Keys.C);
