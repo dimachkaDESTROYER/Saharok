@@ -1,4 +1,5 @@
-﻿using Saharok.Model;
+﻿using Saharok.Interface;
+using Saharok.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,16 +22,16 @@ namespace Saharok
         private readonly string LifeImage;
         private readonly string finish;
         private readonly string CoinImage;
-        private string PlayerImage;
+        private Bitmap PlayerImage;
         private readonly string MonsterImage;
         private bool inicialise;
-        private bool ShopInicialise;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
 
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
         {
+            GameImages.PlayerImages.ImagesForSugar();
             finish = "финиш.png";
-            PlayerImage = "длинный.png";
+            PlayerImage = GameImages.PlayerImages.Simple;
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
             MonsterImage = "монстр.png";
@@ -100,7 +101,7 @@ namespace Saharok
             foreach (var monster in level.monsters)
                 e.Graphics.DrawImage(bitmaps[MonsterImage], monster.Position);
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
-            e.Graphics.DrawImage(bitmaps[PlayerImage], level.player.Position);
+            e.Graphics.DrawImage(PlayerImage, level.player.Position);
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
             e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.92 * level.LevelWidth), 0));
@@ -120,15 +121,15 @@ namespace Saharok
                 foreach (var tool in level.player.Tools)
                     if (tool.GetToolType() == TypeTool.Magnit)
                     {
-                        PlayerImage = "крутой.png";
+                        PlayerImage = GameImages.PlayerImages.WithMagnet;
                         tool.DoAction(level);
                     }
                         
             }
-            if (pressedKeys.Contains(Keys.C) && !ShopInicialise)
+            if (pressedKeys.Contains(Keys.C))
             {
-                ShopInicialise = true;
-                new Shop(level, ShopInicialise).Show();
+                pressedKeys.Remove(Keys.C);
+                new Shop(level).Show();
             }
                 
         }

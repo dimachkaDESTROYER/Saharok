@@ -9,6 +9,8 @@ namespace Saharok.Model
     public enum TypeTool
     {
         Magnit,
+        Boot,
+        Student,
     }
 
     public interface ITool
@@ -45,6 +47,52 @@ namespace Saharok.Model
         public int GetPrise()
         {
             return 5;
+        }
+    }
+
+    class Student : ITool
+    {
+        public void DoAction(Level level)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName()
+        {
+            return "Студенческий - спасение от монстров";
+        }
+
+        public int GetPrise()
+        {
+            return 10;
+        }
+
+        public TypeTool GetToolType()
+        {
+            return TypeTool.Student;
+        }
+    }
+
+    class Boots : ITool
+    {
+        public void DoAction(Level level)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName()
+        {
+            return "Ботинки - прыгунки";
+        }
+
+        public int GetPrise()
+        {
+            return 5;
+        }
+
+        public TypeTool GetToolType()
+        {
+            return TypeTool.Boot;
         }
     }
 }

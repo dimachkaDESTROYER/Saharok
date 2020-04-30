@@ -20,7 +20,7 @@ namespace Saharok
 
             //var file = imagesDirectory.GetFiles("*.jpg")[0];
             //BackgroundImage = (Bitmap)Image.FromFile(file.FullName);
-            BackColor = Color.DarkSlateBlue;
+            BackColor = GameColors.BackgroundColor;
 
             var play = new Button()
             {

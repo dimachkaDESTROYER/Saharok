@@ -1,4 +1,5 @@
-﻿using Saharok.Model;
+﻿using Saharok.Interface;
+using Saharok.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,29 +15,18 @@ namespace Saharok
 {
     public partial class Shop : Form
     {
-        private readonly Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
-        private readonly Image ImageGun;
-        private readonly Image imageHat;
-        private readonly Image ImageStudent;
-        private readonly Image ImageSugar;
-        private readonly Image CoinImage;
+        
+        
         private readonly Level level;
         private ITool current;
 
-        public Shop(Level level, bool inicialise, DirectoryInfo imagesDirectory = null)
+        public Shop(Level level, DirectoryInfo imagesDirectory = null)
         {
             BackColor = GameColors.BackgroundColor;
             InitializeComponent();
+
+            GameImages.ImagesForShop();
             
-            if (imagesDirectory == null)
-                imagesDirectory = new DirectoryInfo("Image");
-            foreach (var e in imagesDirectory.GetFiles("*.png"))
-                bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
-            ImageGun = bitmaps["gun.png"];
-            imageHat = bitmaps["Shapka.png"];
-            ImageStudent = bitmaps["студик.png"];
-            ImageSugar = bitmaps["улыбка.png"];
-            CoinImage = bitmaps["монетка.png"];
             this.level = level;
 
             var buttonBuy = new Button()
@@ -67,8 +57,6 @@ namespace Saharok
             {
                 
                 this.Hide();
-                inicialise = false;
-                
             };
 
             var textBox = new TextBox
@@ -76,41 +64,45 @@ namespace Saharok
                 Text = "Выберите покупку",
                 Font = new Font("AlaskaC", 15),
                 Dock = DockStyle.Fill,
-                BackColor = GameColors.ButtonColor,
             };
 
-            var gun = new Button()
+            var boots = new Button()
             {
-                Image = ImageGun,
+                Image = GameImages.Boots,
                 Dock = DockStyle.Fill,
-                BackColor = GameColors.ButtonColor,
+            };
+            boots.Click += (sender, args) =>
+            {
+                current = new Boots();
+                textBox.Text = current.GetName() + "; Цена - " + current.GetPrise().ToString();
             };
 
             var hat = new Button()
             {
-                Image = imageHat,
+                Image = GameImages.CoinMagnet,
                 Dock = DockStyle.Fill,
-                BackColor = GameColors.ButtonColor,
             };
 
             hat.Click += (sender, args) =>
             {
                 current = new Magnit();
                 textBox.Text = current.GetName() + "; Цена - " + current.GetPrise().ToString();
-                
             };
 
             var student = new Button()
             {
-                Image = ImageStudent,
+                Image = GameImages.Student,
                 Dock = DockStyle.Fill
             };
+            student.Click += (sender, args) =>
+            {
+                current = new Student();
+                textBox.Text = current.GetName() + "; Цена - " + current.GetPrise().ToString();
+            };
 
-            
 
             var table = new TableLayoutPanel();
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
-
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
             table.RowStyles.Add(new RowStyle(SizeType.Percent, 20));
@@ -122,7 +114,7 @@ namespace Saharok
 
             table.Controls.Add(buttonBuy, 1, 3);
             table.Controls.Add(buttonBack, 3, 3);
-            table.Controls.Add(gun, 1, 1);
+            table.Controls.Add(boots, 1, 1);
             table.Controls.Add(student, 2, 1);
             table.Controls.Add(hat, 3, 1);
 
@@ -130,7 +122,7 @@ namespace Saharok
             table.Controls.Add(textBox, 1, 0);
             table.Dock = DockStyle.Fill;
             Controls.Add(table);
-            BackgroundImage = ImageSugar;
+            
 
         }
     }
