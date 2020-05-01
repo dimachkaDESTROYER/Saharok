@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Saharok.Model
+﻿namespace Saharok.Model
 {
     public enum TypeTool
     {
-        Magnit,
+        Magnet,
         Boot,
         Student,
     }
@@ -16,16 +10,16 @@ namespace Saharok.Model
     public interface ITool
     {
         string GetName();
-        int GetPrise();
+        int GetPrice();
         void DoAction(Level level);
         TypeTool GetToolType();
     }
-    class Magnit : ITool
+    class Magnet : ITool
     {
 
         private CoinMagnet coinMagnet;
 
-        public Magnit()
+        public Magnet()
         {
             coinMagnet = new CoinMagnet(10, 10, 200);
         }
@@ -41,10 +35,10 @@ namespace Saharok.Model
 
         public TypeTool GetToolType()
         {
-            return TypeTool.Magnit;
+            return TypeTool.Magnet;
         }
 
-        public int GetPrise()
+        public int GetPrice()
         {
             return 5;
         }
@@ -62,7 +56,7 @@ namespace Saharok.Model
             return "Студенческий - спасение от монстров";
         }
 
-        public int GetPrise()
+        public int GetPrice()
         {
             return 10;
         }
@@ -85,7 +79,7 @@ namespace Saharok.Model
             return "Ботинки - прыгунки";
         }
 
-        public int GetPrise()
+        public int GetPrice()
         {
             return 5;
         }

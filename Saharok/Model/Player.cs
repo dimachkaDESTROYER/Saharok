@@ -1,11 +1,5 @@
-﻿using NUnit.Framework;
-using Saharok.Model;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Saharok.Model
 {
@@ -22,21 +16,20 @@ namespace Saharok.Model
         Vertical,
         Horisontal,
     }
+
     public class Player
     {
         public int Coins { get; private set; }
         public int Lifes { get; private set; }
-        public bool OnGround = false;
+        public bool OnGround;
         public Rectangle Position { get; private set; }
         public int SpeedX { get; set; }
         public int SpeedY { get; set; }
         public List<ITool> Tools = new List<ITool>();
         public bool IsStudent;
+        public ITool CurrentTool { get; private set; }
+        public Player Copy() => new Player(Position, Lifes);
 
-        public Player Copy()
-        {
-            return new Player(Position, Lifes);
-        }
         public Player(Rectangle position, int lifes = 1)
         {
             Lifes = lifes;
@@ -45,7 +38,7 @@ namespace Saharok.Model
 
         public void AddCoins(int count)
         {
-            Coins+= count;
+            Coins += count;
         }
 
         public bool TryRemoveCoins(int count)
@@ -55,8 +48,9 @@ namespace Saharok.Model
                 Coins -= count;
                 return true;
             }
+
             return false;
-                
+
         }
 
         public void ChangeSpeedBy(MovingDirection d, int absSpeed)
@@ -70,6 +64,7 @@ namespace Saharok.Model
             if (d == MovingDirection.Right)
                 SpeedX += absSpeed;
         }
+
         public void ChangePosition(Axis axis)
         {
             var dx = 0;
@@ -84,8 +79,9 @@ namespace Saharok.Model
         public void Conflict()
         {
             Lifes--;
-            ChangeSpeedBy(MovingDirection.Up,70);
+            ChangeSpeedBy(MovingDirection.Up, 70);
         }
+
         public void ChangePosition(int dx, int dy)
         {
             Position = new Rectangle(new Point(Position.X + dx, Position.Y + dy), Position.Size);
@@ -93,7 +89,7 @@ namespace Saharok.Model
 
         public void Up(int absSpeed)
         {
-            if(OnGround)
+            if (OnGround)
                 ChangeSpeedBy(MovingDirection.Up, absSpeed);
             OnGround = false;
         }
@@ -111,6 +107,17 @@ namespace Saharok.Model
         public void Right(int absSpeed)
         {
             ChangeSpeedBy(MovingDirection.Right, absSpeed);
+        }
+
+        public bool TryChangeTool(TypeTool typeTool)
+        {
+            foreach (var tool in Tools)
+                if (tool.GetToolType() == typeTool)
+                {
+                    CurrentTool = tool;
+                    return true;
+                }
+            return false;
         }
     }
 }

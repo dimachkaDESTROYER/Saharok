@@ -2,13 +2,8 @@
 using Saharok.Model;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Saharok
@@ -59,15 +54,15 @@ namespace Saharok
             var g = Graphics.FromImage(bitmap);
             g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0,0, 
                                                                 builder.Width, builder.Height));
-            var wallPen = new SolidBrush(GameColors.WallColor);
-            var waterPen = new SolidBrush(Color.FromArgb(255,154,2));
+            var wallBrush = new SolidBrush(GameColors.WallColor);
+            var lavaBrush = new SolidBrush(GameColors.LavaColor);
             foreach (var gameCell in builder.GetCells())
             {
                 SolidBrush currentBrush;
                 if(gameCell.Type == CellType.Wall)
-                    currentBrush = wallPen;
-                else if (gameCell.Type == CellType.Water)
-                    currentBrush = waterPen;
+                    currentBrush = wallBrush;
+                else if (gameCell.Type == CellType.Lava)
+                    currentBrush = lavaBrush;
                 else
                     throw new Exception("unexpected CellType");
                 g.FillRectangle(currentBrush, gameCell.Position);
@@ -116,35 +111,12 @@ namespace Saharok
                 level.player.Right(20);
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
-            if (pressedKeys.Contains(Keys.M))
-            {
-                foreach (var tool in level.player.Tools)
-                    if (tool.GetToolType() == TypeTool.Magnit)
-                    {
-                        PlayerImage = GameImages.PlayerImages.WithMagnet;
-                        tool.DoAction(level);
-                    }         
-            }
-            if (pressedKeys.Contains(Keys.B))
-            {
-                foreach (var tool in level.player.Tools)
-                    if (tool.GetToolType() == TypeTool.Boot)
-                    {
-                        PlayerImage = GameImages.PlayerImages.WithBoots;
-                        tool.DoAction(level);
-                    }
-            }
-
-            if (pressedKeys.Contains(Keys.S))
-            {
-                foreach (var tool in level.player.Tools)
-                    if (tool.GetToolType() == TypeTool.Student)
-                    {
-                        PlayerImage = GameImages.PlayerImages.WithStudent;
-                        tool.DoAction(level);
-                    }
-            }
-
+            if (pressedKeys.Contains(Keys.M) && level.player.TryChangeTool(TypeTool.Magnet))
+                PlayerImage = GameImages.PlayerImages.WithMagnet;
+            if (pressedKeys.Contains(Keys.B) && level.player.TryChangeTool(TypeTool.Boot))
+                PlayerImage = GameImages.PlayerImages.WithBoots;
+            if (pressedKeys.Contains(Keys.S) && level.player.TryChangeTool(TypeTool.Student))
+                PlayerImage = GameImages.PlayerImages.WithStudent;
             if (pressedKeys.Contains(Keys.C))
             {
                 pressedKeys.Remove(Keys.C);

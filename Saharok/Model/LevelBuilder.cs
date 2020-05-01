@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Saharok.Model
 {
@@ -14,7 +11,7 @@ namespace Saharok.Model
         public int Height { get; }
         private readonly List<Rectangle> coins;
         private readonly List<Rectangle> walls;
-        private readonly List<Rectangle> water;
+        private readonly List<Rectangle> lava;
         private Player Player;
         private List<Monster> monsters;
         private readonly Rectangle finish;
@@ -22,7 +19,7 @@ namespace Saharok.Model
         {
             coins = new List<Rectangle>();
             walls = new List<Rectangle>();
-            water = new List<Rectangle>();
+            lava = new List<Rectangle>();
             Width = width;
             Height = height;
             this.finish = finish;
@@ -36,10 +33,10 @@ namespace Saharok.Model
                 this.walls.Add(wall);
             return this;
         }
-        public LevelBuilder AddWater(params Rectangle[] water)
+        public LevelBuilder AddLava(params Rectangle[] lava)
         {
-            foreach (var drop in water)
-                this.water.Add(drop);
+            foreach (var drop in lava)
+                this.lava.Add(drop);
             return this;
         }
 
@@ -72,11 +69,11 @@ namespace Saharok.Model
         {
             foreach (var wall in walls)
                 yield return new GameCell(CellType.Wall, wall);
-            foreach (var water in water)
-                yield return new GameCell(CellType.Water, water);
+            foreach (var water in lava)
+                yield return new GameCell(CellType.Lava, water);
         }
 
-        public Level ToLevel() => new Level(Height, Width, walls, coins.ToArray(), water,
+        public Level ToLevel() => new Level(Height, Width, walls, coins.ToArray(), lava,
                                             gravityForce, Player.Copy(), monsters.Select(m => m.Copy()), finish);
     }
 }

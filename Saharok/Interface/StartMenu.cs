@@ -1,13 +1,8 @@
 ﻿using Saharok.Model;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Saharok
@@ -53,7 +48,7 @@ namespace Saharok
                                                              new Rectangle(320, 325, 160, 50),
                                                              new Rectangle(80, 300, 160, 50))
                                                    .AddCoins(coins.ToArray())
-                                                   .AddWater(new Rectangle(160, 550, 160, 50),
+                                                   .AddLava(new Rectangle(160, 550, 160, 50),
                                                              new Rectangle(640, 550, 480, 50));
 
                 new GameForm(l).Show();

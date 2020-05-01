@@ -39,7 +39,7 @@ namespace Saharok
             };
             buttonBuy.Click += (sender, args) =>
             {
-                if (current != null && level.player.TryRemoveCoins(current.GetPrise()))
+                if (current != null && level.player.TryRemoveCoins(current.GetPrice()))
                 {
                     level.player.Tools.Add(current);
                 }
@@ -75,7 +75,7 @@ namespace Saharok
             boots.Click += (sender, args) =>
             {
                 current = new Boots();
-                textBox.Text = current.GetName() + "; Цена - " + current.GetPrise().ToString();
+                textBox.Text = current.GetName() + "; Цена - " + current.GetPrice().ToString();
             };
 
             var hat = new Button()
@@ -86,8 +86,8 @@ namespace Saharok
 
             hat.Click += (sender, args) =>
             {
-                current = new Magnit();
-                textBox.Text = current.GetName() + "; Цена - " + current.GetPrise().ToString();
+                current = new Magnet();
+                textBox.Text = current.GetName() + "; Цена - " + current.GetPrice().ToString();
             };
 
             var student = new Button()
@@ -98,7 +98,7 @@ namespace Saharok
             student.Click += (sender, args) =>
             {
                 current = new Student();
-                textBox.Text = current.GetName() + "; Цена - " + current.GetPrise().ToString();
+                textBox.Text = current.GetName() + "; Цена - " + current.GetPrice().ToString();
             };
 
 

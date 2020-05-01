@@ -6,7 +6,7 @@ namespace Saharok.Interface
     public static class GameImages
     {
         
-        private static readonly DirectoryInfo imagesDirectory = new DirectoryInfo("Image");
+        private static readonly DirectoryInfo ImagesDirectory = new DirectoryInfo("Image");
         public static Bitmap Coin;
         public static Bitmap CoinMagnet;
         public static Bitmap Boots;
@@ -15,16 +15,23 @@ namespace Saharok.Interface
 
         public static void ImagesForShop()
         {
-            foreach (var e in imagesDirectory.GetFiles("*.png"))
+            foreach (var e in ImagesDirectory.GetFiles("*.png"))
             {
-                if (e.Name == "монетка.png")
-                    Coin = (Bitmap)Image.FromFile(e.FullName);
-                if (e.Name == "hat.png")
-                    CoinMagnet = (Bitmap)Image.FromFile(e.FullName);
-                if (e.Name == "boots.png")
-                    Boots = (Bitmap)Image.FromFile(e.FullName);
-                if (e.Name == "student.png")
-                    Student = (Bitmap)Image.FromFile(e.FullName);
+                switch (e.Name)
+                {
+                    case "монетка.png":
+                        Coin = (Bitmap)Image.FromFile(e.FullName);
+                        break;
+                    case "hat.png":
+                        CoinMagnet = (Bitmap)Image.FromFile(e.FullName);
+                        break;
+                    case "boots.png":
+                        Boots = (Bitmap)Image.FromFile(e.FullName);
+                        break;
+                    case "student.png":
+                        Student = (Bitmap)Image.FromFile(e.FullName);
+                        break;
+                }
             }
         }
         public static class PlayerImages
@@ -36,16 +43,23 @@ namespace Saharok.Interface
 
             public static void ImagesForSugar()
             {
-                foreach (var e in imagesDirectory.GetFiles("*.png"))
+                foreach (var e in ImagesDirectory.GetFiles("*.png"))
                 {
-                    if (e.Name == "withBoots.png")
-                        WithBoots = (Bitmap)Image.FromFile(e.FullName);
-                    if (e.Name == "withHat.png")
-                        WithMagnet = (Bitmap)Image.FromFile(e.FullName);
-                    if (e.Name == "withStudent.png")
-                        WithStudent = (Bitmap)Image.FromFile(e.FullName);
-                    if (e.Name == "simple.png")
-                        Simple = (Bitmap)Image.FromFile(e.FullName);
+                    switch (e.Name)
+                    {
+                        case "withBoots.png":
+                            WithBoots = (Bitmap)Image.FromFile(e.FullName);
+                            break;
+                        case "withHat.png":
+                            WithMagnet = (Bitmap)Image.FromFile(e.FullName);
+                            break;
+                        case "withStudent.png":
+                            WithStudent = (Bitmap)Image.FromFile(e.FullName);
+                            break;
+                        case "simple.png":
+                            Simple = (Bitmap)Image.FromFile(e.FullName);
+                            break;
+                    }
                 }
             }
             
