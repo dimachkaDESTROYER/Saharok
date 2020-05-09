@@ -11,7 +11,6 @@ namespace Saharok
     public class GameForm : Form
     {
         private readonly Dictionary<string, Bitmap> bitmaps = new Dictionary<string, Bitmap>();
-        private readonly Dictionary<CellType, string> cells = new Dictionary<CellType, string>();
         private readonly Level level;
         private readonly LevelBuilder levelBuilder;
         private readonly string LifeImage;
@@ -97,14 +96,17 @@ namespace Saharok
                 e.Graphics.DrawImage(bitmaps[MonsterImage], monster.Position);
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawImage(PlayerImage, level.player.Position);
+            //шрифт можно не создавать(каждый раз)
             e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
-            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.92 * level.LevelWidth), 0));
-            e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0));
+            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.92 * level.LevelWidth), 0)); //!!! поменять на арифметику
+            e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0)); //непонятно
+            //рисовать список обьектов по типу 
         }
 
         private void ReadPressedKeys()
         {
+            // к словарям к кнопке => картинка, tool
             if (pressedKeys.Contains(Keys.A))
                 level.player.Left(20);
             if (pressedKeys.Contains(Keys.D))
@@ -122,7 +124,7 @@ namespace Saharok
                 pressedKeys.Remove(Keys.C);
                 new Shop(level).Show();
             }
-                
+            //непонятно как менять tools   
         }
         private void TimerTick(object sender, EventArgs args)
         {
@@ -149,8 +151,10 @@ namespace Saharok
             Invalidate(level.player.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
         }
-
-        private void Exit(string text)
+        // окошко exit можно в поле - isVisible вместо inic
+        // либо
+        // можно остановить таймер и убрать inic
+        private void Exit(string text) 
         {
             this.inicialise = true;
             var ex = new Exit(text, levelBuilder);
