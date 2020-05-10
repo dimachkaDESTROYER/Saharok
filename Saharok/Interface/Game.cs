@@ -17,8 +17,11 @@ namespace Saharok
         private readonly string finish;
         private readonly string CoinImage;
         private Bitmap PlayerImage;
+        private Font fontForMoneyAndLifes;
         private readonly string MonsterImage;
-        private bool inicialise;
+        private Form shop;
+        private Timer timer;
+        private Dictionary<Keys, Dictionary<TypeTool, Bitmap>> keyWithTool;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
 
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
@@ -29,6 +32,8 @@ namespace Saharok
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
             MonsterImage = "монстр.png";
+            
+            fontForMoneyAndLifes = new Font("Arial", 30);
             this.levelBuilder = levelBuilder;
             this.level = levelBuilder.ToLevel();
             ClientSize = new Size(
@@ -40,7 +45,13 @@ namespace Saharok
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             BackgroundImage = GetBackgroundImage(levelBuilder);
-            var timer = new Timer();
+            keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();      
+            keyWithTool[Keys.M] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Magnet, GameImages.PlayerImages.WithMagnet } };
+            keyWithTool[Keys.S] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Student, GameImages.PlayerImages.WithStudent } };
+            keyWithTool[Keys.B] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Boot, GameImages.PlayerImages.WithBoots } };
+
+
+            timer = new Timer();
             timer.Interval = 40;
             timer.Tick += TimerTick;
             timer.Start();
@@ -96,10 +107,9 @@ namespace Saharok
                 e.Graphics.DrawImage(bitmaps[MonsterImage], monster.Position);
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawImage(PlayerImage, level.player.Position);
-            //шрифт можно не создавать(каждый раз)
-            e.Graphics.DrawString(level.player.Coins.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
-            e.Graphics.DrawString(level.player.Lifes.ToString(), new Font("Arial", 30), Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
-            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.92 * level.LevelWidth), 0)); //!!! поменять на арифметику
+            e.Graphics.DrawString(level.player.Coins.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
+            e.Graphics.DrawString(level.player.Lifes.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
+            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.8 * level.LevelWidth - bitmaps[LifeImage].Width), 0)); //!!! поменять на арифметику
             e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0)); //непонятно
             //рисовать список обьектов по типу 
         }
@@ -113,16 +123,15 @@ namespace Saharok
                 level.player.Right(20);
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
-            if (pressedKeys.Contains(Keys.M) && level.player.TryChangeTool(TypeTool.Magnet))
-                PlayerImage = GameImages.PlayerImages.WithMagnet;
-            if (pressedKeys.Contains(Keys.B) && level.player.TryChangeTool(TypeTool.Boot))
-                PlayerImage = GameImages.PlayerImages.WithBoots;
-            if (pressedKeys.Contains(Keys.S) && level.player.TryChangeTool(TypeTool.Student))
-                PlayerImage = GameImages.PlayerImages.WithStudent;
+            foreach (var e in keyWithTool.Keys)
+                foreach (var k in keyWithTool[e].Keys)
+                    if (pressedKeys.Contains(e) && level.player.TryChangeTool(k))
+                        PlayerImage = keyWithTool[e][k];
             if (pressedKeys.Contains(Keys.C))
             {
                 pressedKeys.Remove(Keys.C);
-                new Shop(level).Show();
+                var shop = new Shop(level);
+                shop.Show();
             }
             //непонятно как менять tools   
         }
@@ -136,8 +145,9 @@ namespace Saharok
                 Invalidate(monster.Position);
 
             level.GameTurn();
-            if ((level.IsOver || level.IsWin) && !inicialise)
+            if ((level.IsOver || level.IsWin))
             {
+                timer.Stop();
                 if (level.IsOver)
                     Exit("Вы проиграли");
                 else
@@ -151,15 +161,12 @@ namespace Saharok
             Invalidate(level.player.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
         }
-        // окошко exit можно в поле - isVisible вместо inic
-        // либо
-        // можно остановить таймер и убрать inic
+        
         private void Exit(string text) 
         {
-            this.inicialise = true;
-            var ex = new Exit(text, levelBuilder);
+            var exit = new Exit(text, levelBuilder);
             this.Hide();
-            ex.ShowDialog();
+            exit.ShowDialog();
         }
         
 
