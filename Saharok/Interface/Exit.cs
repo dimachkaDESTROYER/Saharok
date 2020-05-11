@@ -13,13 +13,13 @@ namespace Saharok
 {
     public partial class Exit : Form
     {
-        public Exit(string text, LevelBuilder level)
+        public Exit(bool isWin, LevelBuilder level)
         {
             this.Size = new Size(1024, 600);
             BackColor = GameColors.BackgroundColor;
             var text_form = new Label()
             {
-                Text = text,
+                Text = isWin? "Вы выйграли": "Вы проиграли",
                 Font = new Font("Roboto", 30),
                 Size = new Size(300, 100),
                 Location = new Point(this.Width / 3, this.Height / 5)

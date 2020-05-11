@@ -148,11 +148,7 @@ namespace Saharok
             if ((level.IsOver || level.IsWin))
             {
                 timer.Stop();
-                if (level.IsOver)
-                    Exit("Вы проиграли");
-                else
-                    Exit("Победа!");
-               
+                Exit(level.IsWin);
             }
             foreach (var coin in level.GetCoins())
                 Invalidate(coin);
@@ -162,9 +158,9 @@ namespace Saharok
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
         }
         
-        private void Exit(string text) 
+        private void Exit(bool isWin) 
         {
-            var exit = new Exit(text, levelBuilder);
+            var exit = new Exit(isWin, levelBuilder);
             this.Hide();
             exit.ShowDialog();
         }
