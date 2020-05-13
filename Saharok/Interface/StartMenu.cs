@@ -17,9 +17,6 @@ namespace Saharok
         public Menu(DirectoryInfo imagesDirectory = null)
         {
             InitializeComponent();
-
-            //var file = imagesDirectory.GetFiles("*.jpg")[0];
-            //BackgroundImage = (Bitmap)Image.FromFile(file.FullName);
             BackColor = GameColors.BackgroundColor;
 
             var play = new Button()
@@ -29,7 +26,6 @@ namespace Saharok
                 Font = new Font("Roboto", 15),
                 Size = new Size(200, 200),
                 Location = new Point((int)(this.Width / 4), (int)(1.5 * this.Height / 3))
-
             };
 
             play.Click += (sender, args) =>
@@ -80,9 +76,6 @@ namespace Saharok
                 Location = new Point((int)(1.6 * this.Width / 3), (int)(1.5 * this.Height / 3))
             };
 
-            //settings.Font
-            //settings.FlatStyle
-            //settings.ForeColor = Color.Black;
             Controls.Add(settings);
         }
 

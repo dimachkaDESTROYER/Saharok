@@ -19,7 +19,6 @@ namespace Saharok
         private Bitmap PlayerImage;
         private Font fontForMoneyAndLifes;
         private readonly string MonsterImage;
-        private Form shop;
         private Timer timer;
         private Dictionary<Keys, Dictionary<TypeTool, Bitmap>> keyWithTool;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
@@ -36,14 +35,15 @@ namespace Saharok
             fontForMoneyAndLifes = new Font("Arial", 30);
             this.levelBuilder = levelBuilder;
             this.level = levelBuilder.ToLevel();
-            ClientSize = new Size(
-                this.level.LevelWidth,
-                this.level.LevelHeight);
+            
             FormBorderStyle = FormBorderStyle.FixedDialog;
             if (imagesDirectory == null)
                 imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
+            ClientSize = new Size(
+                this.level.LevelWidth,
+                2*bitmaps[LifeImage].Width + this.level.LevelHeight);
             BackgroundImage = GetBackgroundImage(levelBuilder);
             keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();      
             keyWithTool[Keys.M] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Magnet, GameImages.PlayerImages.WithMagnet } };
@@ -107,16 +107,16 @@ namespace Saharok
                 e.Graphics.DrawImage(bitmaps[MonsterImage], monster.Position);
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawImage(PlayerImage, level.player.Position);
-            e.Graphics.DrawString(level.player.Coins.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(0.86 * level.LevelWidth), 5);
-            e.Graphics.DrawString(level.player.Lifes.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(0.76 * level.LevelWidth), 5);
-            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(0.8 * level.LevelWidth - bitmaps[LifeImage].Width), 0)); //!!! поменять на арифметику
-            e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(0.8 * level.LevelWidth), 0)); //непонятно
+            e.Graphics.DrawString(level.player.Coins.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - bitmaps[LifeImage].Width), 5);
+            e.Graphics.DrawString(level.player.Lifes.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - 3*bitmaps[LifeImage].Width), 5);
+            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(level.LevelWidth - 2*bitmaps[LifeImage].Width), 0));
+            e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(level.LevelWidth - 4 * bitmaps[LifeImage].Width), 0));
             //рисовать список обьектов по типу 
         }
 
         private void ReadPressedKeys()
         {
-            // к словарям к кнопке => картинка, tool
+            
             if (pressedKeys.Contains(Keys.A))
                 level.player.Left(20);
             if (pressedKeys.Contains(Keys.D))
