@@ -22,7 +22,8 @@ namespace Saharok
         private Timer timer;
         private Dictionary<Keys, Dictionary<TypeTool, Bitmap>> keyWithTool;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
-
+        private HashSet<Tuple<Bitmap, Rectangle>> toDraw = new HashSet<Tuple<Bitmap, Rectangle>>();
+        private Dictionary<CellType, SolidBrush> brushesOfCells = new Dictionary<CellType, SolidBrush>();
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
         {
             GameImages.PlayerImages.ImagesForSugar();
@@ -38,46 +39,39 @@ namespace Saharok
             
             FormBorderStyle = FormBorderStyle.FixedDialog;
             if (imagesDirectory == null)
-                imagesDirectory = new DirectoryInfo("Image");
+                    imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             ClientSize = new Size(
                 this.level.LevelWidth,
                 2*bitmaps[LifeImage].Width + this.level.LevelHeight);
-            BackgroundImage = GetBackgroundImage(levelBuilder);
+
             keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();      
             keyWithTool[Keys.M] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Magnet, GameImages.PlayerImages.WithMagnet } };
             keyWithTool[Keys.S] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Student, GameImages.PlayerImages.WithStudent } };
             keyWithTool[Keys.B] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Boot, GameImages.PlayerImages.WithBoots } };
 
+            brushesOfCells[CellType.Lava] = new SolidBrush(GameColors.LavaColor);
+            brushesOfCells[CellType.Wall] = new SolidBrush(GameColors.WallColor);
+
+            BackgroundImage = GetBackgroundImage(levelBuilder);
 
             timer = new Timer();
             timer.Interval = 40;
             timer.Tick += TimerTick;
             timer.Start();
-            
         }
 
-        private static Bitmap GetBackgroundImage(LevelBuilder builder)
+        private Bitmap GetBackgroundImage(LevelBuilder builder)
         {
             var bitmap = new Bitmap(builder.Width, builder.Height);
             var g = Graphics.FromImage(bitmap);
             g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0,0, 
                                                                 builder.Width, builder.Height));
-            var wallBrush = new SolidBrush(GameColors.WallColor);
-            var lavaBrush = new SolidBrush(GameColors.LavaColor);
             foreach (var gameCell in builder.GetCells())
             {
-                SolidBrush currentBrush;
-                if(gameCell.Type == CellType.Wall)
-                    currentBrush = wallBrush;
-                else if (gameCell.Type == CellType.Lava)
-                    currentBrush = lavaBrush;
-                else
-                    throw new Exception("unexpected CellType");
-                g.FillRectangle(currentBrush, gameCell.Position);
+                g.FillRectangle(brushesOfCells[gameCell.Type], gameCell.Position);
             }
-
             return bitmap;
         }
 
@@ -101,16 +95,14 @@ namespace Saharok
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            //foreach(var imageRectPair in )
             foreach (var coin in level.GetCoins())
                 e.Graphics.DrawImage(bitmaps[CoinImage], coin);
-            foreach (var monster in level.monsters)
-                e.Graphics.DrawImage(bitmaps[MonsterImage], monster.Position);
+            
             e.Graphics.DrawImage(bitmaps[finish], level.finish);
             e.Graphics.DrawImage(PlayerImage, level.player.Position);
             e.Graphics.DrawString(level.player.Coins.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - bitmaps[LifeImage].Width), 5);
             e.Graphics.DrawString(level.player.Lifes.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - 3*bitmaps[LifeImage].Width), 5);
-            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(level.LevelWidth - 2*bitmaps[LifeImage].Width), 0));
-            e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(level.LevelWidth - 4 * bitmaps[LifeImage].Width), 0));
             //рисовать список обьектов по типу 
         }
 
@@ -137,8 +129,14 @@ namespace Saharok
         }
         private void TimerTick(object sender, EventArgs args)
         {
+            toDraw = new HashSet<Tuple<Bitmap, Rectangle>>();
+
             foreach (var coin in level.GetCoins())
+            {
                 Invalidate(coin);
+                toDraw.Add(Tuple.Create(bitmaps[CoinImage], coin));
+            }
+
             ReadPressedKeys();
             Invalidate(level.player.Position); 
             foreach (var monster in level.monsters)
@@ -153,9 +151,13 @@ namespace Saharok
             foreach (var coin in level.GetCoins())
                 Invalidate(coin);
             foreach (var monster in level.monsters)
+                toDraw.Add(Tuple.Create(bitmaps[MonsterImage], monster.Position));
+            foreach (var monster in level.monsters)
                 Invalidate(monster.Position);
             Invalidate(level.player.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
+            
+            //toDraw.Add()
         }
         
         private void Exit(bool isWin) 
