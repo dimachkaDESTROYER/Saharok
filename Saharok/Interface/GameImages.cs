@@ -37,6 +37,7 @@ namespace Saharok.Interface
         public static class PlayerImages
         {
             public static Bitmap Simple;
+            public static Bitmap Simplefon;
             public static Bitmap WithMagnet;
             public static Bitmap WithBoots;
             public static Bitmap WithStudent;
@@ -58,6 +59,9 @@ namespace Saharok.Interface
                             break;
                         case "simple.png":
                             Simple = (Bitmap)Image.FromFile(e.FullName);
+                            break;
+                        case "simplefon.png":
+                            Simplefon = (Bitmap)Image.FromFile(e.FullName);
                             break;
                     }
                 }

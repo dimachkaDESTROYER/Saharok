@@ -43,7 +43,7 @@ namespace Saharok
                                               new Monster(320, 740, MovingDirection.Left, new Rectangle(380, 145, 50, 50)),
                                               new Monster(580, 850, MovingDirection.Right, new Rectangle(480, 25, 50, 50))};
                 var finish = new Rectangle(880, 5, 100, 75);
-                var l = new LevelBuilder(1024, 600, finish).AddPlayer(player).AddMonsters(monster)
+                var l = new LevelBuilder(1024, 600, finish, false).AddPlayer(player).AddMonsters(monster)
                                                    .AddWalls(new Rectangle(0, 550, 160, 50),
                                                              new Rectangle(320, 550, 320, 50),
                                                              new Rectangle(560, 500, 80, 50),

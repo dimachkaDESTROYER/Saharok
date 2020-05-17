@@ -1,4 +1,5 @@
-﻿using Saharok.Interface;
+﻿
+using Saharok.Interface;
 using Saharok.Model;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,10 @@ namespace Saharok
         private Timer timer;
         private Dictionary<Keys, Dictionary<TypeTool, Bitmap>> keyWithTool;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
-
+        private List<Tuple<Bitmap, Rectangle>> toDraw = new List<Tuple<Bitmap, Rectangle>>();
+        private Dictionary<CellType, SolidBrush> brushesOfCells = new Dictionary<CellType, SolidBrush>();
+        private int yForCoinsAndHearths;
+        private int xForCoinsAndHearths;
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
         {
             GameImages.PlayerImages.ImagesForSugar();
@@ -31,53 +35,54 @@ namespace Saharok
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
             MonsterImage = "монстр.png";
-            
+
             fontForMoneyAndLifes = new Font("Arial", 30);
             this.levelBuilder = levelBuilder;
             this.level = levelBuilder.ToLevel();
-            
+
             FormBorderStyle = FormBorderStyle.FixedDialog;
             if (imagesDirectory == null)
                 imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
+            yForCoinsAndHearths = bitmaps[LifeImage].Height + 10;
+            //TranslateTransform
+            xForCoinsAndHearths = bitmaps[LifeImage].Width;
             ClientSize = new Size(
                 this.level.LevelWidth,
-                2*bitmaps[LifeImage].Width + this.level.LevelHeight);
-            BackgroundImage = GetBackgroundImage(levelBuilder);
-            keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();      
+                yForCoinsAndHearths + this.level.LevelHeight);
+
+            keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();
             keyWithTool[Keys.M] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Magnet, GameImages.PlayerImages.WithMagnet } };
             keyWithTool[Keys.S] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Student, GameImages.PlayerImages.WithStudent } };
             keyWithTool[Keys.B] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Boot, GameImages.PlayerImages.WithBoots } };
 
+            brushesOfCells[CellType.Lava] = new SolidBrush(GameColors.LavaColor);
+            brushesOfCells[CellType.Wall] = new SolidBrush(GameColors.WallColor);
+
+            BackgroundImage = GetBackgroundImage(levelBuilder);
 
             timer = new Timer();
             timer.Interval = 40;
             timer.Tick += TimerTick;
             timer.Start();
-            
         }
 
-        private static Bitmap GetBackgroundImage(LevelBuilder builder)
+        private Rectangle GetIncrementedByY(Rectangle Position, int value) =>
+        new Rectangle(new Point(Position.X, Position.Y + value), Position.Size);
+        private Rectangle GetDowned(Rectangle Position) => GetIncrementedByY(Position, yForCoinsAndHearths);
+        private Bitmap GetBackgroundImage(LevelBuilder builder)
         {
-            var bitmap = new Bitmap(builder.Width, builder.Height);
+            var bitmap = new Bitmap(builder.Width, builder.Height + yForCoinsAndHearths);
             var g = Graphics.FromImage(bitmap);
-            g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0,0, 
-                                                                builder.Width, builder.Height));
-            var wallBrush = new SolidBrush(GameColors.WallColor);
-            var lavaBrush = new SolidBrush(GameColors.LavaColor);
+            g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0, 0,
+                                                                builder.Width, builder.Height + yForCoinsAndHearths));
             foreach (var gameCell in builder.GetCells())
-            {
-                SolidBrush currentBrush;
-                if(gameCell.Type == CellType.Wall)
-                    currentBrush = wallBrush;
-                else if (gameCell.Type == CellType.Lava)
-                    currentBrush = lavaBrush;
-                else
-                    throw new Exception("unexpected CellType");
-                g.FillRectangle(currentBrush, gameCell.Position);
-            }
-
+                g.FillRectangle(brushesOfCells[gameCell.Type],
+                            GetDowned(gameCell.Position));
+            g.DrawImage(bitmaps[finish], GetDowned(level.finish));
+            g.DrawImage(bitmaps[CoinImage], level.LevelWidth - xForCoinsAndHearths * 4, 5);
+            g.DrawImage(bitmaps[LifeImage], level.LevelWidth - xForCoinsAndHearths * 2, 5);
             return bitmap;
         }
 
@@ -101,22 +106,25 @@ namespace Saharok
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            foreach (var coin in level.GetCoins())
-                e.Graphics.DrawImage(bitmaps[CoinImage], coin);
-            foreach (var monster in level.monsters)
-                e.Graphics.DrawImage(bitmaps[MonsterImage], monster.Position);
-            e.Graphics.DrawImage(bitmaps[finish], level.finish);
-            e.Graphics.DrawImage(PlayerImage, level.player.Position);
-            e.Graphics.DrawString(level.player.Coins.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - bitmaps[LifeImage].Width), 5);
-            e.Graphics.DrawString(level.player.Lifes.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - 3*bitmaps[LifeImage].Width), 5);
-            e.Graphics.DrawImage(bitmaps[CoinImage], new Point((int)(level.LevelWidth - 2*bitmaps[LifeImage].Width), 0));
-            e.Graphics.DrawImage(bitmaps[LifeImage], new Point((int)(level.LevelWidth - 4 * bitmaps[LifeImage].Width), 0));
-            //рисовать список обьектов по типу 
+            
+            //for (var i = 0; i < level.player.Tools.Count; i++)
+            //{
+            //    var stro = level.player.Tools[i].GetFileName();
+            //    e.Graphics.DrawImage(bitmaps[stro], i * 20, 5);
+            //    e.Graphics.FillRectangle(new SolidBrush(Color.Red), new Rectangle(10, 10, 300, 300));
+            //}
+            
+            e.Graphics.DrawString(level.player.Lifes.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - xForCoinsAndHearths), 5);
+            e.Graphics.DrawString(level.player.Coins.ToString(), fontForMoneyAndLifes, Brushes.Black, (float)(level.LevelWidth - 3 * xForCoinsAndHearths), 5);
+            foreach (var imageRectPair in toDraw)
+                e.Graphics.DrawImage(imageRectPair.Item1, GetDowned(imageRectPair.Item2));
+            
+            
         }
 
         private void ReadPressedKeys()
         {
-            
+
             if (pressedKeys.Contains(Keys.A))
                 level.player.Left(20);
             if (pressedKeys.Contains(Keys.D))
@@ -135,37 +143,62 @@ namespace Saharok
             }
             //непонятно как менять tools   
         }
+
         private void TimerTick(object sender, EventArgs args)
         {
-            foreach (var coin in level.GetCoins())
-                Invalidate(coin);
-            ReadPressedKeys();
-            Invalidate(level.player.Position); 
-            foreach (var monster in level.monsters)
-                Invalidate(monster.Position);
+            toDraw = new List<Tuple<Bitmap, Rectangle>>();//GetSprites вместо этого 
 
+            foreach (var coin in level.GetCoins())
+                Invalidate(GetDowned(coin));
+
+            ReadPressedKeys();
+            Invalidate(GetDowned(level.player.Position));
+            foreach (var monster in level.monsters)
+                Invalidate(GetDowned(monster.Position));
             level.GameTurn();
+            foreach (var coin in level.GetCoins())
+                toDraw.Add(Tuple.Create(bitmaps[CoinImage], coin));
             if ((level.IsOver || level.IsWin))
             {
                 timer.Stop();
-                Exit(level.IsWin);
+                if (level.isFinal && level.IsWin)
+                    Exit(level.IsWin);
+                if (level.IsOver)
+                    Exit(level.IsWin);
+                else
+                {
+                    
+                    var player = new Player(new Rectangle(25, 450, 50, 50), 2);
+                    var monster = new Monster[] { new Monster(320, 560, MovingDirection.Right, new Rectangle(380, 500, 50, 50)) };
+                                              
+                    var fin = new Rectangle(150, 480, 100, 75);
+                    var l = new LevelBuilder(1024, 600, fin, true).AddPlayer(player).AddMonsters(monster)
+                                                   .AddWalls(new Rectangle(0, 550, 160, 50),
+                                                             new Rectangle(40, 70, 160, 25))
+                                                   .AddLava(new Rectangle(180, 550, 160, 50),
+                                                             new Rectangle(640, 550, 480, 50));
+                    this.Hide();
+                    new GameForm(l).Show();
+                }
             }
             foreach (var coin in level.GetCoins())
-                Invalidate(coin);
+                toDraw.Add(Tuple.Create(bitmaps[CoinImage], coin));
             foreach (var monster in level.monsters)
-                Invalidate(monster.Position);
-            Invalidate(level.player.Position, true);
-            Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
+                Invalidate(GetDowned(monster.Position));
+            foreach (var monster in level.monsters)
+                toDraw.Add(Tuple.Create(bitmaps[MonsterImage], monster.Position));
+
+            toDraw.Add(Tuple.Create(PlayerImage, level.player.Position));
+
+            Invalidate(GetDowned(level.player.Position), true);
         }
-        
-        private void Exit(bool isWin) 
+
+        private void Exit(bool isWin)
         {
             var exit = new Exit(isWin, levelBuilder);
             this.Hide();
             exit.ShowDialog();
         }
-        
-
 
         private void InitializeComponent()
         {

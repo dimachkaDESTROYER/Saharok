@@ -8,6 +8,7 @@ namespace Saharok.Model
     {
         public bool IsOver { get; private set; }
         public bool IsWin { get; private set; }
+        public bool isFinal { get; private set; }
         private int gravityForce;
         public readonly int LevelHeight;
         public readonly int LevelWidth;
@@ -19,7 +20,7 @@ namespace Saharok.Model
         public Rectangle finish;
         public Level(int LevelHeight, int LevelWidth,
                      IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> lava,
-                     int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish)
+                     int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, bool isFinal)
         {
             IsOver = false;
             this.LevelHeight = LevelHeight;
@@ -33,6 +34,7 @@ namespace Saharok.Model
             this.player = player;
             this.monsters = monsters.ToList();
             this.finish = finish;
+            this.isFinal = isFinal;
         }
 
         private void Move(Axis axis)

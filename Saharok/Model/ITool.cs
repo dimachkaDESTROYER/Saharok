@@ -13,6 +13,7 @@
         int GetPrice();
         void DoAction(Level level);
         TypeTool GetToolType();
+        string GetFileName();
     }
     class Magnet : ITool
     {
@@ -33,6 +34,11 @@
             return "Шапка - магнит";
         }
 
+        public string GetFileName()
+        {
+            return "hat.png";
+        }
+
         public TypeTool GetToolType()
         {
             return TypeTool.Magnet;
@@ -49,6 +55,11 @@
         public void DoAction(Level level)
         {
             level.player.IsStudent = true;
+        }
+
+        public string GetFileName()
+        {
+            return "student.png";
         }
 
         public string GetName()
@@ -72,6 +83,11 @@
         public void DoAction(Level level)
         {
             level.player.Up(80);
+        }
+
+        public string GetFileName()
+        {
+            return "boots.png";
         }
 
         public string GetName()
