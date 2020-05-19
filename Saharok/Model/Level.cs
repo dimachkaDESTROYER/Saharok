@@ -18,9 +18,10 @@ namespace Saharok.Model
         public Player player;
         public List<Monster> monsters;
         public Rectangle finish;
+
         public Level(int LevelHeight, int LevelWidth,
-                     IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> lava,
-                     int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, bool isFinal)
+            IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> lava,
+            int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, bool isFinal)
         {
             IsOver = false;
             this.LevelHeight = LevelHeight;
@@ -42,8 +43,8 @@ namespace Saharok.Model
             player.ChangePosition(axis);
             var dx = 0;
             var dy = 0;
-            foreach (var wall in Walls.Select(w => w.Position)) 
-            { 
+            foreach (var wall in Walls.Select(w => w.Position))
+            {
                 if (player.Position.IntersectsWith(wall))
                 {
                     if (axis == Axis.Horisontal)
@@ -65,6 +66,7 @@ namespace Saharok.Model
                     }
                 }
             }
+
             player.SpeedX = 0;
             if (dy != 0)
                 player.SpeedY = 0;
@@ -92,10 +94,11 @@ namespace Saharok.Model
             foreach (var coin in GetCoins().Where(c => c.IntersectsWith(player.Position)).ToList())
             {
                 removed.Add(coin);
-                if(Coins.ContainsKey(coin))
+                if (Coins.ContainsKey(coin))
                     player.AddCoins(Coins[coin]);
                 Coins.Remove(coin);
             }
+
             foreach (var coin in removed)
                 Coins.Remove(coin);
             foreach (var water in Lava.Where(c => c.Position.IntersectsWith(player.Position)))
@@ -105,6 +108,7 @@ namespace Saharok.Model
                 if (!player.IsStudent)
                     player.Conflict();
             }
+
             foreach (var coin in removed)
                 Coins.Remove(coin);
             if (player.Position.Bottom > LevelHeight)
@@ -132,6 +136,16 @@ namespace Saharok.Model
             Coins[coin]--;
             if (Coins[coin] <= 0)
                 Coins.Remove(coin);
+        }
+
+        public IEnumerable<Sprite> GetSprites()
+        {
+            yield return new Sprite(player.Position, SpriteType.Player);
+            foreach (var monster in monsters)
+                yield return new Sprite(monster.Position, SpriteType.Monster);
+
+            foreach (var coin in Coins)
+                yield return new Sprite(coin.Key, SpriteType.Coin);
         }
     }
 }
