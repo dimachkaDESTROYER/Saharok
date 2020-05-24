@@ -173,25 +173,18 @@ namespace Saharok
             if ((level.IsOver || level.IsWin))
             {
                 timer.Stop();
-                if (level.isFinal && level.IsWin)
-                    Exit(level.IsWin);
-                if (level.IsOver)
-                    Exit(level.IsWin);
-                else
+                if (level.IsWin)
                 {
-                    
-                    var player = new Player(new Rectangle(25, 450, 50, 50), 2);
-                    var monster = new Monster[] { new Monster(320, 560, MovingDirection.Right, new Rectangle(380, 500, 50, 50)) };
-                                              
-                    var fin = new Rectangle(150, 480, 100, 75);
-                    var l = new LevelBuilder(1024, 600, fin, true).AddPlayer(player).AddMonsters(monster)
-                                                   .AddWalls(new Rectangle(0, 550, 160, 50),
-                                                             new Rectangle(40, 70, 160, 25))
-                                                   .AddLava(new Rectangle(180, 550, 160, 50),
-                                                             new Rectangle(640, 550, 480, 50));
-                    this.Hide();
-                    new GameForm(l).Show();
+                    if (levelBuilder.nextLevel != null)
+                    {
+                        this.Hide();
+                        new GameForm(levelBuilder.nextLevel).Show();
+                    }
+                    else
+                        Exit(true);
                 }
+                else
+                    Exit(false);
             }
             Invalidate(GetDowned(level.player.Position), true);
             foreach (var monster in level.monsters)

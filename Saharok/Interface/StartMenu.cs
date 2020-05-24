@@ -30,20 +30,29 @@ namespace Saharok
 
             play.Click += (sender, args) =>
             {
-                var coins = new List<Rectangle>();
+                var coins3 = new List<Rectangle>();
                 for (var y = 250; y <= 290; y += 40)
                     for (var x = 250; x <= 80 + 50 * 10; x += 50)
-                        coins.Add(new Rectangle(x, y, 25, 25));
-                coins.Add(new Rectangle(1000, 250, 25, 25));
-                coins.Add(new Rectangle(60, 30, 25, 25));
-                coins.Add(new Rectangle(95, 30, 25, 25));
-                coins.Add(new Rectangle(960, 165, 25, 25));
+                        coins3.Add(new Rectangle(x, y, 25, 25));
+                coins3.Add(new Rectangle(1000, 250, 25, 25));
+                coins3.Add(new Rectangle(60, 30, 25, 25));
+                coins3.Add(new Rectangle(95, 30, 25, 25));
+                coins3.Add(new Rectangle(960, 165, 25, 25));
+
+                var coins1 = new List<Rectangle>() { new Rectangle(450, 300, 50, 50), new Rectangle(800, 400, 50, 50), new Rectangle(800, 150, 50, 50) };
+                var coins2 = new List<Rectangle>() { new Rectangle(200, 350, 50, 50), new Rectangle(550, 100, 50, 50)};
+                for (var x = 0; x <= 150; x += 30)
+                    coins2.Add(new Rectangle(x, 250, 50, 50));
                 var player = new Player(new Rectangle(25, 500, 50, 50), 2);
-                var monster = new Monster[] { new Monster(320, 560, MovingDirection.Right, new Rectangle(380, 500, 50, 50)),
+                var monster3 = new Monster[] { new Monster(320, 560, MovingDirection.Right, new Rectangle(380, 500, 50, 50)),
                                               new Monster(320, 740, MovingDirection.Left, new Rectangle(380, 145, 50, 50)),
                                               new Monster(580, 850, MovingDirection.Right, new Rectangle(480, 25, 50, 50))};
-                var finish = new Rectangle(880, 5, 100, 75);
-                var l = new LevelBuilder(1024, 600, finish, false).AddPlayer(player).AddMonsters(monster)
+                var monster2 = new Monster[] { new Monster(300, 550, MovingDirection.Right, new Rectangle(400, 400, 50, 50)),
+                                               new Monster(250, 450, MovingDirection.Right, new Rectangle(300, 50, 50, 50))};
+                var finish3 = new Rectangle(880, 5, 75, 75);
+                var finish = new Rectangle(100, 75, 100, 75);
+                var finish2 = new Rectangle(750, 175, 100, 75);
+                var level3 = new LevelBuilder(1024, 600, finish3, null).AddPlayer(player).AddMonsters(monster3)
                                                    .AddWalls(new Rectangle(0, 550, 160, 50),
                                                              new Rectangle(320, 550, 320, 50),
                                                              new Rectangle(560, 500, 80, 50),
@@ -59,11 +68,36 @@ namespace Saharok
                                                              new Rectangle(580, 75, 400, 25),
                                                              new Rectangle(280, 95, 160, 25),
                                                              new Rectangle(40, 70, 160, 25))
-                                                   .AddCoins(coins.ToArray())
+                                                   .AddCoins(coins3.ToArray())
                                                    .AddLava(new Rectangle(160, 550, 160, 50),
                                                              new Rectangle(640, 550, 480, 50));
+                var level2 = new LevelBuilder(1024, 600, finish2, level3).AddPlayer(player)
+                                                                         .AddMonsters(monster2)
+                                                                         .AddWalls(new Rectangle(0, 550, 150, 50),
+                                                                                   new Rectangle(150, 450, 400, 50),
+                                                                                   new Rectangle(0, 350, 150, 50),
+                                                                                   new Rectangle(0, 200, 150, 50),
+                                                                                   new Rectangle(600, 350, 200, 50),
+                                                                                   new Rectangle(250, 275, 200, 50),
+                                                                                   new Rectangle(500, 200, 150, 50),
+                                                                                   new Rectangle(750, 250, 100, 50),
+                                                                                   new Rectangle(200, 100, 300, 50))
+                                                                         .AddLava(new Rectangle(150, 550, 900, 50)).AddCoins(coins2.ToArray());                                                           
 
-                new GameForm(l).Show();
+                var level1 = new LevelBuilder(1024, 600, finish, level2).AddPlayer(player)
+                                                                      .AddCoins(coins1.ToArray())
+                                                                      .AddLava(new Rectangle(250, 550, 400, 100))
+                                                                      .AddWalls(new Rectangle(0, 550, 250, 100),
+                                                                                new Rectangle(650, 550, 350, 100),
+                                                                                new Rectangle(300, 450, 100, 50),
+                                                                                new Rectangle(450, 400, 100, 50),
+                                                                                new Rectangle(600, 480, 100, 50),
+                                                                                new Rectangle(600, 300, 200, 50),
+                                                                                new Rectangle(300, 200, 200, 50),
+                                                                                new Rectangle(100, 150, 100, 50));
+
+
+                new GameForm(level1).Show();
                 this.Hide();
             };
             Controls.Add(play);

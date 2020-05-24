@@ -44,7 +44,7 @@ namespace Saharok.Tests
         public void TestMoveUpWithoutGravity()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 1000, walls, coins, water, 0, player, monsters, finish, true);
+            var level = new Level(1000, 1000, walls, coins, water, 0, player, monsters, finish, null);
             level.player.OnGround = true;
             level.player.Up(5);
             level.GameTurn();
@@ -57,7 +57,7 @@ namespace Saharok.Tests
         public void TestMoveUpWithGravity()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 1000, walls, coins, water, 5, player, monsters, finish, true);
+            var level = new Level(1000, 1000, walls, coins, water, 5, player, monsters, finish, null);
             level.player.OnGround = true;
             level.player.Up(10);
             level.GameTurn();
@@ -71,7 +71,7 @@ namespace Saharok.Tests
         public void TestMoveUpNotOnGround()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 1000, walls, coins, water, 5, player, monsters, finish, true);
+            var level = new Level(1000, 1000, walls, coins, water, 5, player, monsters, finish, null);
             level.player.OnGround = false;
             level.player.Up(70);
             level.GameTurn();
@@ -96,7 +96,7 @@ namespace Saharok.Tests
         {
 
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 800, walls, coins, water, 0, player, monsters, finish, true);
+            var level = new Level(1000, 800, walls, coins, water, 0, player, monsters, finish, null);
             level.player.Right(10);
             level.GameTurn();
             var actual = level.player.Coins;
@@ -109,7 +109,7 @@ namespace Saharok.Tests
         public void TestCoinDisappearAfterCollecting()
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
-            var level = new Level(1000, 800, walls, coins, water, 0, player, monsters, finish, true);
+            var level = new Level(1000, 800, walls, coins, water, 0, player, monsters, finish, null);
             level.player.Right(10);
             level.GameTurn();
             var actualCoins = level.GetCoins().ToList();
@@ -121,7 +121,7 @@ namespace Saharok.Tests
         {
             var player = new Player(new Rectangle(50, 500, 100, 100));
 
-            var level = new Level(1000, 1000, walls, coins, water, 1, player, monsters, finish, true);
+            var level = new Level(1000, 1000, walls, coins, water, 1, player, monsters, finish, null);
             level.player.OnGround = true;
             level.player.Right(200);
             level.GameTurn();
@@ -136,7 +136,7 @@ namespace Saharok.Tests
         {
             var player = new Player(new Rectangle(340, 500, 100, 100));
             
-            var level = new Level(1000, 1000, walls, new List<Rectangle>(), water, 5, player, monsters, finish, true);
+            var level = new Level(1000, 1000, walls, new List<Rectangle>(), water, 5, player, monsters, finish, null);
             level.player.Right(15);
             level.GameTurn();
             var actual = level.IsWin;

@@ -14,9 +14,9 @@ namespace Saharok.Model
         private readonly List<Rectangle> lava;
         private Player Player;
         private List<Monster> monsters;
-        private bool isFinal;
         private readonly Rectangle finish;
-        public LevelBuilder(int width, int height, Rectangle finish, bool isFinal)
+        public readonly LevelBuilder nextLevel;
+        public LevelBuilder(int width, int height, Rectangle finish, LevelBuilder nextLevel)
         {
             coins = new List<Rectangle>();
             walls = new List<Rectangle>();
@@ -25,8 +25,7 @@ namespace Saharok.Model
             Height = height;
             this.finish = finish;
             monsters = new List<Monster>();
-            this.isFinal = isFinal;
-
+            this.nextLevel = nextLevel;
         }
 
         public LevelBuilder AddWalls(params Rectangle[] walls)
@@ -76,6 +75,6 @@ namespace Saharok.Model
         }
 
         public Level ToLevel() => new Level(Height, Width, walls, coins.ToArray(), lava,
-                                            gravityForce, Player.Copy(), monsters.Select(m => m.Copy()), finish, isFinal);
+                                            gravityForce, Player.Copy(), monsters.Select(m => m.Copy()), finish, nextLevel);
     }
 }

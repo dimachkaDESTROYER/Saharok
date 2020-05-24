@@ -8,7 +8,7 @@ namespace Saharok.Model
     {
         public bool IsOver { get; private set; }
         public bool IsWin { get; private set; }
-        public bool isFinal { get; private set; }
+        public readonly LevelBuilder nextLevel; 
         private int gravityForce;
         public readonly int LevelHeight;
         public readonly int LevelWidth;
@@ -21,7 +21,7 @@ namespace Saharok.Model
 
         public Level(int LevelHeight, int LevelWidth,
             IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> lava,
-            int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, bool isFinal)
+            int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, LevelBuilder nextLevel)
         {
             IsOver = false;
             this.LevelHeight = LevelHeight;
@@ -35,7 +35,7 @@ namespace Saharok.Model
             this.player = player;
             this.monsters = monsters.ToList();
             this.finish = finish;
-            this.isFinal = isFinal;
+            this.nextLevel = nextLevel;
         }
 
         private void Move(Axis axis)
@@ -108,15 +108,15 @@ namespace Saharok.Model
                 if (!player.IsStudent)
                     player.Conflict();
             }
-
             foreach (var coin in removed)
                 Coins.Remove(coin);
             if (player.Position.Bottom > LevelHeight)
                 player.Conflict();
             if (player.Lifes <= 0)
                 IsOver = true;
-            if (player.Position.IntersectsWith(finish) && Coins.Count == 0)
-                IsWin = true;
+            if (!player.Position.IntersectsWith(finish)) return;
+            IsOver = true;
+            IsWin = true;
         }
 
         public IEnumerable<Rectangle> GetCoins()
