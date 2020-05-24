@@ -89,6 +89,8 @@ namespace Saharok
                 builder.Width, builder.Height));
             g.FillRectangle(new SolidBrush(GameColors.BackgroundColor), new Rectangle(0, 0,
                                                                 builder.Width, builder.Height + yForCoinsAndHearths));
+            g.DrawImage(bitmaps[CoinImage], level.LevelWidth - xForCoinsAndHearths * 4, 5);
+            g.DrawImage(bitmaps[LifeImage], level.LevelWidth - xForCoinsAndHearths * 2, 5);
             g.TranslateTransform(0, yForCoinsAndHearths);
             foreach (var gameCell in builder.GetCells())
                 g.FillRectangle(brushesOfCells[gameCell.Type],
