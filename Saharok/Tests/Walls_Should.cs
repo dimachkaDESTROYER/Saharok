@@ -15,7 +15,7 @@ namespace Saharok.Tests
         private LevelBuilder builder;
         private void GenerateLevelBuilder()
         {
-            builder = new LevelBuilder(100, 100, new Rectangle(80, 80, 10, 10), null);
+            builder = new LevelBuilder(100, 100, new Rectangle(80, 80, 10, 10), new Rectangle(0, 0, 0, 0), null);
             builder.AddWalls(new Rectangle(0, 0, 90, 10),
                              new Rectangle(0, 10, 10, 90),
                              new Rectangle(10, 90, 90, 10),

@@ -19,6 +19,7 @@ namespace Saharok
         private readonly LevelBuilder levelBuilder;
         private readonly string LifeImage;
         private readonly string finish;
+        private readonly string shop;
         private readonly string CoinImage;
         private Bitmap PlayerImage;
         private Font fontForMoneyAndLifes;
@@ -35,6 +36,7 @@ namespace Saharok
         {
             GameImages.PlayerImages.ImagesForSugar();
             finish = "финиш.png";
+            shop = "shop.png";
             PlayerImage = GameImages.PlayerImages.Simple;
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
@@ -96,6 +98,7 @@ namespace Saharok
                 g.FillRectangle(brushesOfCells[gameCell.Type],
                             gameCell.Position);
             g.DrawImage(bitmaps[finish], level.finish);
+            g.DrawImage(bitmaps[shop], level.shop);
 
             return bitmap;
         }
@@ -145,7 +148,7 @@ namespace Saharok
                 foreach (var k in keyWithTool[e].Keys)
                     if (pressedKeys.Contains(e) && level.player.TryChangeTool(k))
                         spritesImages[SpriteType.Player] = keyWithTool[e][k];
-            if (pressedKeys.Contains(Keys.C))
+            if (pressedKeys.Contains(Keys.C) && level.IsenterShop)
             {
                 pressedKeys.Remove(Keys.C);
                 var shop = new Shop(level);

@@ -15,6 +15,7 @@ namespace Saharok
 {
     public partial class Menu : Form
     {
+        public LevelBuilder FirstLevel;
         public Menu(DirectoryInfo imagesDirectory = null)
         {
             InitializeComponent();
@@ -45,7 +46,7 @@ namespace Saharok
                 var coins2 = new List<Rectangle>() { new Rectangle(200, 350, 50, 50), new Rectangle(550, 100, 50, 50)};
                 for (var x = 0; x <= 150; x += 30)
                     coins2.Add(new Rectangle(x, 275, 50, 50));
-                var player = new Player(new Rectangle(25, 500, 50, 50), 2);
+                var player = new Player(new Rectangle(25, 500, 50,  50), 2);
                 var monster3 = new Monster[] { new Monster(320, 560, MovingDirection.Right, new Rectangle(380, 500, 50, 50)),
                                               new Monster(320, 740, MovingDirection.Left, new Rectangle(380, 145, 50, 50)),
                                               new Monster(580, 850, MovingDirection.Right, new Rectangle(480, 25, 50, 50))};
@@ -54,7 +55,7 @@ namespace Saharok
                 var finish3 = new Rectangle(880, 5, 75, 75);
                 var finish = new Rectangle(100, 75, 100, 75);
                 var finish2 = new Rectangle(750, 175, 100, 75);
-                var level3 = new LevelBuilder(1024, 600, finish3, null).AddPlayer(player).AddMonsters(monster3)
+                var level3 = new LevelBuilder(1024, 600, finish3, new Rectangle(320, 265, 50, 80), null).AddPlayer(player).AddMonsters(monster3)
                                                    .AddWalls(new Rectangle(0, 550, 160, 50),
                                                              new Rectangle(320, 550, 320, 50),
                                                              new Rectangle(560, 500, 80, 50),
@@ -73,7 +74,7 @@ namespace Saharok
                                                    .AddCoins(coins3.ToArray())
                                                    .AddLava(new Rectangle(160, 550, 160, 50),
                                                              new Rectangle(640, 550, 480, 50));
-                var level2 = new LevelBuilder(1024, 600, finish2, level3).AddPlayer(player)
+                var level2 = new LevelBuilder(1024, 600, finish2, new Rectangle(0,275, 50, 70 ), level3).AddPlayer(player)
                                                                          .AddMonsters(monster2)
                                                                          .AddWalls(new Rectangle(0, 550, 150, 50),
                                                                                    new Rectangle(150, 450, 400, 50),
@@ -86,7 +87,7 @@ namespace Saharok
                                                                                    new Rectangle(200, 100, 300, 50))
                                                                          .AddLava(new Rectangle(150, 550, 900, 50)).AddCoins(coins2.ToArray());                                                           
 
-                var level1 = new LevelBuilder(1024, 600, finish, level2).AddPlayer(player)
+                var level1 = new LevelBuilder(1024, 600, finish, new Rectangle(0,0,0,0), level2).AddPlayer(player)
                                                                       .AddCoins(coins1.ToArray())
                                                                       .AddLava(new Rectangle(250, 550, 400, 100))
                                                                       .AddWalls(new Rectangle(0, 550, 250, 100),
@@ -97,6 +98,7 @@ namespace Saharok
                                                                                 new Rectangle(600, 300, 200, 50),
                                                                                 new Rectangle(300, 200, 200, 50),
                                                                                 new Rectangle(100, 150, 100, 50));
+                FirstLevel = level1;
 
 
                 new GameForm(level1).Show();

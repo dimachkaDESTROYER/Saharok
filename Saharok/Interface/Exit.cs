@@ -1,4 +1,5 @@
 ﻿using Saharok.Model;
+using Saharok.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,7 +46,7 @@ namespace Saharok
             {
 
                 BackColor = GameColors.ButtonColor,
-                Text = "Начать заново",
+                Text = "Вернуться в меню",
                 Font = new Font("Roboto", 15),
                 Size = new Size(200, 200),
                 Location = new Point((int)(this.Width / 4), (int)(1.5 * this.Height / 3))
@@ -55,8 +56,13 @@ namespace Saharok
             buttonAgain.Click += (sender, args) =>
             {
                 this.Hide();
-                var game = new GameForm(level);
-                game.Show();
+                if (!isWin)
+                {
+                    var game = new GameForm(level);
+                    game.Show();
+                }
+                else
+                    new Menu().Show();
                 InitializeComponent();
             };
 

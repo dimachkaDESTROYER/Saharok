@@ -18,10 +18,12 @@ namespace Saharok.Model
         public Player player;
         public List<Monster> monsters;
         public Rectangle finish;
+        public Rectangle shop;
+        public bool IsenterShop { get; private set; }
 
         public Level(int LevelHeight, int LevelWidth,
             IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> lava,
-            int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, LevelBuilder nextLevel)
+            int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, Rectangle shop, LevelBuilder nextLevel)
         {
             IsOver = false;
             this.LevelHeight = LevelHeight;
@@ -35,6 +37,7 @@ namespace Saharok.Model
             this.player = player;
             this.monsters = monsters.ToList();
             this.finish = finish;
+            this.shop = shop;
             this.nextLevel = nextLevel;
         }
 
@@ -114,6 +117,10 @@ namespace Saharok.Model
                 player.Conflict();
             if (player.Lifes <= 0)
                 IsOver = true;
+            if (player.Position.IntersectsWith(shop))
+                IsenterShop = true;
+            else
+                IsenterShop = false;
             if (!player.Position.IntersectsWith(finish)) return;
             IsOver = true;
             IsWin = true;
