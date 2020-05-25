@@ -11,7 +11,7 @@ namespace Saharok.Interface
         public static Bitmap CoinMagnet;
         public static Bitmap Boots;
         public static Bitmap Student;
-
+        public static Bitmap backgroung;
 
         public static void ImagesForShop()
         {
@@ -34,6 +34,20 @@ namespace Saharok.Interface
                 }
             }
         }
+
+        public static void ImageBackGround()
+        {
+            foreach (var e in ImagesDirectory.GetFiles("*.png"))
+            {
+                switch (e.Name)
+                {
+                    case "start.png":
+                        backgroung = (Bitmap)Image.FromFile(e.FullName);
+                        break;
+                }
+            }
+        }
+
         public static class PlayerImages
         {
             public static Bitmap Simple;
@@ -65,11 +79,7 @@ namespace Saharok.Interface
                             break;
                     }
                 }
-            }
-            
-
-            
-
+            }     
         }
 
     }

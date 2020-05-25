@@ -130,6 +130,7 @@ namespace Saharok
             table.Controls.Add(textBox, 1, 0);
             Controls.Add(picture);
             table.Dock = DockStyle.Fill;
-            Controls.Add(table);        }
+            Controls.Add(table);
+        }
     }
 }

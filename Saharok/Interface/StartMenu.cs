@@ -1,4 +1,5 @@
-﻿using Saharok.Model;
+﻿using Saharok.Interface;
+using Saharok.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,15 +18,16 @@ namespace Saharok
         public Menu(DirectoryInfo imagesDirectory = null)
         {
             InitializeComponent();
-            BackColor = GameColors.BackgroundColor;
+            GameImages.ImageBackGround();
+            BackgroundImage = GameImages.backgroung;
+            ClientSize = new Size(860, 600);
 
             var play = new Button()
             {
                 BackColor = Color.Yellow,
                 Text = "Играть",
                 Font = new Font("Roboto", 15),
-                Size = new Size(200, 200),
-                Location = new Point((int)(this.Width / 4), (int)(1.5 * this.Height / 3))
+                Size = new Size(400, 50),
             };
 
             play.Click += (sender, args) =>
@@ -42,7 +44,7 @@ namespace Saharok
                 var coins1 = new List<Rectangle>() { new Rectangle(450, 300, 50, 50), new Rectangle(800, 400, 50, 50), new Rectangle(800, 150, 50, 50) };
                 var coins2 = new List<Rectangle>() { new Rectangle(200, 350, 50, 50), new Rectangle(550, 100, 50, 50)};
                 for (var x = 0; x <= 150; x += 30)
-                    coins2.Add(new Rectangle(x, 250, 50, 50));
+                    coins2.Add(new Rectangle(x, 275, 50, 50));
                 var player = new Player(new Rectangle(25, 500, 50, 50), 2);
                 var monster3 = new Monster[] { new Monster(320, 560, MovingDirection.Right, new Rectangle(380, 500, 50, 50)),
                                               new Monster(320, 740, MovingDirection.Left, new Rectangle(380, 145, 50, 50)),
@@ -101,16 +103,21 @@ namespace Saharok
                 this.Hide();
             };
             Controls.Add(play);
-            var settings = new Button()
-            {
-                Text = "Настройки",
-                Size = play.Size,
-                BackColor = Color.Yellow,
-                Font = new Font("Roboto", 15),
-                Location = new Point((int)(1.6 * this.Width / 3), (int)(1.5 * this.Height / 3))
-            };
-
-            Controls.Add(settings);
+            var table = new TableLayoutPanel();
+            table.BackgroundImage = GameImages.backgroung;
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 41));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 25));
+            table.RowStyles.Add(new RowStyle(SizeType.Percent, 10));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 32));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 32));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15));
+           
+            table.Controls.Add(play, 1, 1);
+            table.SetColumnSpan(play, 2);
+            table.Dock = DockStyle.Fill;
+            Controls.Add(table);
         }
 
         protected override void OnLoad(EventArgs e)
