@@ -16,7 +16,7 @@ namespace Saharok.Model
             DeltaX = deltaX;
             DeltaY = deltaY;
             MagnetRange = magnetRange;
-        }
+        }  
         private IEnumerable<Rectangle> GetNeighbourPositions(Rectangle currentPos)
         {
             for (var dx = -1; dx <= 1; dx++)

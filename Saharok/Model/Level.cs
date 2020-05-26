@@ -126,11 +126,7 @@ namespace Saharok.Model
             IsWin = true;
             foreach (var hint in hints.Where(hint => hint.position.IntersectsWith(player.Position)))
             {
-                if (hint.hintText != CurrentHintText)
-                {
-                    CurrentHintText = hint.hintText;
-                    NeedToChangeHint = true;
-                }
+                CurrentHintText = hint.hintText;
                 break;
             }
         }

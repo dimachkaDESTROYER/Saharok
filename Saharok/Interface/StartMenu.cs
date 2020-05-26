@@ -90,6 +90,8 @@ namespace Saharok
                 var level1 = new LevelBuilder(1024, 600, finish, new Rectangle(0,0,0,0), level2).AddPlayer(player)
                                                                       .AddCoins(coins1.ToArray())
                                                                       .AddLava(new Rectangle(250, 550, 400, 100))
+                                                                      .AddHints(new Hint(new Rectangle(0, 0, 1000, 1000),
+                                                                          "всем привет"))
                                                                       .AddWalls(new Rectangle(0, 550, 250, 100),
                                                                                 new Rectangle(650, 550, 350, 100),
                                                                                 new Rectangle(300, 450, 100, 50),

@@ -9,6 +9,8 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Brushes = System.Drawing.Brushes;
+using Color = System.Drawing.Color;
+using FontFamily = System.Drawing.FontFamily;
 
 namespace Saharok
 {
@@ -33,6 +35,7 @@ namespace Saharok
         private int xForCoinsAndHearths;
         private int yForHints;
         private int xForTool;
+        private Label hintLabel;
 
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null, int coins = -1, int lifes = -1)
         {
@@ -44,7 +47,8 @@ namespace Saharok
             CoinImage = "монетка.png";
             MonsterImage = "монстр.png";
 
-
+            
+            Controls.Add(hintLabel);
             yForHints = 60;
             xForTool = 100;
             fontForMoneyAndLifes = new Font("Arial", 30);
@@ -82,6 +86,16 @@ namespace Saharok
             spritesImages[SpriteType.Coin] = bitmaps[CoinImage];
             spritesImages[SpriteType.Monster] = bitmaps[MonsterImage];
 
+            hintLabel = new Label()
+            {
+                BackColor = GameColors.ButtonColor,
+                Text = "",
+                Font = new Font(FontFamily.GenericSansSerif, 20),
+                Size = new Size(level.LevelWidth - 3 * xForTool, yForHints),
+                Location = new Point(0, level.LevelHeight + yForCoinsAndHearths),
+                TextAlign = ContentAlignment.MiddleLeft,
+            };
+            Controls.Add(hintLabel);
             timer = new Timer();
             timer.Interval = 40;
             timer.Tick += TimerTick;
@@ -168,7 +182,7 @@ namespace Saharok
         private Rectangle GetDowned(Rectangle position) => GetIncrementedByY(position, yForCoinsAndHearths);
         private void TimerTick(object sender, EventArgs args)
         {
-
+            hintLabel.Text = level.CurrentHintText;
             ReadPressedKeys();
             Invalidate(GetDowned(level.player.Position));
             foreach (var coin in level.GetCoins())
