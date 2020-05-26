@@ -12,7 +12,8 @@ namespace Saharok.Model
         private readonly List<Rectangle> coins;
         private readonly List<Rectangle> walls;
         private readonly List<Rectangle> lava;
-        private Player Player;
+        private readonly List<Hint> hints = new List<Hint>();
+        public Player Player;
         private List<Monster> monsters;
         private readonly Rectangle finish;
         private readonly Rectangle shop;
@@ -36,6 +37,13 @@ namespace Saharok.Model
                 this.walls.Add(wall);
             return this;
         }
+
+        public LevelBuilder AddHints(params Hint[] hints)
+        {
+            this.hints.AddRange(hints);
+            return this;
+        }
+
         public LevelBuilder AddLava(params Rectangle[] lava)
         {
             foreach (var drop in lava)
@@ -77,6 +85,6 @@ namespace Saharok.Model
         }
 
         public Level ToLevel() => new Level(Height, Width, walls, coins.ToArray(), lava,
-                                            gravityForce, Player.Copy(), monsters.Select(m => m.Copy()), finish, shop, nextLevel);
+                                            gravityForce, Player.Copy(), monsters.Select(m => m.Copy()), finish, shop, nextLevel, hints);
     }
 }

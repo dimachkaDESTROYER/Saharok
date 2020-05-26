@@ -19,12 +19,16 @@ namespace Saharok.Model
         public List<Monster> monsters;
         public Rectangle finish;
         public Rectangle shop;
-        public bool IsenterShop { get; private set; }
+        private List<Hint> hints;
+        public string CurrentHintText = "";
+        public bool NeedToChangeHint = false;
+        public bool IsEnterShop { get; private set; }
 
         public Level(int LevelHeight, int LevelWidth,
             IEnumerable<Rectangle> walls, IEnumerable<Rectangle> coins, IEnumerable<Rectangle> lava,
-            int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, Rectangle shop, LevelBuilder nextLevel)
+            int gForce, Player player, IEnumerable<Monster> monsters, Rectangle finish, Rectangle shop, LevelBuilder nextLevel, List<Hint> hints = null)
         {
+            this.hints = hints ?? new List<Hint>();
             IsOver = false;
             this.LevelHeight = LevelHeight;
             this.LevelWidth = LevelWidth;
@@ -88,8 +92,7 @@ namespace Saharok.Model
 
         public void GameTurn()
         {
-            if (player.CurrentTool != null)
-                player.CurrentTool.DoAction(this);
+            player.CurrentTool?.DoAction(this);
             if (player.SpeedY < gravityForce)
                 player.Down(gravityForce);
             Move();
@@ -117,13 +120,19 @@ namespace Saharok.Model
                 player.Conflict();
             if (player.Lifes <= 0)
                 IsOver = true;
-            if (player.Position.IntersectsWith(shop))
-                IsenterShop = true;
-            else
-                IsenterShop = false;
+            IsEnterShop = player.Position.IntersectsWith(shop);
             if (!player.Position.IntersectsWith(finish)) return;
             IsOver = true;
             IsWin = true;
+            foreach (var hint in hints.Where(hint => hint.position.IntersectsWith(player.Position)))
+            {
+                if (hint.hintText != CurrentHintText)
+                {
+                    CurrentHintText = hint.hintText;
+                    NeedToChangeHint = true;
+                }
+                break;
+            }
         }
 
         public IEnumerable<Rectangle> GetCoins()

@@ -19,8 +19,8 @@ namespace Saharok.Model
 
     public class Player
     {
-        public int Coins { get; private set; }
-        public int Lifes { get; private set; }
+        public int Coins { get; set; }
+        public int Lifes { get; set; }
         public bool OnGround;
         public Rectangle Position { get; private set; }
         public int SpeedX { get; set; }

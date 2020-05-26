@@ -31,8 +31,10 @@ namespace Saharok
         private Dictionary<CellType, SolidBrush> brushesOfCells = new Dictionary<CellType, SolidBrush>();
         private int yForCoinsAndHearths;
         private int xForCoinsAndHearths;
+        private int yForHints;
+        private int xForTool;
 
-        public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null)
+        public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null, int coins = -1, int lifes = -1)
         {
             GameImages.PlayerImages.ImagesForSugar();
             finish = "финиш.png";
@@ -42,12 +44,16 @@ namespace Saharok
             CoinImage = "монетка.png";
             MonsterImage = "монстр.png";
 
-            
 
+            yForHints = 60;
+            xForTool = 100;
             fontForMoneyAndLifes = new Font("Arial", 30);
             this.levelBuilder = levelBuilder;
             this.level = levelBuilder.ToLevel();
-
+            if (coins != -1)
+                level.player.Coins = coins;
+            if (lifes != -1)
+                level.player.Lifes = lifes;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             if (imagesDirectory == null)
                     imagesDirectory = new DirectoryInfo("Image");
@@ -57,8 +63,8 @@ namespace Saharok
             xForCoinsAndHearths = bitmaps[LifeImage].Width;
             ClientSize = new Size(
                 this.level.LevelWidth,
-                yForCoinsAndHearths + this.level.LevelHeight);
-
+                yForCoinsAndHearths + yForHints + this.level.LevelHeight);
+            
             keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();
             //2 * bitmaps[LifeImage].Width + this.level.LevelHeight;
             keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();      
@@ -148,13 +154,12 @@ namespace Saharok
                 foreach (var k in keyWithTool[e].Keys)
                     if (pressedKeys.Contains(e) && level.player.TryChangeTool(k))
                         spritesImages[SpriteType.Player] = keyWithTool[e][k];
-            if (pressedKeys.Contains(Keys.C) && level.IsenterShop)
+            if (pressedKeys.Contains(Keys.C) && level.IsEnterShop)
             {
                 pressedKeys.Remove(Keys.C);
                 var shop = new Shop(level);
                 shop.Show();
             }
-            //непонятно как менять tools   aa
         }
 
         private Rectangle GetIncrementedByY(Rectangle position, int value) =>
@@ -181,7 +186,7 @@ namespace Saharok
                     if (levelBuilder.nextLevel != null)
                     {
                         this.Hide();
-                        new GameForm(levelBuilder.nextLevel).Show();
+                        new GameForm(levelBuilder.nextLevel, null, level.player.Coins, level.player.Lifes).Show();
                     }
                     else
                         Exit(true);
@@ -192,13 +197,15 @@ namespace Saharok
             Invalidate(GetDowned(level.player.Position), true);
             foreach (var monster in level.monsters)
                 Invalidate(monster.Position);
+            foreach (var coin in level.GetCoins())
+                Invalidate(GetDowned(coin));
             Invalidate(level.player.Position, true);
             Invalidate(new Rectangle(0, 10, level.LevelWidth, 35), true);
         }
 
         private void Exit(bool isWin)
         {
-            var exit = new Exit(isWin, levelBuilder);
+            var exit = new Exit(isWin, levelBuilder, isWin);
             this.Hide();
             exit.ShowDialog();
         }

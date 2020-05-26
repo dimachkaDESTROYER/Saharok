@@ -14,7 +14,7 @@ namespace Saharok
 {
     public partial class Exit : Form
     {
-        public Exit(bool isWin, LevelBuilder level)
+        public Exit(bool isWin, LevelBuilder level, bool isFinal)
         {
             this.Size = new Size(1024, 600);
             BackColor = GameColors.BackgroundColor;
@@ -42,12 +42,14 @@ namespace Saharok
                 InitializeComponent();
             };
 
+            var rightButtonText = isFinal ? "Вернуться в меню" : "Eщё раз";
             var buttonAgain = new Button()
             {
 
                 BackColor = GameColors.ButtonColor,
-                Text = "Вернуться в меню",
-                Font = new Font("Roboto", 15),
+                
+                    Text = rightButtonText,
+                    Font = new Font("Roboto", 15),
                 Size = new Size(200, 200),
                 Location = new Point((int)(this.Width / 4), (int)(1.5 * this.Height / 3))
 
