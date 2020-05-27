@@ -83,7 +83,7 @@ namespace Saharok
             {
                 current = new Boots();
                 textBox.Text = current.GetName() + "; \n Цена - " + current.GetPrice().ToString();
-                picture.Image = (GameImages.PlayerImages.WithBoots);
+                picture.Image = GameImages.PlayerImages.WithBoots;
             };
 
             var hat = new Button()

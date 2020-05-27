@@ -28,7 +28,7 @@ namespace Saharok.Model
             this.finish = finish;
             this.shop = shop;
             if(shop != null)
-                hints.Add(new Hint(shop, "Нажмите С чтобы войти в магазин"));
+                hints.Add(new Hint(shop, "Нажмите С чтобы войти в магазин \nДля выбора инвентаря используйте 1 2 3"));
             monsters = new List<Monster>();
             this.nextLevel = nextLevel;
         }

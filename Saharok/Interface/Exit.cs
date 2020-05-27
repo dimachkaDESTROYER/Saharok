@@ -42,7 +42,7 @@ namespace Saharok
                 InitializeComponent();
             };
 
-            var rightButtonText = isFinal ? "Вернуться в меню" : "Eщё раз";
+            var rightButtonText = isFinal ? "Вернуться в меню" : "Начать заново";
             var buttonAgain = new Button()
             {
 

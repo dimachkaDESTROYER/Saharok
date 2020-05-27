@@ -27,7 +27,7 @@ namespace Saharok
         private Font fontForMoneyAndLifes;
         private readonly string MonsterImage;
         private Timer timer;
-        private Dictionary<Keys, Dictionary<TypeTool, Bitmap>> keyWithTool;
+        private Dictionary<TypeTool, Bitmap> keyWithTool;
         private readonly HashSet<Keys> pressedKeys = new HashSet<Keys>();
         private Dictionary<SpriteType, Bitmap> spritesImages;
         private Dictionary<CellType, SolidBrush> brushesOfCells = new Dictionary<CellType, SolidBrush>();
@@ -36,18 +36,26 @@ namespace Saharok
         private int yForHints;
         private int xForTool;
         private Label hintLabel;
+        private PictureBox picture;
+        private PictureBox picture1;
+        private PictureBox picture2;
+        private Dictionary<TypeTool, Bitmap> toolImage;
 
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null, int coins = -1, int lifes = -1)
         {
             GameImages.PlayerImages.ImagesForSugar();
+
             finish = "финиш.png";
             shop = "shop.png";
             PlayerImage = GameImages.PlayerImages.Simple;
             LifeImage = "жизнь.png";
             CoinImage = "монетка.png";
             MonsterImage = "монстр.png";
-
-            
+            GameImages.ImagesForShop();
+            toolImage = new Dictionary<TypeTool, Bitmap>();
+            toolImage[TypeTool.Boot] = GameImages.Boots;
+            toolImage[TypeTool.Magnet] = GameImages.CoinMagnet;
+            toolImage[TypeTool.Student] = GameImages.Student;
             Controls.Add(hintLabel);
             yForHints = 60;
             xForTool = 100;
@@ -60,7 +68,7 @@ namespace Saharok
                 level.player.Lifes = lifes;
             FormBorderStyle = FormBorderStyle.FixedDialog;
             if (imagesDirectory == null)
-                    imagesDirectory = new DirectoryInfo("Image");
+                imagesDirectory = new DirectoryInfo("Image");
             foreach (var e in imagesDirectory.GetFiles("*.png"))
                 bitmaps[e.Name] = (Bitmap)Image.FromFile(e.FullName);
             yForCoinsAndHearths = bitmaps[LifeImage].Height + 10;
@@ -68,13 +76,11 @@ namespace Saharok
             ClientSize = new Size(
                 this.level.LevelWidth,
                 yForCoinsAndHearths + yForHints + this.level.LevelHeight);
-            
-            keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();
-            //2 * bitmaps[LifeImage].Width + this.level.LevelHeight;
-            keyWithTool = new Dictionary<Keys, Dictionary<TypeTool, Bitmap>>();      
-            keyWithTool[Keys.M] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Magnet, GameImages.PlayerImages.WithMagnet } };
-            keyWithTool[Keys.S] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Student, GameImages.PlayerImages.WithStudent } };
-            keyWithTool[Keys.B] = new Dictionary<TypeTool, Bitmap>() { { TypeTool.Boot, GameImages.PlayerImages.WithBoots } };
+
+            keyWithTool = new Dictionary<TypeTool, Bitmap>();
+            keyWithTool[TypeTool.Magnet] = GameImages.PlayerImages.WithMagnet;
+            keyWithTool[TypeTool.Student] = GameImages.PlayerImages.WithStudent;
+            keyWithTool[TypeTool.Boot] = GameImages.PlayerImages.WithBoots;
 
             brushesOfCells[CellType.Lava] = new SolidBrush(GameColors.LavaColor);
             brushesOfCells[CellType.Wall] = new SolidBrush(GameColors.WallColor);
@@ -86,15 +92,46 @@ namespace Saharok
             spritesImages[SpriteType.Coin] = bitmaps[CoinImage];
             spritesImages[SpriteType.Monster] = bitmaps[MonsterImage];
 
+            picture = new PictureBox()
+            {
+                BackColor = GameColors.ButtonColor,
+                BorderStyle = BorderStyle.FixedSingle,  
+                Location = new Point(level.LevelWidth - 3 * xForTool, ClientSize.Height - yForHints),
+                Size = new Size(xForTool, yForHints),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+            };
+            Controls.Add(picture);
+
+            picture1 = new PictureBox()
+            {
+                BackColor = GameColors.ButtonColor,
+                BorderStyle = BorderStyle.FixedSingle,
+                Location = new Point(level.LevelWidth - 2 * xForTool, ClientSize.Height - yForHints),
+                Size = new Size(xForTool, yForHints),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+            };
+            Controls.Add(picture1);
+
+            picture2 = new PictureBox()
+            {
+                BackColor = GameColors.ButtonColor,
+                BorderStyle = BorderStyle.FixedSingle,
+                Location = new Point(level.LevelWidth - xForTool, ClientSize.Height - yForHints),
+                Size = new Size(xForTool, yForHints),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+            };
+            Controls.Add(picture2);
+
             hintLabel = new Label()
             {
                 BackColor = GameColors.ButtonColor,
                 Text = "",
-                Font = new Font(FontFamily.GenericSansSerif, 20),
+                Font = new Font("Roboto", 15),
                 Size = new Size(level.LevelWidth - 3 * xForTool, yForHints),
                 Location = new Point(0, level.LevelHeight + yForCoinsAndHearths),
                 TextAlign = ContentAlignment.MiddleLeft,
             };
+
             Controls.Add(hintLabel);
             timer = new Timer();
             timer.Interval = 40;
@@ -119,7 +156,6 @@ namespace Saharok
                             gameCell.Position);
             g.DrawImage(bitmaps[finish], level.finish);
             g.DrawImage(bitmaps[shop], level.shop);
-
             return bitmap;
         }
 
@@ -148,26 +184,27 @@ namespace Saharok
             e.Graphics.TranslateTransform(0, yForCoinsAndHearths);
             foreach (var sprite in level.GetSprites())
             {
-                if(spritesImages.TryGetValue(sprite.Type, out var image))
+                if (spritesImages.TryGetValue(sprite.Type, out var image))
                     e.Graphics.DrawImage(image, sprite.Position);
-                else 
-                    e.Graphics.DrawRectangle(Pens.Violet, sprite.Position); 
+                else
+                    e.Graphics.DrawRectangle(Pens.Violet, sprite.Position);
             }
         }
 
         private void ReadPressedKeys()
         {
-
             if (pressedKeys.Contains(Keys.A))
                 level.player.Left(20);
             if (pressedKeys.Contains(Keys.D))
                 level.player.Right(20);
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
-            foreach (var e in keyWithTool.Keys)
-                foreach (var k in keyWithTool[e].Keys)
-                    if (pressedKeys.Contains(e) && level.player.TryChangeTool(k))
-                        spritesImages[SpriteType.Player] = keyWithTool[e][k];
+            if (pressedKeys.Contains(Keys.D1) && level.player.TryChangeTool(level.player.Tools[0].GetToolType()))
+                spritesImages[SpriteType.Player] = keyWithTool[level.player.Tools[0].GetToolType()];
+            if (pressedKeys.Contains(Keys.D2) && level.player.TryChangeTool(level.player.Tools[1].GetToolType()))
+                spritesImages[SpriteType.Player] = keyWithTool[level.player.Tools[1].GetToolType()];
+            if (pressedKeys.Contains(Keys.D3) && level.player.TryChangeTool(level.player.Tools[2].GetToolType()))
+                spritesImages[SpriteType.Player] = keyWithTool[level.player.Tools[2].GetToolType()];
             if (pressedKeys.Contains(Keys.C) && level.IsEnterShop)
             {
                 pressedKeys.Remove(Keys.C);
@@ -183,6 +220,12 @@ namespace Saharok
         private void TimerTick(object sender, EventArgs args)
         {
             hintLabel.Text = level.CurrentHintText;
+            if (level.player.Tools.Count > 0)
+                picture.Image = toolImage[level.player.Tools[0].GetToolType()];
+            if (level.player.Tools.Count > 1)
+                picture1.Image = toolImage[level.player.Tools[1].GetToolType()];
+            if (level.player.Tools.Count > 2)
+                picture2.Image = toolImage[level.player.Tools[2].GetToolType()];
             ReadPressedKeys();
             Invalidate(GetDowned(level.player.Position));
             foreach (var coin in level.GetCoins())
