@@ -21,7 +21,7 @@ namespace Saharok.Model
         public Rectangle shop;
         private List<Hint> hints;
         public string CurrentHintText = "";
-        public bool NeedToChangeHint = false;
+        public bool NeedToChangeHint { get; set; }
         public bool IsEnterShop { get; private set; }
 
         public Level(int LevelHeight, int LevelWidth,
@@ -30,6 +30,7 @@ namespace Saharok.Model
         {
             this.hints = hints ?? new List<Hint>();
             IsOver = false;
+            NeedToChangeHint = false;
             this.LevelHeight = LevelHeight;
             this.LevelWidth = LevelWidth;
             Walls = walls.Select(r => new GameCell(CellType.Wall, r)).ToArray();
@@ -52,25 +53,23 @@ namespace Saharok.Model
             var dy = 0;
             foreach (var wall in Walls.Select(w => w.Position))
             {
-                if (player.Position.IntersectsWith(wall))
+                if (!player.Position.IntersectsWith(wall)) continue;
+                if (axis == Axis.Horisontal)
                 {
-                    if (axis == Axis.Horisontal)
+                    if (player.SpeedX > 0)
+                        dx = wall.Left - player.Position.Right;
+                    else if (player.SpeedX < 0)
+                        dx = wall.Right - player.Position.Left;
+                }
+                else
+                {
+                    if (player.SpeedY > 0)
                     {
-                        if (player.SpeedX > 0)
-                            dx = wall.Left - player.Position.Right;
-                        else if (player.SpeedX < 0)
-                            dx = wall.Right - player.Position.Left;
+                        player.OnGround = true;
+                        dy = wall.Top - player.Position.Bottom;
                     }
-                    else
-                    {
-                        if (player.SpeedY > 0)
-                        {
-                            player.OnGround = true;
-                            dy = wall.Top - player.Position.Bottom;
-                        }
-                        else if (player.SpeedY < 0)
-                            dy = wall.Bottom - player.Position.Top;
-                    }
+                    else if (player.SpeedY < 0)
+                        dy = wall.Bottom - player.Position.Top;
                 }
             }
 
@@ -120,15 +119,23 @@ namespace Saharok.Model
                 player.Conflict();
             if (player.Lifes <= 0)
                 IsOver = true;
+
+            foreach (var hint in hints.Where(hint => hint.position.IntersectsWith(player.Position)))
+            {
+                if (hint.hintText != CurrentHintText)
+                {
+                    CurrentHintText = hint.hintText;
+                    NeedToChangeHint = true;
+                }
+
+                break;
+            }
+
             IsEnterShop = player.Position.IntersectsWith(shop);
             if (!player.Position.IntersectsWith(finish)) return;
             IsOver = true;
             IsWin = true;
-            foreach (var hint in hints.Where(hint => hint.position.IntersectsWith(player.Position)))
-            {
-                CurrentHintText = hint.hintText;
-                break;
-            }
+            
         }
 
         public IEnumerable<Rectangle> GetCoins()

@@ -76,6 +76,8 @@ namespace Saharok
                                                              new Rectangle(640, 550, 480, 50));
                 var level2 = new LevelBuilder(1024, 600, finish2, new Rectangle(0,275, 50, 70 ), level3).AddPlayer(player)
                                                                          .AddMonsters(monster2)
+                                                                         .AddHints(new Hint(new Rectangle(0, 0, 1024, 600),
+                                                                             "Остерегайтесь стаканчиков с кофе"))
                                                                          .AddWalls(new Rectangle(0, 550, 150, 50),
                                                                                    new Rectangle(150, 450, 400, 50),
                                                                                    new Rectangle(0, 350, 150, 50),
@@ -91,7 +93,7 @@ namespace Saharok
                                                                       .AddCoins(coins1.ToArray())
                                                                       .AddLava(new Rectangle(250, 550, 400, 100))
                                                                       .AddHints(new Hint(new Rectangle(0, 0, 1000, 1000),
-                                                                          "всем привет"))
+                                                                          "Используйте A, D и пробел для перемещения"))
                                                                       .AddWalls(new Rectangle(0, 550, 250, 100),
                                                                                 new Rectangle(650, 550, 350, 100),
                                                                                 new Rectangle(300, 450, 100, 50),
