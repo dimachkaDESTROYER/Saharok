@@ -44,7 +44,8 @@ namespace Saharok
         public GameForm(LevelBuilder levelBuilder, DirectoryInfo imagesDirectory = null, int coins = -1, int lifes = -1)
         {
             GameImages.PlayerImages.ImagesForSugar();
-
+            Location = new Point(0, 0);
+            MaximizeBox = false;
             finish = "финиш.png";
             shop = "shop.png";
             PlayerImage = GameImages.PlayerImages.Simple;
@@ -199,6 +200,11 @@ namespace Saharok
                 level.player.Right(20);
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
+            if (pressedKeys.Contains(Keys.Z))
+            {               
+                spritesImages[SpriteType.Player] = PlayerImage;
+                level.player.TryChangeTool(TypeTool.Nothing);
+            }
             if (pressedKeys.Contains(Keys.D1) && level.player.Tools.Count > 0 && level.player.TryChangeTool(level.player.Tools[0].GetToolType()))
                 spritesImages[SpriteType.Player] = keyWithTool[level.player.Tools[0].GetToolType()];
             if (pressedKeys.Contains(Keys.D2) && level.player.Tools.Count > 1 && level.player.TryChangeTool(level.player.Tools[1].GetToolType()))

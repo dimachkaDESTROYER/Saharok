@@ -22,7 +22,8 @@ namespace Saharok
         {
             BackColor = GameColors.BackgroundColor;
             InitializeComponent();
-
+            Location = new Point(0, 0);
+            MaximizeBox = false;
             GameImages.ImagesForShop();
             GameImages.PlayerImages.ImagesForSugar();
             

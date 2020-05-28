@@ -16,6 +16,8 @@ namespace Saharok
     {
         public Exit(bool isWin, LevelBuilder level, bool isFinal)
         {
+            Location = new Point(0, 0);
+            MaximizeBox = false;
             this.Size = new Size(1024, 600);
             BackColor = GameColors.BackgroundColor;
             var text_form = new Label()

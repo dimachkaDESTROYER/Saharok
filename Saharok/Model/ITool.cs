@@ -5,6 +5,7 @@
         Magnet,
         Boot,
         Student,
+        Nothing,
     }
 
     public interface ITool

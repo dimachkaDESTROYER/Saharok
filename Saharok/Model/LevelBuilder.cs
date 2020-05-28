@@ -30,7 +30,7 @@ namespace Saharok.Model
             if (shop.Height != 0)
             {
                 hints.Add(new Hint(new Rectangle(0, 0, width, height),
-                    "Для выбора предметов из инвентаря используйте 1, 2, 3",
+                    "Для выбора предметов из инвентаря используйте 1, 2, 3, чтобы снять - Z",
                     l => l.player.Tools.Count > 0));
                     hints.Add(new Hint(shop, "Нажмите С чтобы войти в магазин"));
             }

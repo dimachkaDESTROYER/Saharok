@@ -18,6 +18,8 @@ namespace Saharok
         public LevelBuilder FirstLevel;
         public Menu(DirectoryInfo imagesDirectory = null)
         {
+            Location = new Point(0, 0);
+            MaximizeBox = false;
             InitializeComponent();
             GameImages.ImageBackGround();
             BackgroundImage = GameImages.backgroung;

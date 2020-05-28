@@ -111,6 +111,11 @@ namespace Saharok.Model
 
         public bool TryChangeTool(TypeTool typeTool)
         {
+            if (typeTool == TypeTool.Nothing)
+            {
+                CurrentTool = null;
+                return true;
+            }
             foreach (var tool in Tools)
                 if (tool.GetToolType() == typeTool)
                 {
