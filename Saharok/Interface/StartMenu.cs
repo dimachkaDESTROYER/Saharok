@@ -93,7 +93,7 @@ namespace Saharok
                                                                       .AddCoins(coins1.ToArray())
                                                                       .AddLava(new Rectangle(250, 550, 400, 100))
                                                                       .AddHints(new Hint(new Rectangle(0, 0, 1000, 1000),
-                                                                          "Используйте A, D и пробел для перемещения \nСобирайте монеты"))
+                                                                          "Используйте A, D и пробел для перемещения "))
                                                                       .AddWalls(new Rectangle(0, 550, 250, 100),
                                                                                 new Rectangle(650, 550, 350, 100),
                                                                                 new Rectangle(300, 450, 100, 50),

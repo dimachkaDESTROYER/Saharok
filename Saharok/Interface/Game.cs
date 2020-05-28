@@ -199,11 +199,11 @@ namespace Saharok
                 level.player.Right(20);
             if (pressedKeys.Contains(Keys.Space))
                 level.player.Up(50);
-            if (pressedKeys.Contains(Keys.D1) && level.player.TryChangeTool(level.player.Tools[0].GetToolType()))
+            if (pressedKeys.Contains(Keys.D1) && level.player.Tools.Count > 0 && level.player.TryChangeTool(level.player.Tools[0].GetToolType()))
                 spritesImages[SpriteType.Player] = keyWithTool[level.player.Tools[0].GetToolType()];
-            if (pressedKeys.Contains(Keys.D2) && level.player.TryChangeTool(level.player.Tools[1].GetToolType()))
+            if (pressedKeys.Contains(Keys.D2) && level.player.Tools.Count > 1 && level.player.TryChangeTool(level.player.Tools[1].GetToolType()))
                 spritesImages[SpriteType.Player] = keyWithTool[level.player.Tools[1].GetToolType()];
-            if (pressedKeys.Contains(Keys.D3) && level.player.TryChangeTool(level.player.Tools[2].GetToolType()))
+            if (pressedKeys.Contains(Keys.D3) && level.player.Tools.Count > 2 && level.player.TryChangeTool(level.player.Tools[2].GetToolType()))
                 spritesImages[SpriteType.Player] = keyWithTool[level.player.Tools[2].GetToolType()];
             if (pressedKeys.Contains(Keys.C) && level.IsEnterShop)
             {

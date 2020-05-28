@@ -120,14 +120,13 @@ namespace Saharok.Model
             if (player.Lifes <= 0)
                 IsOver = true;
 
-            foreach (var hint in hints.Where(hint => hint.position.IntersectsWith(player.Position)))
+            foreach (var hint in hints.Where(hint => hint.position.IntersectsWith(player.Position) && hint.predicate(this)))
             {
                 if (hint.hintText != CurrentHintText)
                 {
                     CurrentHintText = hint.hintText;
                     NeedToChangeHint = true;
                 }
-
                 break;
             }
 

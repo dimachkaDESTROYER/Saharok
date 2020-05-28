@@ -11,9 +11,11 @@ namespace Saharok.Model
     {
         public readonly Rectangle position;
         public readonly string hintText;
+        public readonly Func<Level, bool> predicate;
 
-        public Hint(Rectangle position, string hintText)
+        public Hint(Rectangle position, string hintText, Func<Level, bool> predicate = null)
         {
+            this.predicate = predicate ?? (l => true);
             this.position = position;
             this.hintText = hintText;
         }
